@@ -17,6 +17,10 @@ and is further quite unpractical for a composer's workflows.
 is basicly a modified Gregorio input format and a tool
 which translates it to the standard clumsy GABC.
 
+## Run tests
+
+by executing `tests/run.rb`
+
 ## License
 
 MIT
