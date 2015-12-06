@@ -1,0 +1,6 @@
+#!/bin/env ruby
+
+# gly
+# takes gly file, produces gabc file(s);
+# optionally makes a simple tex file including it(them) and
+# builds a pdf.

@@ -4,7 +4,8 @@ require_relative 'test_helper'
 
 def gly_process(s)
   # for now do nothing
-  s
+  parsed = Gly::Parser.new.parse(s)
+  Gly::GabcConvertor.new.convert(parsed)
 end
 
 def create_gly_test_case(given_file, expected_file)
@@ -13,9 +14,10 @@ def create_gly_test_case(given_file, expected_file)
 
   test_case = Class.new(MiniTest::Test) do |klass|
     define_method "test_#{case_name}" do
-      given = File.read given_file
       expected = File.read expected_file
-      assert_equal expected, gly_process(given)
+      File.open given_file do |fr|
+        assert_equal expected, gly_process(fr).string
+      end
     end
   end
 
