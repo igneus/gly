@@ -4,7 +4,7 @@ require_relative 'test_helper'
 
 def gly_process(s)
   # for now do nothing
-  parsed = Gly::Parser.new.parse(s)
+  parsed = Gly::Parser.new.parse(s).first
   Gly::GabcConvertor.new.convert(parsed)
 end
 

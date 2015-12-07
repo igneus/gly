@@ -47,6 +47,7 @@ annotation
     end
 
     def_delegator :@headers, :[]
+    def_delegator :@pairs, :empty?
 
     def each_pair
       @pairs.each do |k|

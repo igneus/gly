@@ -8,5 +8,9 @@ module Gly
     end
 
     attr_reader :headers, :lyrics, :music
+
+    def empty?
+      @headers.empty? && @lyrics.empty? && @music.empty?
+    end
   end
 end

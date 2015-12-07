@@ -9,8 +9,6 @@ module Gly
 
       out.puts '%%'
 
-      p score.lyrics
-
       lyric_enum = score.lyrics.each_syllable.to_enum
       score.music.each_with_index do |mus_chunk,i|
         unless nonlyrical_chunk?(mus_chunk)

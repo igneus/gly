@@ -4,6 +4,7 @@ module Gly
     SYLLABLE_SEP = '--'
 
     def parse(io)
+      scores = []
       @score = ParsedScore.new
 
       io.each do |line|
@@ -11,6 +12,11 @@ module Gly
 
         if empty? line
           next
+        elsif new_score? line
+          unless @score.empty?
+            scores << @score
+            @score = ParsedScore.new
+          end
         elsif header_line? line
           parse_header line
         elsif lyrics_line? line
@@ -20,11 +26,17 @@ module Gly
         end
       end
 
-      return @score
+      scores << @score
+
+      return scores
     end
 
     def empty?(str)
       str =~ /\A\s*\Z/
+    end
+
+    def new_score?(str)
+      str =~ /\A\s*\\score/
     end
 
     def strip_comments(str)
