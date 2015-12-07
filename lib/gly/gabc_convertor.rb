@@ -26,7 +26,7 @@ module Gly
 
     # is the given music chunk capable of bearing lyrics?
     def nonlyrical_chunk?(chunk)
-      chunk =~ /\A[cf][1-4]\Z/ # clef
+      chunk =~ /\A([cf][1-4]|[.,;:]+)\Z/ # clef or differentia
     end
   end
 end
