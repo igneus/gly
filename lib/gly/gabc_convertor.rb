@@ -11,8 +11,14 @@ module Gly
 
       lyric_enum = score.lyrics.each_syllable.to_enum
       score.music.each_with_index do |mus_chunk,i|
+        begin
+          next_syl = lyric_enum.peek
+        rescue StopIteration
+          next_syl = ''
+        end
+
         unless clef?(mus_chunk) ||
-               (nonlyrical_chunk?(mus_chunk) && ! nonlyrical_lyrics?(lyric_enum.peek))
+               (nonlyrical_chunk?(mus_chunk) && ! nonlyrical_lyrics?(next_syl))
           begin
             out.print strip_directives lyric_enum.next
           rescue StopIteration
