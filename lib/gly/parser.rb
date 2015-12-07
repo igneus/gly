@@ -44,7 +44,7 @@ module Gly
     end
 
     def header_line?(str)
-      @score.lyrics.empty? && @score.music.empty? && str.include?(':')
+      @score.lyrics.empty? && @score.music.empty? && str =~ /\w+:\s*./
     end
 
     def lyrics_line?(str)
