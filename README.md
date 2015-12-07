@@ -10,20 +10,27 @@ However, it's input format, allowing only one score per file
 and intermingling music with lyrics (thus making the lyrics
 not-very-well-readable, preventing their easy copying etc.)
 offends a programmer's eye (which desires separation of
-content from logic, lyrics from music, ...)
-and is further quite unpractical for a composer's workflows.
+content from logic, lyrics from music, ...).
+As a typesetter working with petrified traditional liturgical chants
+I could live with GABC, despite of not liking it very much.
+But I sometimes also compose melodies for texts missing them -
+and in such scenarios the limitations of GABC are a real pain.
+Therefore I designed GLY - a new Gregorian notation plaintext format,
+based on GABC and translating to it.
 
-*gly* ("Gregorio for liLYponders" or "Gregorio with separate LYrics)
-is basicly a modified Gregorio input format and a tool
-which translates it to the standard clumsy GABC.
+*GLY* is an acronym of "Gregorio for liLYponders" or
+"Gregorio with separate LYrics.
 
 ## Core features
 
-* music separated from lyrics
-* music, headers and lyrics can be interspersed as needed
-* no need for parentheses (with exception of music chunks containing spaces)
-* no need for semicolons
+* music separated from lyrics => no need of the ubiquitous
+  and tedious parentheses
+  (with exception of music chunks containing spaces)
+* music and lyrics can be interspersed as needed
+* no semicolons in the header
 * custom header fields supported (commented out in the GABC output)
+* several scores per file
+* compile pdf preview by a single command, without writing any (La)TeX
 
 ## Examples
 
@@ -64,7 +71,7 @@ Corresponding GLY may look like this:
     or -- tae de tri -- bu Ju -- da,
     cla -- ra ex stir -- pe Da -- vid.
 
-Or, if preferred:
+Or, with music and lyrics interlaced:
 
     name: Nativitas gloriosae
     office-part: laudes, 1. ant.
@@ -87,6 +94,9 @@ Or, if preferred:
     
     df!gh g f hg~ hi h g ::
     cla -- ra ex stir -- pe Da -- vid.
+
+Other arrangements are also possible. Order of music and lyrics
+is actually ignored during processing.
 
 ## Run tests
 
