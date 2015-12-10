@@ -1,6 +1,7 @@
 require 'thor'
 
 module Gly
+  # implements the 'gly' executable
   class CLI < Thor
     desc 'gabc FILE ...', 'convert gly to gabc'
     def gabc(*files)
@@ -26,7 +27,6 @@ module Gly
           yield score, out_fname if block_given?
         end
       end
-
     end
 
     def make_preview(gly_file)
@@ -38,12 +38,13 @@ module Gly
 \\usepackage[left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry}
 
 \\usepackage{fontspec}
-\\setmainfont{Junicode}
 
 % for gregorio
 \\usepackage{luatextra}
 \\usepackage{graphicx}
 \\usepackage{gregoriotex}
+
+\\newcommand{\\pieceTitle}[1]{\\begin{flushright}\\footnotesize{#1}\\end{flushright}}
 
 \\begin{document}
 
@@ -56,7 +57,12 @@ EOS
         gabc_convert(gly_file) do |score, gabc_fname|
           system "gregorio #{gabc_fname}"
           gtex_fname = gabc_fname.sub /\.gabc/i, ''
-          fw.puts "\\includescore{#{gtex_fname}}"
+          piece_title = %w(book manuscript arranger author).collect do |m|
+            score.headers[m]
+          end.delete_if(&:nil?).join ', '
+          fw.puts "\\pieceTitle{#{piece_title}}"
+          fw.puts
+          fw.puts "\\includescore{#{gtex_fname}}\n\\vspace{1cm}"
         end
 
         fw.puts "\n\\end{document}"
