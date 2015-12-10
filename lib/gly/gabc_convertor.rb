@@ -17,8 +17,12 @@ module Gly
           next_syl = ''
         end
 
-        unless clef?(mus_chunk) ||
-               (nonlyrical_chunk?(mus_chunk) && ! nonlyrical_lyrics?(next_syl))
+        if clef?(mus_chunk) ||
+           (nonlyrical_chunk?(mus_chunk) && ! nonlyrical_lyrics?(next_syl))
+          # music chunk normally not having lyrics
+          out.print ' ' if i != 0
+        else
+          # regular music chunk
           begin
             out.print strip_directives lyric_enum.next
           rescue StopIteration
