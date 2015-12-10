@@ -98,6 +98,22 @@ Or, with music and lyrics interlaced:
 Other arrangements are also possible. Order of music and lyrics
 is actually ignored during processing.
 
+## Usage
+
+This gem provides executable `gly`. Run `gly help` for full list
+of subcommands. The most important ones are:
+
+`gly gabc FILE1 ...`
+
+converts given gly file(s) to one or more gabc files (one per score,
+i.e. one gly may spawn a bunch of gabcs).
+
+`gly preview FILE1 ...`
+
+Attempts to create a pdf document with all scores contained in each
+gly file. Expects gregorio and lualatex to be in PATH
+and gregoriotex to be installed and accessible by lualatex.
+
 ## Tools
 
 [Emacs mode with syntax highlighting for gly][elisp]
