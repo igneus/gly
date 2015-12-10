@@ -98,6 +98,10 @@ Or, with music and lyrics interlaced:
 Other arrangements are also possible. Order of music and lyrics
 is actually ignored during processing.
 
+## Tools
+
+[Emacs mode with syntax highlighting for gly][elisp]
+
 ## Run tests
 
 by executing `tests/run.rb`
@@ -107,3 +111,4 @@ by executing `tests/run.rb`
 MIT
 
 [gregorio]: https://github.com/gregorio-project/gregorio
+[elisp]: /tree/master/elisp
