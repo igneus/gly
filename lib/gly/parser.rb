@@ -4,7 +4,7 @@ module Gly
     SYLLABLE_SEP = '--'
 
     def parse(io)
-      scores = []
+      @scores = []
       @score = ParsedScore.new
 
       io.each do |line|
@@ -13,10 +13,11 @@ module Gly
         if empty? line
           next
         elsif new_score? line
-          unless @score.empty?
-            scores << @score
-            @score = ParsedScore.new
-          end
+          push_score
+          @score = ParsedScore.new
+        elsif header_start? line
+          push_score
+          @score = Headers.new
         elsif header_line? line
           parse_header line
         elsif lyrics_line? line
@@ -26,10 +27,12 @@ module Gly
         end
       end
 
-      scores << @score
+      push_score
 
-      return scores
+      return @scores
     end
+
+    private
 
     def empty?(str)
       str =~ /\A\s*\Z/
@@ -39,16 +42,24 @@ module Gly
       str =~ /\A\s*\\score/
     end
 
+    def header_start?(str)
+      str =~ /\A\s*\\header/
+    end
+
     def strip_comments(str)
       str.sub(/%.*\Z/, '')
     end
 
     def header_line?(str)
-      @score.lyrics.empty? && @score.music.empty? && str =~ /\w+:\s*./
+      in_header_block? || @score.lyrics.empty? && @score.music.empty? && str =~ /\w+:\s*./
     end
 
     def lyrics_line?(str)
       str.start_with?('\lyrics') || str.include?(SYLLABLE_SEP)
+    end
+
+    def in_header_block?
+      @score.is_a? Headers
     end
 
     def parse_header(str)
@@ -69,6 +80,12 @@ module Gly
       str.split(/\s+/).each do |chunk|
         chunk.sub!(/\A\((.*?)\)\Z/, '\1') # unparenthesize
         @score.music << chunk
+      end
+    end
+
+    def push_score
+      if @score.is_a?(ParsedScore) && !@score.empty?
+        @scores << @score
       end
     end
   end

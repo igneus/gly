@@ -1,6 +1,7 @@
 require 'forwardable'
 
 module Gly
+  # score or document header
   class Headers
     extend Forwardable
 
@@ -57,6 +58,10 @@ annotation
 
     def self.gregorio_supported?(key)
       GREGORIO_HEADERS.include? key
+    end
+
+    def headers
+      self
     end
   end
 end

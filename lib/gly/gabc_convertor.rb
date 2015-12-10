@@ -26,7 +26,7 @@ module Gly
           begin
             out.print strip_directives lyric_enum.next
           rescue StopIteration
-            out.print ' '
+            out.print ' ' if i != 0
           end
         end
         out.print "(#{mus_chunk})"
