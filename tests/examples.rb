@@ -2,17 +2,15 @@
 
 require_relative 'test_helper'
 
-def gly_process(s)
-  # for now do nothing
-  parsed = Gly::Parser.new.parse(s).first
-  Gly::GabcConvertor.new.convert(parsed)
-end
+# Each test case is defined by a pair of files
+# in directories examples/given and examples/expected
+# which define what is an expected gabc result of a single-score
+# gly file.
+class TestExamples < GlyTest
+  def self.example_test_case(given_file, expected_file)
+    # filename without extension
+    case_name = File.basename(given_file).sub(/\.[^\.]*\Z/, '')
 
-def create_gly_test_case(given_file, expected_file)
-  # filename without extension
-  case_name = File.basename(given_file).sub(/\.[^\.]*\Z/, '')
-
-  test_case = Class.new(MiniTest::Test) do |klass|
     define_method "test_#{case_name}" do
       expected = File.read expected_file
       File.open given_file do |fr|
@@ -21,13 +19,9 @@ def create_gly_test_case(given_file, expected_file)
     end
   end
 
-  # make CamelCase
-  class_name = case_name.gsub(/(^|_)(\w)/) {|m| m[-1].upcase }
-  Object.const_set class_name, test_case
-end
-
-here = File.dirname __FILE__
-Dir.glob(File.join(here, 'examples/gly/**/*.gly')).each do |given|
-  expected = given.sub('/given', '/expected').sub('.gly', '.gabc')
-  create_gly_test_case given, expected
+  here = File.dirname __FILE__
+  Dir.glob(File.join(here, 'examples/gly/given/*.gly')).each do |given|
+    expected = given.sub('/given', '/expected').sub('.gly', '.gabc')
+    example_test_case given, expected
+  end
 end

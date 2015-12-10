@@ -1,0 +1,9 @@
+\header
+title: Testing document with document header
+author: the author of gly
+
+\score
+mode: 8
+description: Basic alleluia
+c4 g gh g g
+A -- lle -- lu -- ia

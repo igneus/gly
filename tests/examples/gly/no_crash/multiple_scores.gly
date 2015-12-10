@@ -1,0 +1,10 @@
+\score
+mode: 8
+description: Basic alleluia
+c4 g gh g g
+A -- lle -- lu -- ia
+
+\score
+description: Another simple alleluia
+c4 g gj hig h
+A -- lle -- lu -- ia
