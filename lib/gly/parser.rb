@@ -55,11 +55,16 @@ module Gly
     end
 
     def lyrics_line?(str)
-      str.start_with?('\lyrics') || str.include?(SYLLABLE_SEP)
+      str.start_with?('\lyrics') || str.include?(SYLLABLE_SEP) || contains_unmusical_letters?(str)
     end
 
     def in_header_block?
       @score.is_a? Headers
+    end
+
+    def contains_unmusical_letters?(str)
+      letters = str.gsub(/[\W\d_]+/, '')
+      letters !~ /\A[a-mvoz]*\Z/i # incomplete gabc music letters!
     end
 
     def parse_header(str)
