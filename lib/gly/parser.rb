@@ -4,7 +4,7 @@ module Gly
     SYLLABLE_SEP = '--'
 
     def parse(io)
-      @scores = []
+      @doc = Document.new
       @score = ParsedScore.new
 
       io.each do |line|
@@ -17,7 +17,7 @@ module Gly
           @score = ParsedScore.new
         elsif header_start? line
           push_score
-          @score = Headers.new
+          @score = @doc.header
         elsif header_line? line
           parse_header line
         elsif lyrics_line? line
@@ -29,7 +29,7 @@ module Gly
 
       push_score
 
-      return @scores
+      return @doc
     end
 
     private
@@ -95,7 +95,7 @@ module Gly
 
     def push_score
       if @score.is_a?(ParsedScore) && !@score.empty?
-        @scores << @score
+        @doc.scores << @score
       end
     end
   end
