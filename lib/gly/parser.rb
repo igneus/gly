@@ -54,8 +54,10 @@ module Gly
       in_header_block? || @score.lyrics.empty? && @score.music.empty? && str =~ /\w+:\s*./
     end
 
+    EXPLICIT_LYRICS_RE = /\A\\l(yrics)?\s+/
+
     def lyrics_line?(str)
-      str.start_with?('\lyrics') || str.include?(SYLLABLE_SEP) || contains_unmusical_letters?(str)
+      str =~ EXPLICIT_LYRICS_RE || str.include?(SYLLABLE_SEP) || contains_unmusical_letters?(str)
     end
 
     def in_header_block?
@@ -75,7 +77,10 @@ module Gly
     def parse_lyrics(str)
       # words: split by whitespace not being part of syllable
       # separator
-      str.split(/(?<!#{SYLLABLE_SEP})\s+(?!#{SYLLABLE_SEP})/).each do |word|
+      str
+        .sub(EXPLICIT_LYRICS_RE, '')
+        .split(/(?<!#{SYLLABLE_SEP})\s+(?!#{SYLLABLE_SEP})/)
+        .each do |word|
         @score.lyrics << Word.new(word.split(/\s*#{SYLLABLE_SEP}\s*/))
       end
     end

@@ -14,7 +14,8 @@ class TestExamples < GlyTest
     define_method "test_#{case_name}" do
       expected = File.read expected_file
       File.open given_file do |fr|
-        assert_equal expected, gly_process(fr).string
+        given = gly_process(fr).string
+        assert_equal expected, given
       end
     end
   end
