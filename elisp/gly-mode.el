@@ -6,7 +6,7 @@
   '()                   ;; some keywords
   '(("\\\\\\(score\\|header\\)" . 'font-lock-keyword-face)
     ("\\(% .*\\)" 1 'font-lock-comment-face)
-    ("[a-z_\\-]+:" . 'font-lock-builtin-face) ;; header fields
+    ("^[a-z_\\-]+:" . 'font-lock-builtin-face) ;; header fields
     ("^.*--.*" . 'font-lock-type-face) ;; lyrics line
     )
   '("\\.gly$")          ;; files that trigger this mode
