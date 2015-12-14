@@ -70,8 +70,9 @@ EOS
           piece_title = %w(book manuscript arranger author).collect do |m|
             score.headers[m]
           end.delete_if(&:nil?).join ', '
-          fw.puts "\\pieceTitle{#{piece_title}}"
+          fw.puts "\\pieceTitle{#{piece_title}}" unless piece_title.empty?
           fw.puts
+          fw.puts "\\gresetfirstlineaboveinitial{#{score.headers['annotation']}}{}" if score.headers['annotation']
           fw.puts "\\includescore{#{gtex_fname}}\n\\vspace{1cm}"
         end
 
