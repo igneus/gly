@@ -11,7 +11,7 @@ class GlyTest < MiniTest::Test
   # shortcut performing gly->gabc conversion and returning
   # it's results
   def gly_process(gly_io)
-    parsed = Gly::Parser.new.parse(gly_io)
-    Gly::GabcConvertor.new.convert(parsed[0])
+    doc = Gly::Parser.new.parse(gly_io)
+    Gly::GabcConvertor.new.convert(doc.scores[0])
   end
 end
