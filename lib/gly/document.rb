@@ -6,8 +6,10 @@ module Gly
     def initialize
       @scores = []
       @header = Headers.new
+      @path = nil
     end
 
     attr_reader :scores, :header
+    attr_accessor :path
   end
 end

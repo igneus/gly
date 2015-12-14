@@ -7,6 +7,10 @@ module Gly
       @doc = Document.new
       @score = ParsedScore.new
 
+      if io.respond_to? :path
+        @doc.path = io.path
+      end
+
       io.each do |line|
         line = strip_comments(line)
 

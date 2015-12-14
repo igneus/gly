@@ -5,7 +5,7 @@ module Gly
   class CLI < Thor
     desc 'gabc FILE ...', 'convert gly to gabc'
     def gabc(*files)
-      files.each {|f| gabc_convert f }
+      files.each {|f| gabc_convert(parse(f)) }
     end
 
     desc 'preview FILE ...', 'convert to gabc AND generate pdf preview'
@@ -15,21 +15,27 @@ module Gly
 
     private
 
-    def gabc_convert(gly_file)
-      parsed = File.open(gly_file) do |fr|
-        Parser.new.parse(fr).each_with_index do |score, si|
-          score_id = score.headers['id'] || si.to_s
-          out_fname = File.basename(gly_file)
-                      .sub(/\.gly\Z/i, "_#{score_id}.gabc")
-          File.open(out_fname, 'w') do |fw|
-            GabcConvertor.new.convert score, fw
-          end
-          yield score, out_fname if block_given?
+    def parse(gly_file)
+      document = File.open(gly_file) do |fr|
+        Parser.new.parse(fr)
+      end
+    end
+
+    def gabc_convert(doc)
+      doc.scores.each_with_index do |score, si|
+        score_id = score.headers['id'] || si.to_s
+        out_fname = File.basename(doc.path)
+                    .sub(/\.gly\Z/i, "_#{score_id}.gabc")
+        File.open(out_fname, 'w') do |fw|
+          GabcConvertor.new.convert score, fw
         end
+        yield score, out_fname if block_given?
       end
     end
 
     def make_preview(gly_file)
+      doc = parse(gly_file)
+
       tex_header = <<EOS
 % LuaLaTeX
 
@@ -46,7 +52,11 @@ module Gly
 
 \\newcommand{\\pieceTitle}[1]{\\begin{flushright}\\footnotesize{#1}\\end{flushright}}
 
+\\title{#{doc.header['title']}}
+
 \\begin{document}
+
+#{doc.header['title'] && '\\maketitle'}
 
 EOS
 
@@ -54,7 +64,7 @@ EOS
       File.open(tex_fname, 'w') do |fw|
         fw.puts tex_header
 
-        gabc_convert(gly_file) do |score, gabc_fname|
+        gabc_convert(doc) do |score, gabc_fname|
           system "gregorio #{gabc_fname}"
           gtex_fname = gabc_fname.sub /\.gabc/i, ''
           piece_title = %w(book manuscript arranger author).collect do |m|
@@ -65,6 +75,10 @@ EOS
           fw.puts "\\includescore{#{gtex_fname}}\n\\vspace{1cm}"
         end
 
+        # tagline
+        fw.puts "\n\\vfill\n\\begin{center}"
+        fw.puts "\\texttt{gly preview https://github.com/igneus/gly}"
+        fw.puts "\\end{center}\n"
         fw.puts "\n\\end{document}"
       end
 
