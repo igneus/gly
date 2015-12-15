@@ -228,17 +228,20 @@ There are, however, a few special cases, to make it work conveniently:
 
 These special cases of music chunks don't get lyric syllable:
 
-* clef has no lyrics
+* clef
 * music chunk containing only a division - i.e. music chunk containing
-  only one of `,` , `;` , `:` , `::`
+  one of `,` , `;` , `:` , `::` alone
 
 Exception to this rule are 'nonlyrical lyrics chunks'.
-One of them is `*`. Normally it is treated as any other syllable,
+Currently there is only one built-in nonlyrical lyric chunk:
+asterisk `*`.
+Normally it is treated as any other syllable,
 but if it meets a division, it is set as it's lyrics, while
 a normal syllable wouldn't be.
 
 If you need to set some other syllable under a division,
-put an exclamation mark at it's beginning, e.g. `!<i>Ps.</i>`
+make it 'nonlyrical' by placing
+an exclamation mark at it's beginning, e.g. `!<i>Ps.</i>`
 
 In the other direction it is sometimes necessary to set a syllable
 not matching any music at all. In such cases empty music chunk
