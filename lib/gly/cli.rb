@@ -50,8 +50,6 @@ module Gly
 \\usepackage{graphicx}
 \\usepackage{gregoriotex}
 
-\\newcommand{\\pieceTitle}[1]{\\begin{flushright}\\footnotesize{#1}\\end{flushright}}
-
 \\title{#{doc.header['title']}}
 
 \\begin{document}
@@ -70,7 +68,7 @@ EOS
           piece_title = %w(book manuscript arranger author).collect do |m|
             score.headers[m]
           end.delete_if(&:nil?).join ', '
-          fw.puts "\\hfill\\pieceTitle{#{piece_title}}\n" unless piece_title.empty?
+          fw.puts "\\commentary{\\footnotesize{#{piece_title}}}\n" unless piece_title.empty?
 
           annotations = score.headers.each_value('annotation')
           begin
