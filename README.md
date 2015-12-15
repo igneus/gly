@@ -96,6 +96,12 @@ Or, with music and lyrics interlaced:
 Other arrangements are also possible. Order of music and lyrics
 is actually ignored during processing.
 
+## Installation
+
+Install Ruby (some version 2.x) runtime. Then install as any ruby gem:
+
+`gem install gly`
+
 ## Usage
 
 This gem provides executable `gly`. Run `gly help` for full list
@@ -109,8 +115,8 @@ i.e. one gly may spawn a bunch of gabcs).
 `gly preview FILE1 ...`
 
 Attempts to create a pdf document with all scores contained in each
-gly file. Expects gregorio and lualatex to be in PATH
-and gregoriotex to be installed and accessible by lualatex.
+gly file. Expects `gregorio` and `lualatex` to be in PATH
+and `gregoriotex` to be installed and accessible by `lualatex`.
 
 ## Tools
 
