@@ -2,6 +2,8 @@
 
 The friendly Gregorian notation format
 
+![Editing gly in emacs](/doc/img/gly_emacs_scr.png)
+
 ## Why
 
 For Gregorian notation there is no other software with such great
