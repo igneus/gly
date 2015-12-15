@@ -142,7 +142,7 @@ or hints for the parser concerning what each line means.
 Mostly the parser guesses the meaning correctly.
 Where not, meaning of each line can be stated explicitly.
 
-### Comments
+### 1. Comments
 
 When a `%` sign is encountered, everything until the end of line
 is considered a comment and not interpreted.
@@ -151,11 +151,11 @@ is considered a comment and not interpreted.
 Please note, that when compiling to gabc, comments are dropped
 and don't appear in the resulting gabc file.
 
-### Whitespace
+### 2. Whitespace
 
 Empty lines are ignored.
 
-### Scores
+### 3. Scores
 
 A new score begins at the beginning of a file or at a line containing
 a single keyword '\score'.
@@ -168,7 +168,7 @@ Lines with music and lyrics may appear in any order.
 Score ends with end of file or with explicit beginning of a new score
 or another top-level element.
 
-#### Score header
+#### 3.1 Score header
 
 Score header consists of fields.
 
@@ -183,7 +183,7 @@ minus-sign and underscore. Value can contain anything.
 Score header ends with first non-empty line identified by the parser
 as music or lyrics.
 
-#### Lyrics
+#### 3.2 Lyrics
 
 Syntax of lyrics is inspired by LilyPond.
 Lyrics have to be manually syllabified. Default syllable delimiter
@@ -201,7 +201,7 @@ or short `\l` at the beginning of the unhappy line:
 
 `\l a a a`
 
-#### Music
+#### 3.3 Music
 
 Any line appearing in a score and not identified as header field
 or lyrics is music by default.
@@ -210,7 +210,7 @@ Music line contains one or more music chunks separated by whitespace.
 For music syntax see [official gabc documentation][gabc] -
 gly doesn't change anything in this respect.
 
-### Document header
+### 4. Document header
 
 Each gly document may optinally contain a document header.
 It may appear anywhere in the document, but best practice is to place
