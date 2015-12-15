@@ -183,6 +183,10 @@ minus-sign and underscore. Value can contain anything.
 Score header ends with first non-empty line identified by the parser
 as music or lyrics.
 
+Header field 'id' is special: if present, it is used as suffix
+of the generated gabc file (instead of the default, which is
+numeric position of the score in the source document).
+
 #### 3.2 Lyrics
 
 Syntax of lyrics is inspired by LilyPond.
@@ -196,8 +200,9 @@ syllable separator in it and by looking if it's alphanumeric
 characters contains something that cannot be interpreted as music.
 If any of these conditions is met, the line is interpreted as lyrics.
 
-If gly interprets your lyrics line as music, place `\lyrics`
-or short `\l` at the beginning of the unhappy line:
+If gly fails to guess your lyrics line correctly and interprets
+it as music, place `\lyrics` or short `\l` at the beginning
+of the unhappy line:
 
 `\l a a a`
 
@@ -210,6 +215,35 @@ Music line contains one or more music chunks separated by whitespace.
 For music syntax see [official gabc documentation][gabc] -
 gly doesn't change anything in this respect.
 
+Music chunks may be enclosed in parentheses as in gabc.
+(Of course you don't like the parentheses and are happy that gly
+let's you leave them out. But in some special cases they come handy.)
+
+#### 3.4 Matching lyrics to music
+
+When processing the gly source and producing gabc, music chunks
+are matched to lyric syllables.
+
+There are, however, a few special cases, to make it work conveniently:
+
+These special cases of music chunks don't get lyric syllable:
+
+* clef has no lyrics
+* music chunk containing only a division - i.e. music chunk containing
+  only one of `,` , `;` , `:` , `::`
+
+Exception to this rule are 'nonlyrical lyrics chunks'.
+One of them is `*`. Normally it is treated as any other syllable,
+but if it meets a division, it is set as it's lyrics, while
+a normal syllable wouldn't be.
+
+If you need to set some other syllable under a division,
+put an exclamation mark at it's beginning, e.g. `!<i>Ps.</i>`
+
+In the other direction it is sometimes necessary to set a syllable
+not matching any music at all. In such cases empty music chunk
+`()` is what you need.
+
 ### 4. Document header
 
 Each gly document may optinally contain a document header.
@@ -220,6 +254,9 @@ Document header starts with keyword `\header` and ends
 at the end of file or at the beginning of another top-level element.
 The syntax of it's content is the same
 as for [Score header][].
+
+Field 'title' in the document header is, if present,
+used by `gly preview` as title of the generated pdf.
 
 ## Run tests
 
