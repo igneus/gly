@@ -30,6 +30,7 @@ module Gly
           end
         end
         out.print "(#{mus_chunk})"
+        # out.puts if differentia?(mus_chunk) # newline after each differentia
       end
 
       return out
@@ -39,9 +40,13 @@ module Gly
       chunk =~ /\A[cf][1-4]\Z/
     end
 
+    def differentia?(chunk)
+      chunk =~ /\A*[,;:]+\Z/ # differentia
+    end
+
     # is the given music chunk capable of bearing lyrics?
     def nonlyrical_chunk?(chunk)
-      chunk =~ /\A*[,;:]+\Z/ # differentia
+      differentia? chunk
     end
 
     def nonlyrical_lyrics?(syl)
