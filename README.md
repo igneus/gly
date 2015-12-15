@@ -30,7 +30,11 @@ notation format, which compiles to pure Gregorio GABC
   a separate file)
 * compile pdf preview by a single command, without writing any (La)TeX
 
-## Examples
+## Real world examples
+
+* [Proper Divine Office chants of Bohemian Premonstratensian houses][opraem_boh]
+
+## Basic examples
 
 Typical GABC source of an antiphon looks like this:
 
@@ -69,7 +73,9 @@ Corresponding GLY may look like this:
     or -- tae de tri -- bu Ju -- da,
     cla -- ra ex stir -- pe Da -- vid.
 
-Or, with music and lyrics interlaced:
+Or, with music and lyrics interlaced
+(this arrangement may be handy for larger scores,
+like full-notated hymns, sequences or nocturnal responsories):
 
     name: Nativitas gloriosae
     office-part: laudes, 1. ant.
@@ -124,6 +130,97 @@ and `gregoriotex` to be installed and accessible by `lualatex`.
 
 ![Editing gly in emacs](/doc/img/gly_emacs_scr.png)
 
+## Syntax reference
+
+Gly syntax is line-based.
+The interpreter reads the input line by line,
+and depending on context it interprets each line as
+e.g. music, lyrics or header field.
+
+The syntax is quite permissive, not requiring a lot of delimiters
+or hints for the parser concerning what each line means.
+Mostly the parser guesses the meaning correctly.
+Where not, meaning of each line can be stated explicitly.
+
+### Comments
+
+When a `%` sign is encountered, everything until the end of line
+is considered a comment and not interpreted.
+(Comment syntax is the same as in gabc.)
+
+Please note, that when compiling to gabc, comments are dropped
+and don't appear in the resulting gabc file.
+
+### Whitespace
+
+Empty lines are ignored.
+
+### Scores
+
+A new score begins at the beginning of a file or at a line containing
+a single keyword '\score'.
+
+It consists of
+a header (optional, only permitted at the beginning of a score)
+and music- and lyrics-lines.
+Lines with music and lyrics may appear in any order.
+
+Score ends with end of file or with explicit beginning of a new score
+or another top-level element.
+
+#### Score header
+
+Score header consists of fields.
+
+Each header field is on it's own (one) line and consists of
+identifier, colon and value:
+
+`mode: 8`
+
+Header field identifier may only consist of alphanumeric characters,
+minus-sign and underscore. Value can contain anything.
+
+Score header ends with first non-empty line identified by the parser
+as music or lyrics.
+
+#### Lyrics
+
+Syntax of lyrics is inspired by LilyPond.
+Lyrics have to be manually syllabified. Default syllable delimiter
+is double dash (minus) `--` with optional whitespace around.
+
+`cla -- ra ex stir -- pe Da -- vid.`
+
+The parser guesses meaning of the line by attempting to find
+syllable separator in it and by looking if it's alphanumeric
+characters contains something that cannot be interpreted as music.
+If any of these conditions is met, the line is interpreted as lyrics.
+
+If gly interprets your lyrics line as music, place `\lyrics`
+or short `\l` at the beginning of the unhappy line:
+
+`\l a a a`
+
+#### Music
+
+Any line appearing in a score and not identified as header field
+or lyrics is music by default.
+
+Music line contains one or more music chunks separated by whitespace.
+For music syntax see [official gabc documentation][gabc] -
+gly doesn't change anything in this respect.
+
+### Document header
+
+Each gly document may optinally contain a document header.
+It may appear anywhere in the document, but best practice is to place
+it at the very beginning.
+
+Document header starts with keyword `\header` and ends
+at the end of file or at the beginning of another top-level element.
+The syntax of it's content is the same
+as for [Score header][].
+
 ## Run tests
 
 by executing `tests/run.rb`
@@ -133,4 +230,7 @@ by executing `tests/run.rb`
 MIT
 
 [gregorio]: https://github.com/gregorio-project/gregorio
+[gabc]: http://gregorio-project.github.io/gabc/index.html
 [elisp]: /tree/master/elisp
+
+[opraem_boh]: https://gist.github.com/igneus/1aed0b36e9b23b51526d
