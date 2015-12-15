@@ -1,37 +1,33 @@
 # gly
 
-The friendly Gregorian notation format
-
-![Editing gly in emacs](/doc/img/gly_emacs_scr.png)
-
-## Why
-
-For Gregorian notation there is no other software with such great
-features as [Gregorio][gregorio].
-However, it's input format, allowing only one score per file
-and intermingling music with lyrics (thus making the lyrics
-not-very-well-readable, preventing their easy copying etc.)
-offends a programmer's eye (which desires separation of
-content from logic, lyrics from music, ...).
-As a typesetter working with petrified traditional liturgical chants
-I could live with GABC, despite of not liking it very much.
-But I sometimes also compose melodies for texts missing them -
-and in such scenarios the limitations of GABC are a real pain.
-Therefore I designed GLY - a new Gregorian notation plaintext format,
-based on GABC and translating to it.
+Writer-friendly Gregorian notation format compiling to gabc.
 
 *GLY* is an acronym of "Gregorio for liLYponders" or
 "Gregorio with separate LYrics.
 
-## Core features
+## Why
 
-* music separated from lyrics => no need of the ubiquitous
-  and tedious parentheses
-  (with exception of music chunks containing spaces)
+One of the most popular solutions for typesetting quadratic
+notation used for the Gregorian chant is [Gregorio][gregorio].
+
+However, I have several objections against it's input format.
+That led me to designing an alternative, Gregorio-inspired
+notation format, which compiles to pure Gregorio GABC
+(which I don't like writing manually).
+
+## Features
+
+* music separated from lyrics
+  * no need of the ubiquitous and tedious parentheses
+  * separation of "material and form" -> easy copying of the music or
+    lyrics alone is possible (useful for a composer)
+  * syllabified lyrics entered in a format inspired by LilyPond
 * music and lyrics can be interspersed as needed
 * no semicolons in the header
-* custom header fields supported (commented out in the GABC output)
-* several scores per file
+* custom header fields supported (commented out in the GABC output;
+  as gregorio crashes on headers it doesn't know)
+* several scores per file (when compiled to gabc, each becomes
+  a separate file)
 * compile pdf preview by a single command, without writing any (La)TeX
 
 ## Examples
@@ -119,6 +115,8 @@ and gregoriotex to be installed and accessible by lualatex.
 ## Tools
 
 [Emacs mode with syntax highlighting for gly][elisp]
+
+![Editing gly in emacs](/doc/img/gly_emacs_scr.png)
 
 ## Run tests
 
