@@ -71,7 +71,15 @@ EOS
             score.headers[m]
           end.delete_if(&:nil?).join ', '
           fw.puts "\\hfill\\pieceTitle{#{piece_title}}\n" unless piece_title.empty?
-          fw.puts "\\gresetfirstlineaboveinitial{#{score.headers['annotation']}}{}" if score.headers['annotation']
+
+          annotations = score.headers.each_value('annotation')
+          begin
+            fw.puts "\\setfirstannotation{#{annotations.next}}"
+            fw.puts "\\setsecondannotation{#{annotations.next}}"
+          rescue StopIteration
+            # ok, no more annotations
+          end
+
           fw.puts "\\includescore{#{gtex_fname}}\n\\vspace{1cm}"
         end
 

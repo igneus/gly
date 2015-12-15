@@ -50,7 +50,20 @@ annotation
     def_delegator :@headers, :[]
     def_delegator :@pairs, :empty?
 
+    # some header fields may appear more than once;
+    # this method provides access to values of all occurrences
+    # of a given header field
+    def each_value(key)
+      return to_enum(:each_value, key) unless block_given?
+
+      each_pair do |k,v|
+        yield v if k == key
+      end
+    end
+
     def each_pair
+      return to_enum(:each_pair) unless block_given?
+
       @pairs.each do |k|
         yield k[0], k[1]
       end
