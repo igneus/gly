@@ -8,6 +8,7 @@ lyrics
 document
 document_gabc_convertor
 preview_generator
-lister).each do |mod|
+lister
+string_helpers).each do |mod|
   require "gly/#{mod}"
 end

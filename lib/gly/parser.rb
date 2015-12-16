@@ -119,8 +119,7 @@ module Gly
 
     def parse_music(str)
       # music chunks: split by whitespace out of brackets
-      str.split(/\s+/).each do |chunk|
-        chunk.sub!(/\A\((.*?)\)\Z/, '\1') # unparenthesize
+      StringHelpers.music_split(str).each do |chunk|
         @score.music << chunk
       end
     end
