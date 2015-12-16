@@ -1,4 +1,5 @@
 require 'thor'
+require 'stringio'
 
 module Gly
   # implements the 'gly' executable
@@ -78,59 +79,43 @@ module Gly
     def make_preview(gly_file)
       doc = parse(gly_file)
 
-      tex_header = <<EOS
-% LuaLaTeX
+      tpl_name = File.join(File.dirname(__FILE__), 'templates/lualatex_document.tex')
+      template = File.read(tpl_name)
 
-\\documentclass[a4paper, 12pt]{article}
-\\usepackage[latin]{babel}
-\\usepackage[left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry}
+      doc_body = fw = StringIO.new
 
-\\usepackage{fontspec}
+      gabc_convert(doc) do |score, gabc_fname|
+        system "gregorio #{gabc_fname}"
+        gtex_fname = gabc_fname.sub /\.gabc/i, ''
+        piece_title = %w(book manuscript arranger author).collect do |m|
+          score.headers[m]
+        end.delete_if(&:nil?).join ', '
+        fw.puts "\\commentary{\\footnotesize{#{piece_title}}}\n" unless piece_title.empty?
 
-% for gregorio
-\\usepackage{luatextra}
-\\usepackage{graphicx}
-\\usepackage{gregoriotex}
-
-\\title{#{doc.header['title']}}
-
-\\begin{document}
-
-#{doc.header['title'] && '\\maketitle'}
-
-EOS
-
-      tex_fname = File.basename(gly_file).sub(/\.gly\Z/i, '.tex')
-      File.open(tex_fname, 'w') do |fw|
-        fw.puts tex_header
-
-        gabc_convert(doc) do |score, gabc_fname|
-          system "gregorio #{gabc_fname}"
-          gtex_fname = gabc_fname.sub /\.gabc/i, ''
-          piece_title = %w(book manuscript arranger author).collect do |m|
-            score.headers[m]
-          end.delete_if(&:nil?).join ', '
-          fw.puts "\\commentary{\\footnotesize{#{piece_title}}}\n" unless piece_title.empty?
-
-          annotations = score.headers.each_value('annotation')
-          begin
-            fw.puts "\\setfirstannotation{#{annotations.next}}"
-            fw.puts "\\setsecondannotation{#{annotations.next}}"
-          rescue StopIteration
-            # ok, no more annotations
-          end
-
-          fw.puts "\\includescore{#{gtex_fname}}\n\\vspace{1cm}"
+        annotations = score.headers.each_value('annotation')
+        begin
+          fw.puts "\\setfirstannotation{#{annotations.next}}"
+          fw.puts "\\setsecondannotation{#{annotations.next}}"
+        rescue StopIteration
+          # ok, no more annotations
         end
 
-        # tagline
-        fw.puts "\n\\vfill\n\\begin{center}"
-        fw.puts "\\texttt{gly preview https://github.com/igneus/gly}"
-        fw.puts "\\end{center}\n"
-        fw.puts "\n\\end{document}"
+        fw.puts "\\includescore{#{gtex_fname}}\n\\vspace{1cm}"
       end
 
-      system "lualatex #{tex_fname}"
+      replacements = {
+        title: doc.header['title'],
+        maketitle: (doc.header['title'] && '\maketitle'),
+        body: doc_body.string
+      }
+      tex = template % replacements
+
+      out_fname = File.basename(gly_file).sub(/\.gly\Z/i, '.tex')
+      File.open(out_fname, 'w') do |fw|
+        fw.puts tex
+      end
+
+      system "lualatex #{out_fname}"
     end
   end
 end
