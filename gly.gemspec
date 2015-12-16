@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 Gem::Specification.new do |s|
   s.name        = 'gly'
-  s.version     = '0.0.1'
-  s.date        = '2015-12-15'
+  s.version     = '0.0.2'
+  s.date        = '2015-12-16'
   s.summary     = 'Writer-friendly Gregorian notation format compiling to gabc'
 
   s.description = File.read 'README.md'
