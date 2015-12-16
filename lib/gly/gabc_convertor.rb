@@ -1,5 +1,7 @@
+require 'stringio'
+
 module Gly
-  # converts parsed gly to gabc
+  # takes ParsedScore, translates it to gabc
   class GabcConvertor
     def convert(score, out=StringIO.new)
       score.headers.each_pair do |key,value|

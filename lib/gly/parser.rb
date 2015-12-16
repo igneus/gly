@@ -1,9 +1,37 @@
+require 'stringio'
+
 module Gly
   # parses gly source
   class Parser
-    SYLLABLE_SEP = '--'
+    def initialize(syllable_separator='--')
+      @syllable_separator = syllable_separator
+    end
 
-    def parse(io)
+    def parse(source)
+      if source.is_a? String
+        if File.file? source
+          parse_fname source
+        elsif source == '-'
+          parse_io STDIN
+        else
+          parse_str source
+        end
+      else
+        parse_io source
+      end
+    end
+
+    def parse_fname(str)
+      File.open(str) do |fr|
+        parse_io fr
+      end
+    end
+
+    def parse_str(str)
+      parse_io(StringIO.new(source))
+    end
+
+    def parse_io(io)
       @doc = Document.new
       @score = ParsedScore.new
 
@@ -61,7 +89,7 @@ module Gly
     EXPLICIT_LYRICS_RE = /\A\\l(yrics)?\s+/
 
     def lyrics_line?(str)
-      str =~ EXPLICIT_LYRICS_RE || str.include?(SYLLABLE_SEP) || contains_unmusical_letters?(str)
+      str =~ EXPLICIT_LYRICS_RE || str.include?(@syllable_separator) || contains_unmusical_letters?(str)
     end
 
     def in_header_block?
@@ -83,9 +111,9 @@ module Gly
       # separator
       str
         .sub(EXPLICIT_LYRICS_RE, '')
-        .split(/(?<!#{SYLLABLE_SEP})\s+(?!#{SYLLABLE_SEP})/)
+        .split(/(?<!#{@syllable_separator})\s+(?!#{@syllable_separator})/)
         .each do |word|
-        @score.lyrics << Word.new(word.split(/\s*#{SYLLABLE_SEP}\s*/))
+        @score.lyrics << Word.new(word.split(/\s*#{@syllable_separator}\s*/))
       end
     end
 
