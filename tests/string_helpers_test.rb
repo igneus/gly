@@ -7,8 +7,10 @@ class StringHelpersTest < GlyTest
     ['single_chunk', 'a', ['a']],
     ['simple_whitespace', 'aa aa', ['aa', 'aa']],
     ['leading_trailing_whitespace', ' a a  ', ['a', 'a']],
+    ['repeated_inner_whitespace', 'a    a', ['a', 'a']],
     ['bracketted', '(a)', ['a']],
-    ['empty', '()', ['']]
+    ['empty', '()', ['']],
+    ['nested', '(a(b))', ['a(b', ')']] # nesting isn't supported
   ]
 
   examples.each do |e|
