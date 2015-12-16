@@ -41,7 +41,7 @@ module Gly
     end
 
     def differentia?(chunk)
-      chunk =~ /\A*[,;:]+\Z/ # differentia
+      chunk =~ /\A*[,;:`]+\Z/ # differentia
     end
 
     # is the given music chunk capable of bearing lyrics?
