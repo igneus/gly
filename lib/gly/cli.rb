@@ -59,6 +59,10 @@ module Gly
     private
 
     def parse(gly_file)
+      if gly_file == '-'
+        return Parser.new.parse(STDIN)
+      end
+
       document = File.open(gly_file) do |fr|
         Parser.new.parse(fr)
       end
