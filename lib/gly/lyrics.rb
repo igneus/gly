@@ -23,7 +23,11 @@ module Gly
     end
 
     def_delegator :@words, :each, :each_word
-    def_delegators :@words, :empty?, :<<
+    def_delegators :@words, :<<, :empty?
+
+    def readable
+      @words.collect(&:readable).join ' '
+    end
   end
 
   class Word
@@ -35,5 +39,12 @@ module Gly
 
     def_delegators :@syllables, :<<, :push
     def_delegator :@syllables, :each, :each_syllable
+
+    def readable
+      without_directives = @syllables.collect do |s|
+        s.start_with?('!') ? s[1..-1] : s
+      end
+      without_directives.join
+    end
   end
 end

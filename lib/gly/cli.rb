@@ -13,6 +13,48 @@ module Gly
       files.each {|f| make_preview f }
     end
 
+    desc 'list FILE ...', 'list scores contained in files'
+    option :recursive, type: :boolean, aliases: :r, banner: 'recursively traverse directories', default: false
+    def list(*files)
+      if files.empty?
+        STDERR.puts 'No file specified.'
+        exit 1
+      end
+
+      if options[:recursive]
+        files = files.collect do |f|
+          if File.directory?(f)
+            Dir[File.join(f, '**/*.gly')]
+          else
+            f
+          end
+        end
+        files.flatten!
+      end
+
+      was_error = false
+
+      files.each do |f|
+        begin
+          document = parse(f)
+        rescue SystemCallError => err # Errno::WHATEVER
+          STDERR.puts "Cannot read file '#{f}': #{err.message}"
+          was_error = true
+          next
+        end
+
+        puts
+        puts "== #{f}"
+
+        document.scores.each do |s|
+          l = s.lyrics.readable
+          puts l unless l.empty?
+        end
+      end
+
+      exit(was_error ? 1 : 0)
+    end
+
     private
 
     def parse(gly_file)
