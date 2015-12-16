@@ -24,8 +24,8 @@ notation format, which compiles to pure Gregorio GABC
   * syllabified lyrics entered in a format inspired by LilyPond
 * music and lyrics can be interspersed as needed
 * no semicolons in the header
-* custom header fields supported (commented out in the GABC output;
-  as gregorio crashes on headers it doesn't know)
+* custom header fields supported (commented out in the GABC output,
+  as gregorio doesn't tolerate headers it doesn't know)
 * several scores per file (when compiled to gabc, each becomes
   a separate file)
 * compile pdf preview by a single command, without writing any (La)TeX
@@ -104,7 +104,7 @@ is actually ignored during processing.
 
 ## Installation
 
-Install Ruby (some version 2.x) runtime. Then install as any ruby gem:
+Install Ruby (some 2.x version) runtime. Then install as any ruby gem:
 
 `gem install gly`
 
