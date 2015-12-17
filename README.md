@@ -10,13 +10,16 @@ Writer-friendly Gregorian notation format compiling to gabc.
 One of the most popular solutions for typesetting quadratic
 notation used for the Gregorian chant is [Gregorio][gregorio].
 
-However, I have several objections against it's input format.
+Gregorio is a great tool, but I really don't like it's default
+input format [gabc][gabc] - it's not very well readable,
+pain to write, and too restrictive (for some reason doesn't
+support other than the predefined header fields).
 That led me to designing an alternative, Gregorio-inspired
-notation format, which compiles to pure Gregorio GABC
-(which I don't like writing manually).
+notation format, which compiles to pure Gregorio gabc.
 
 ## Features
 
+__gly language__
 * music separated from lyrics
   * no need of the ubiquitous and tedious parentheses
   * separation of "material and form" -> easy copying of the music or
@@ -28,7 +31,10 @@ notation format, which compiles to pure Gregorio GABC
   as gregorio doesn't tolerate headers it doesn't know)
 * several scores per file (when compiled to gabc, each becomes
   a separate file)
-* compile pdf preview by a single command, without writing any (La)TeX
+
+__gly tool__
+* compile pdf preview with a single command, without writing
+  any (La)TeX
 
 ## Real world examples
 
@@ -108,6 +114,10 @@ Install Ruby (some 2.x version) runtime. Then install as any ruby gem:
 
 `gem install gly`
 
+If you plan to use `gly preview`,
+ensure that you have a working installation of `gregorio` and
+`lualatex`.
+
 ## Usage
 
 This gem provides executable `gly`. Run `gly help` for full list
@@ -120,9 +130,8 @@ i.e. one gly may spawn a bunch of gabcs).
 
 `gly preview FILE1 ...`
 
-Attempts to create a pdf document with all scores contained in each
-gly file. Expects `gregorio` and `lualatex` to be in PATH
-and `gregoriotex` to be installed and accessible by `lualatex`.
+creates a pdf document with all scores contained in each
+gly file.
 
 ## Tools
 
@@ -175,7 +184,12 @@ Score header consists of fields.
 Each header field is on it's own (one) line and consists of
 identifier, colon and value:
 
-`mode: 8`
+    name: Nativitas gloriosae
+    office-part: laudes, 1. ant.
+    occasion: In Nativitate B. Mariae Virginis
+    book: Antiphonale Romanum 1912, pg. 704
+    mode: 8
+    initial-style: 1
 
 Header field identifier may only consist of alphanumeric characters,
 minus-sign and underscore. Value can contain anything.
@@ -197,11 +211,11 @@ is double dash (minus) `--` with optional whitespace around.
 
 The parser guesses meaning of the line by attempting to find
 syllable separator in it and by looking if it's alphanumeric
-characters contains something that cannot be interpreted as music.
+characters contain something that cannot be interpreted as music.
 If any of these conditions is met, the line is interpreted as lyrics.
 
 If gly fails to guess your lyrics line correctly and interprets
-it as music, place `\lyrics` or short `\l` at the beginning
+it as music, place `\lyrics` or it's shorter form `\l` at the beginning
 of the unhappy line:
 
 `\l a a a`
@@ -216,8 +230,10 @@ For music syntax see [official gabc documentation][gabc] -
 gly doesn't change anything in this respect.
 
 Music chunks may be enclosed in parentheses as in gabc.
-(Of course you don't like the parentheses and are happy that gly
-let's you leave them out. But in some special cases they come handy.)
+That is especially useful in two cases:
+
+* empty music chunk `()`
+* music chunk containing space `(gf gf g!hi)`
 
 #### 3.4 Matching lyrics to music
 
@@ -256,7 +272,10 @@ it at the very beginning.
 Document header starts with keyword `\header` and ends
 at the end of file or at the beginning of another top-level element.
 The syntax of it's content is the same
-as for [Score header][].
+as for score header.
+
+    \header
+    title: Hebdomada III Adventus
 
 Field 'title' in the document header is, if present,
 used by `gly preview` as title of the generated pdf.
@@ -269,7 +288,7 @@ by executing `tests/run.rb`
 
 MIT
 
-[gregorio]: https://github.com/gregorio-project/gregorio
+[gregorio]: http://gregorio-project.github.io
 [gabc]: http://gregorio-project.github.io/gabc/index.html
 [elisp]: /tree/master/elisp
 
