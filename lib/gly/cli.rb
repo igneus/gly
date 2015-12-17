@@ -37,5 +37,16 @@ module Gly
 
       exit(lister.error? ? 1 : 0)
     end
+
+    class << self
+      # override Thor's default handler
+      def handle_no_command_error(command, has_namespace=$thor_runner)
+        if has_namespace
+          fail Thor::UndefinedCommandError, "Could not find command #{command.inspect} in #{namespace.inspect} namespace."
+        else
+          fail Thor::UndefinedCommandError, "Could not find command #{command.inspect}. Did you mean 'gly preview #{command}' ?"
+        end
+      end
+    end
   end
 end
