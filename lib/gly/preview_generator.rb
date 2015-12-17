@@ -11,6 +11,7 @@ module Gly
       doc_body = fw = StringIO.new
 
       convertor = DocumentGabcConvertor.new(document)
+      convertor.convert
       convertor.each_score_with_gabcname do |score, gabc_fname|
         system "gregorio #{gabc_fname}"
         gtex_fname = gabc_fname.sub /\.gabc/i, ''
