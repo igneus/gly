@@ -13,7 +13,7 @@ module Gly
       convertor = DocumentGabcConvertor.new(document)
       convertor.convert
       convertor.each_score_with_gabcname do |score, gabc_fname|
-        system "gregorio #{gabc_fname}"
+        self.exec 'gregorio', gabc_fname
         gtex_fname = gabc_fname.sub /\.gabc/i, ''
         piece_title = %w(book manuscript arranger author).collect do |m|
           score.headers[m]
@@ -43,7 +43,20 @@ module Gly
         fw.puts tex
       end
 
-      system "lualatex #{out_fname}"
+      self.exec 'lualatex',  out_fname
+    end
+
+    def exec(progname, *args)
+      ok = system progname, *args
+      unless ok
+        case $?.exitstatus
+        when 127
+          STDERR.puts "'#{progname}' is required for this gly command to work, but it was not found. Please, ensure that '#{progname}' is installed in one of the directories listed in your PATH and try again."
+          exit 1
+        else
+          STDERR.puts "'#{progname}' exited with exit code #{$?.to_i}. Let's continue and see what happens ..."
+        end
+      end
     end
   end
 end
