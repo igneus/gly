@@ -98,7 +98,7 @@ module Gly
 
     def contains_unmusical_letters?(str)
       letters = str.gsub(/[\W\d_]+/, '')
-      letters !~ /\A[a-mvwoxz]*\Z/i # incomplete gabc music letters!
+      letters !~ /\A[a-mosvwxz]*\Z/i # incomplete gabc music letters!
     end
 
     def parse_header(str)
