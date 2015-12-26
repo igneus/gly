@@ -33,8 +33,10 @@ __gly language__
   a separate file)
 
 __gly tool__
+* transform your gly document to one or more gabc scores
 * compile pdf preview with a single command, without writing
   any (La)TeX
+  * produces score annotations from provided score header fields
 
 ## Real world examples
 
