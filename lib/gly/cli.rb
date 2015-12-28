@@ -3,9 +3,13 @@ require 'thor'
 module Gly
   # implements the 'gly' executable
   class CLI < Thor
+    class_option :separator, aliases: :s, banner: 'syllable separator (default is double dash "--")'
+
     desc 'gabc FILE ...', 'convert gly to gabc'
     def gabc(*files)
-      files.each {|f| DocumentGabcConvertor.new(Parser.new.parse(f)).convert }
+      files.each do |f|
+        DocumentGabcConvertor.new(parser.parse(f)).convert
+      end
     end
 
     desc 'preview FILE ...', 'convert to gabc AND generate pdf preview'
@@ -14,7 +18,7 @@ module Gly
     def preview(*files)
       files.each do |f|
         gen = PreviewGenerator.new options: options
-        gen.process(Parser.new.parse(f))
+        gen.process(parser.parse(f))
       end
     end
 
@@ -41,6 +45,12 @@ module Gly
       lister.list(STDOUT, STDERR)
 
       exit(lister.error? ? 1 : 0)
+    end
+
+    private
+
+    def parser
+      Parser.new options[:separator]
     end
 
     class << self

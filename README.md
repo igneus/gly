@@ -228,6 +228,12 @@ of the unhappy line:
 
 `\l a a a`
 
+In case you prefer another syllable separator over the default
+double dash, there is a command line switch `--separator` or `-s`
+for this purpose. However, setting a custom syllable separator
+can have tricky consequences due to the way how gly guesses
+meaning of lines.
+
 #### 3.3 Music
 
 Any line appearing in a score and not identified as header field

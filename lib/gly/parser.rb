@@ -3,8 +3,8 @@ require 'stringio'
 module Gly
   # parses gly source
   class Parser
-    def initialize(syllable_separator='--')
-      @syllable_separator = syllable_separator
+    def initialize(syllable_separator=nil)
+      @syllable_separator = syllable_separator || '--'
     end
 
     def parse(source)
