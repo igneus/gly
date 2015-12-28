@@ -17,6 +17,12 @@ support other than the predefined header fields).
 That led me to designing an alternative, Gregorio-inspired
 notation format, which compiles to pure Gregorio gabc.
 
+(Only after that I learned to know the
+[GABC Transcription Tool][bentrans] by Benjamin Bloomfield,
+which does something quite similar, but as a web-based tool.
+You can think of gly as less clever GABC Transcription Tool
+for those who don't like web-based workflows.)
+
 ## Features
 
 __gly language__
@@ -295,3 +301,5 @@ MIT
 [elisp]: /tree/master/elisp
 
 [opraem_boh]: https://gist.github.com/igneus/1aed0b36e9b23b51526d
+
+[bentrans]: https://bbloomf.github.io/jgabc/transcriber.html
