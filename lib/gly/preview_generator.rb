@@ -22,8 +22,17 @@ module Gly
       convertor.convert
 
       doc_body = fw = StringIO.new
+
+      if @options[:full_headers]
+        fw.puts header_table document.header
+      end
+
       convertor.each_score_with_gabcname do |score, gabc_fname|
         @builder.add_gabc gabc_fname
+
+        if @options[:full_headers]
+          fw.puts header_table score.headers
+        end
 
         gtex_fname = gabc_fname.sub /\.gabc/i, ''
         piece_title = %w(book manuscript arranger author).collect do |m|          score.headers[m]
@@ -83,6 +92,15 @@ module Gly
 
     def default_template
       File.read(File.join(File.dirname(__FILE__), 'templates/lualatex_document.tex'))
+    end
+
+    # full header of a score/file as table
+    def header_table(header)
+      return '' if header.empty?
+
+      cols = header.each_pair.collect {|k,v| "#{k} & #{v} \\\\" }
+
+      "\\begin{tabular}{ | r | l | } \\hline %s \\hline \\end{tabular}\n\n" % cols.join("\\hline\n")
     end
   end
 end
