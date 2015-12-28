@@ -54,8 +54,7 @@ module Gly
         tex = doc_body.string
       else
         replacements = {
-          title: document.header['title'],
-          maketitle: (document.header['title'] && '\maketitle'),
+          glyvars: header_variables(document.header),
           body: doc_body.string
         }
         tex = @template % replacements
@@ -101,6 +100,20 @@ module Gly
       cols = header.each_pair.collect {|k,v| "#{k} & #{v} \\\\" }
 
       "\\begin{tabular}{ | r | l | } \\hline %s \\hline \\end{tabular}\n\n" % cols.join("\\hline\n")
+    end
+
+    # transforms header to LaTeX command definitions
+    def header_variables(header)
+      header.each_pair.collect do |k,v|
+        '\newcommand{\%s}{%s}' % [latex_cmd_name(k), v]
+      end.join("\n")
+    end
+
+    def latex_cmd_name(header_name)
+      sanitized = header_name
+                  .gsub(/\s+/, '')
+                  .gsub(/[-_]+(\w)/) {|m| m[1].upcase }
+      prefixed = 'gly' + sanitized[0].upcase + sanitized[1..-1]
     end
   end
 end

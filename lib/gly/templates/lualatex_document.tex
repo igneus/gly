@@ -5,23 +5,47 @@
 \usepackage[left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry}
 
 \usepackage{fontspec}
+\usepackage[hidelinks]{hyperref}
+\usepackage{etoolbox}
 
 %% for gregorio
 \usepackage{luatextra}
 \usepackage{graphicx}
 \usepackage{gregoriotex}
 
-\title{%{title}}
+%{glyvars}
+
+% header fields like title, transcription-date etc.
+% are translated by 'gly preview' to latex commands like
+% \glyTitle \glyTranscriptionDate etc.
+% (All of your document header fields are handled this way.)
+% These commands can be used for various purposes,
+% but we will use them only to assemble document title:
+\newcommand{\glyPreviewTitle}{
+  \begin{center}
+    \ifdef{\glyTitle}{{\huge \glyTitle}}{}
+
+    \ifdef{\glyAuthor}{\emph{\glyAuthor}}{}
+
+    \ifdef{\glyYear}{\glyYear}{}
+
+    \vspace{6mm}
+  \end{center}
+}
+
+\newcommand{\glyPreviewTagline}{
+  \begin{center}
+    \texttt{\href{https://github.com/igneus/gly}{gly preview} \today}
+  \end{center}
+}
 
 \begin{document}
 
-%{maketitle}
+\glyPreviewTitle
 
 %{body}
 
 %% tagline
 \vfill
-\begin{center}
-  \texttt{gly preview https://github.com/igneus/gly}
-\end{center}
+\glyPreviewTagline
 \end{document}
