@@ -24,8 +24,11 @@ module Gly
     private
 
     def output_fname(score, score_index=nil)
-      score_id = score.headers['id'] || score_index.to_s
-      score_id = '_' + score_id unless score_id.empty?
+      if @doc.scores.size == 1
+        score_id = ''
+      else
+        score_id = '_' + (score.headers['id'] || score_index.to_s)
+      end
 
       File.basename(@doc.path)
         .sub(/\.gly\Z/i, "#{score_id}.gabc")
