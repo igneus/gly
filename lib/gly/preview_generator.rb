@@ -4,19 +4,28 @@ module Gly
   # Takes Gly::Document, builds a pdf preview
   # (or at least generates all necessary assets)
   class PreviewGenerator
+    def initialize(template: nil, builder: nil)
+      @preview_dest = nil
+
+      @template = template || default_template
+      @builder = builder || PreviewBuilder.new
+    end
+
+    # IO to which the main LaTeX document should be written.
+    # If not set, a file will be created with name based on
+    # the source file name.
+    attr_accessor :preview_dest
+
     def process(document)
-      tpl_name = File.join(File.dirname(__FILE__), 'templates/lualatex_document.tex')
-      template = File.read(tpl_name)
-
-      doc_body = fw = StringIO.new
-
       convertor = DocumentGabcConvertor.new(document)
       convertor.convert
+
+      doc_body = fw = StringIO.new
       convertor.each_score_with_gabcname do |score, gabc_fname|
-        self.exec 'gregorio', gabc_fname
+        @builder.add_gabc gabc_fname
+
         gtex_fname = gabc_fname.sub /\.gabc/i, ''
-        piece_title = %w(book manuscript arranger author).collect do |m|
-          score.headers[m]
+        piece_title = %w(book manuscript arranger author).collect do |m|          score.headers[m]
         end.delete_if(&:nil?).join ', '
         fw.puts "\\commentary{\\footnotesize{#{piece_title}}}\n" unless piece_title.empty?
 
@@ -36,27 +45,36 @@ module Gly
         maketitle: (document.header['title'] && '\maketitle'),
         body: doc_body.string
       }
-      tex = template % replacements
+      tex = @template % replacements
 
-      out_fname = File.basename(document.path).sub(/\.gly\Z/i, '.tex')
-      File.open(out_fname, 'w') do |fw|
+      with_preview_io(document.path) do |fw|
+        @builder.main_tex = fw.path if fw.respond_to? :path
+
         fw.puts tex
       end
 
-      self.exec 'lualatex',  out_fname
+      @builder.build if @builder.main_tex
     end
 
-    def exec(progname, *args)
-      ok = system progname, *args
-      unless ok
-        case $?.exitstatus
-        when 127
-          STDERR.puts "'#{progname}' is required for this gly command to work, but it was not found. Please, ensure that '#{progname}' is installed in one of the directories listed in your PATH and try again."
-          exit 1
-        else
-          STDERR.puts "'#{progname}' exited with exit code #{$?.to_i}. Let's continue and see what happens ..."
-        end
+    private
+
+    def with_preview_io(src_name)
+      if @preview_dest
+        yield @preview_dest
+        return
       end
+
+      File.open(preview_fname(src_name), 'w') do |fw|
+        yield fw
+      end
+    end
+
+    def preview_fname(src_name)
+      File.basename(src_name).sub(/\.gly\Z/i, '.tex')
+    end
+
+    def default_template
+      File.read(File.join(File.dirname(__FILE__), 'templates/lualatex_document.tex'))
     end
   end
 end
