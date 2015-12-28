@@ -4,11 +4,12 @@ module Gly
   # Takes Gly::Document, builds a pdf preview
   # (or at least generates all necessary assets)
   class PreviewGenerator
-    def initialize(template: nil, builder: nil)
+    def initialize(template: nil, builder: nil, options: {})
       @preview_dest = nil
 
       @template = template || default_template
       @builder = builder || PreviewBuilder.new
+      @options = options
     end
 
     # IO to which the main LaTeX document should be written.
@@ -40,12 +41,16 @@ module Gly
         fw.puts "\\includescore{#{gtex_fname}}\n\\vspace{1cm}"
       end
 
-      replacements = {
-        title: document.header['title'],
-        maketitle: (document.header['title'] && '\maketitle'),
-        body: doc_body.string
-      }
-      tex = @template % replacements
+      if @options['no_document']
+        tex = doc_body.string
+      else
+        replacements = {
+          title: document.header['title'],
+          maketitle: (document.header['title'] && '\maketitle'),
+          body: doc_body.string
+        }
+        tex = @template % replacements
+      end
 
       with_preview_io(document.path) do |fw|
         @builder.main_tex = fw.path if fw.respond_to? :path
@@ -53,7 +58,10 @@ module Gly
         fw.puts tex
       end
 
-      @builder.build if @builder.main_tex
+      build_disabled = @options['no_build'] || @options['no_document']
+      if @builder.main_tex && !build_disabled
+        @builder.build
+      end
     end
 
     private
