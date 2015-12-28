@@ -5,8 +5,6 @@ Gem::Specification.new do |s|
   s.date        = '2015-12-16'
   s.summary     = 'Writer-friendly Gregorian notation format compiling to gabc'
 
-  s.description = File.read 'README.md'
-
   s.authors     = ['Jakub Pavlík']
   s.email       = 'jkb.pavlik@gmail.com'
   s.files       = (Dir['bin/*'] + Dir['lib/**/*'] +
