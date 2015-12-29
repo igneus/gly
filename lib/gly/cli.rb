@@ -2,9 +2,7 @@ require 'thor'
 
 begin
   require 'grely'
-  puts 'ok'
 rescue LoadError
-  puts 'error'
 end
 
 module Gly
@@ -59,12 +57,15 @@ module Gly
       exit(lister.error? ? 1 : 0)
     end
 
-    if defined? LilypondConvertor
-      desc 'ly FILE ...', 'transform gly document to lilypond document'
-      def ly(*files)
-        files.each do |f|
-          DocumentLyConvertor.new(parser.parse(f)).convert
-        end
+    desc 'ly FILE ...', 'transform gly document to lilypond document'
+    def ly(*files)
+      unless defined? LilypondConvertor
+        STDERR.puts "'lygre' gem not found. Please, install lygre in order to run 'gly ly'."
+        exit 1
+      end
+
+      files.each do |f|
+        DocumentLyConvertor.new(parser.parse(f)).convert
       end
     end
 
