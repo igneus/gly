@@ -43,6 +43,7 @@ __gly tool__
 * compile pdf preview with a single command, without writing
   any (La)TeX
   * produces score annotations from provided score header fields
+* transform gly document to (modern notation) lilypond document
 
 ## Real world examples
 
@@ -125,6 +126,11 @@ Install Ruby (some 2.x version) runtime. Then install as any ruby gem:
 If you plan to use `gly preview`,
 ensure that you have a working installation of `gregorio` and
 `lualatex`.
+
+If you also plan to use the gly->lilypond translation,
+install the [lygre][lygre] gem.
+(This feature is currently only for the brave.
+But better support is planned.)
 
 ## Usage
 
@@ -309,3 +315,5 @@ MIT
 [opraem_boh]: https://gist.github.com/igneus/1aed0b36e9b23b51526d
 
 [bentrans]: https://bbloomf.github.io/jgabc/transcriber.html
+
+[lygre]: https://github.com/igneus/lygre
