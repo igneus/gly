@@ -7,6 +7,7 @@ headers
 lyrics
 document
 document_gabc_convertor
+document_ly_convertor
 preview_generator
 preview_builder
 lister
