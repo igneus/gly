@@ -4,4 +4,5 @@ gem 'thor'
 
 group :test do
   gem 'minitest-reporters'
+  gem 'rake'
 end
