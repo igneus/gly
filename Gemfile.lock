@@ -9,7 +9,6 @@ GEM
       builder
       minitest (>= 5.0)
       ruby-progressbar
-    rake (10.4.2)
     ruby-progressbar (1.7.5)
     thor (0.19.1)
 
@@ -18,7 +17,6 @@ PLATFORMS
 
 DEPENDENCIES
   minitest-reporters
-  rake
   thor
 
 BUNDLED WITH
