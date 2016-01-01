@@ -6,7 +6,7 @@ rvm:
   - jruby-19mode
   - rbx-2.1.1
 
-script: bundle exec rspec
+script: bundle exec ruby tests/run.rb
 
 git:
   depth: 3
