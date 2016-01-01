@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/igneus/gly.svg?branch=master)](https://travis-ci.org/igneus/gly)
+
 # gly
 
 Writer-friendly Gregorian notation format compiling to gabc.
