@@ -21,6 +21,8 @@ module Gly
       ly_output.puts
       ly_output.puts header @doc.header
       ly_output.puts
+      ly_output.puts default_style
+      ly_output.puts
 
       @doc.scores.each do |score|
         gabc = gabcor.convert(score).string
@@ -47,6 +49,10 @@ module Gly
         "  #{k} = \"#{v}\""
       end
       "\\header {\n#{fields.join("\n")}\n}\n"
+    end
+
+    def default_style
+      '\layout { \context Score \override TimeSignature #\'stencil = ##f }'
     end
   end
 end
