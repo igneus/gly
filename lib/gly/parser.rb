@@ -103,7 +103,7 @@ module Gly
     end
 
     def lyrics_line?(str)
-      str.include?(@syllable_separator) || (contains_unmusical_letters?(str) && !contains_square_brackets?(str))
+      !contains_square_brackets?(str) && (str.include?(@syllable_separator) || contains_unmusical_letters?(str))
     end
 
     def in_header_block?
