@@ -52,6 +52,10 @@ module Gly
           @score = @doc.header
         elsif header_line? line
           parse_header line
+        elsif explicit_lyrics? line
+          parse_lyrics line
+        elsif explicit_music? line
+          parse_music line
         elsif lyrics_line? line
           parse_lyrics line
         else
@@ -88,8 +92,18 @@ module Gly
 
     EXPLICIT_LYRICS_RE = /\A\\l(yrics)?\s+/
 
+    def explicit_lyrics?(str)
+      str =~ EXPLICIT_LYRICS_RE
+    end
+
+    EXPLICIT_MUSIC_RE = /\A\\m(usic)?\s+/
+
+    def explicit_music?(str)
+      str =~ EXPLICIT_MUSIC_RE
+    end
+
     def lyrics_line?(str)
-      str =~ EXPLICIT_LYRICS_RE || str.include?(@syllable_separator) || (contains_unmusical_letters?(str) && !contains_square_brackets?(str))
+      str.include?(@syllable_separator) || (contains_unmusical_letters?(str) && !contains_square_brackets?(str))
     end
 
     def in_header_block?
@@ -122,6 +136,8 @@ module Gly
     end
 
     def parse_music(str)
+      str = str.sub(EXPLICIT_MUSIC_RE, '')
+
       # music chunks: split by whitespace out of brackets
       StringHelpers.music_split(str).each do |chunk|
         @score.music << chunk

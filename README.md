@@ -237,6 +237,10 @@ of the unhappy line:
 
 `\l a a a`
 
+For the opposite case there is `\music` and it's shortcut `\m`.
+
+`\m a[alt:když něco poplete autodetekci] j ivHG`
+
 In case you prefer another syllable separator over the default
 double dash, there is a command line switch `--separator` or `-s`
 for this purpose. However, setting a custom syllable separator
