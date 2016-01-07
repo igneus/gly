@@ -4,12 +4,12 @@ module Gly
   # Takes Gly::Document, builds a pdf preview
   # (or at least generates all necessary assets)
   class PreviewGenerator
-    def initialize(options={})
+    def initialize(**options)
       @preview_dest = nil
 
       @template = options.delete(:template) || default_template
       @builder = options.delete(:builder) || PreviewBuilder.new
-      @options = options
+      @options = options.delete(:options) || {}
     end
 
     # IO to which the main LaTeX document should be written.
