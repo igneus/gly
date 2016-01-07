@@ -49,6 +49,7 @@ __gly tool__
 
 ## Real world examples
 
+* [WIP Antiphonale according to the 1983 Ordo cantus officii][antiphonale83]
 * [Proper Divine Office chants of Bohemian Premonstratensian houses][opraem_boh]
 
 ## Basic examples
@@ -315,6 +316,7 @@ MIT
 [elisp]: /tree/master/elisp
 
 [opraem_boh]: https://gist.github.com/igneus/1aed0b36e9b23b51526d
+[antiphonale83]: https://github.com/igneus/antiphonale83
 
 [bentrans]: https://bbloomf.github.io/jgabc/transcriber.html
 
