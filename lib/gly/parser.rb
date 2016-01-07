@@ -130,7 +130,7 @@ module Gly
 
     def push_score
       if @score.is_a?(ParsedScore) && !@score.empty?
-        @doc.scores << @score
+        @doc << @score
       end
     end
   end

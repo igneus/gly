@@ -5,11 +5,31 @@ module Gly
   class Document
     def initialize
       @scores = []
+      @scores_by_id = {}
       @header = Headers.new
       @path = nil
     end
 
     attr_reader :scores, :header
     attr_accessor :path
+
+    def <<(score)
+      @scores << score
+
+      sid = score.headers['id']
+      if sid
+        @scores_by_id[sid] = score
+      end
+
+      self
+    end
+
+    def [](key)
+      if key.is_a? Integer
+        @scores[key]
+      else
+        @scores_by_id[key]
+      end
+    end
   end
 end
