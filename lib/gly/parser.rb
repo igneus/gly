@@ -89,7 +89,7 @@ module Gly
     EXPLICIT_LYRICS_RE = /\A\\l(yrics)?\s+/
 
     def lyrics_line?(str)
-      str =~ EXPLICIT_LYRICS_RE || str.include?(@syllable_separator) || contains_unmusical_letters?(str)
+      str =~ EXPLICIT_LYRICS_RE || str.include?(@syllable_separator) || (contains_unmusical_letters?(str) && !contains_square_brackets?(str))
     end
 
     def in_header_block?
@@ -98,7 +98,11 @@ module Gly
 
     def contains_unmusical_letters?(str)
       letters = str.gsub(/[\W\d_]+/, '')
-      letters !~ /\A[a-mosvwxz]*\Z/i # incomplete gabc music letters!
+      letters !~ /\A[a-morsvwxz]*\Z/i # incomplete gabc music letters!
+    end
+
+    def contains_square_brackets?(str)
+      str.include? '['
     end
 
     def parse_header(str)
