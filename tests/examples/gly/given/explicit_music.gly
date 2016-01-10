@@ -1,0 +1,3 @@
+% the result will be invalid gabc, but gly shouldn't care
+% if it is explicitly told to handle the line as music
+\music č ř š
