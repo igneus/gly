@@ -22,8 +22,9 @@ notation format, which compiles to pure Gregorio gabc.
 (Only after that I learned to know the
 [GABC Transcription Tool][bentrans] by Benjamin Bloomfield,
 which does something quite similar, but as a web-based tool.
-You can think of gly as less clever GABC Transcription Tool
-for those who don't like web-based workflows.)
+You can think of gly as of a less clever GABC Transcription Tool
+for those who strongly prefer command-line and plaintext-file-based
+workflows over the web-based ones.)
 
 ## Features
 
