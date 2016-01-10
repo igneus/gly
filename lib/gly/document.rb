@@ -18,6 +18,10 @@ module Gly
 
       sid = score.headers['id']
       if sid
+        if @scores_by_id.has_key? sid
+          raise ArgumentError.new("More than one score with id '#{sid}'.")
+        end
+
         @scores_by_id[sid] = score
       end
 
