@@ -13,4 +13,4 @@ git:
 
 matrix:
   allow_failures:
-    - jruby-19mode
+    - rvm: jruby-19mode
