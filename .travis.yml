@@ -10,3 +10,7 @@ script: bundle exec ruby tests/run.rb
 
 git:
   depth: 3
+
+matrix:
+  allow_failures:
+    - jruby-19mode
