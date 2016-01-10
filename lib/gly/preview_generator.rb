@@ -18,7 +18,7 @@ module Gly
     attr_accessor :preview_dest
 
     def process(document)
-      convertor = DocumentGabcConvertor.new(document)
+      convertor = DocumentGabcConvertor.new(document, **@options)
       convertor.convert
 
       doc_body = fw = StringIO.new

@@ -26,8 +26,11 @@ module Gly
       tpl = nil
       tpl = File.read(options[:template]) if options[:template]
 
+      opts = options.to_h
+      opts[:suffix_always] = true
+
       files.each do |f|
-        gen = PreviewGenerator.new template: tpl, options: options
+        gen = PreviewGenerator.new template: tpl, options: opts
         gen.process(parser.parse(f))
       end
     end

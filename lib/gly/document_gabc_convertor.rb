@@ -1,7 +1,8 @@
 module Gly
   class DocumentGabcConvertor
-    def initialize(document)
+    def initialize(document, **options)
       @doc = document
+      @options = options
     end
 
     def convert
@@ -24,7 +25,7 @@ module Gly
     private
 
     def output_fname(score, score_index=nil)
-      if @doc.scores.size == 1
+      if @doc.scores.size == 1 && !@options[:suffix_always]
         score_id = ''
       else
         score_id = '_' + (score.headers['id'] || score_index.to_s)
