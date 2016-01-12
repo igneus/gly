@@ -28,7 +28,7 @@ module Gly
     end
 
     def parse_str(str)
-      parse_io(StringIO.new(source))
+      parse_io(StringIO.new(str))
     end
 
     def parse_io(io)
