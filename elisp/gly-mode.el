@@ -5,7 +5,7 @@
   '()                   ;; comments delimiter
   '()                   ;; some keywords
   '(("\\\\\\(score\\|header\\|lyrics\\|l\\|music\\|m\\)" . 'font-lock-keyword-face)
-    ("\\(% .*\\)" 1 'font-lock-comment-face)
+    ("\\(%.*\\)" 1 'font-lock-comment-face)
     ("^[a-z_\\-]+:" . 'font-lock-builtin-face) ;; header fields
     ("^.*--.*" . 'font-lock-type-face) ;; lyrics line
     )
