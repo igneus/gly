@@ -62,13 +62,34 @@ module Gly
 
     desc 'ly FILE ...', 'transform gly document to lilypond document'
     def ly(*files)
-      unless defined? LilypondConvertor
-        STDERR.puts "'lygre' gem not found. Please, install lygre in order to run 'gly ly'."
-        exit 1
-      end
+      check_lygre_available!
 
       files.each do |f|
         DocumentLyConvertor.new(parser.parse(f)).convert
+      end
+    end
+
+    desc 'fy FILE ...', 'transform gabc to gly'
+    def fy(*files)
+      check_lygre_available!
+
+      files.each_with_index do |f,i|
+        input = File.read f
+
+        parser = GabcParser.new
+        result = parser.parse(input)
+
+        if result then
+          puts if i >= 1
+          GlyConvertor.new.convert result.create_score, STDOUT
+        else
+          STDERR.puts 'glyfy considers the input invalid gabc:'
+          STDERR.puts
+          STDERR.puts "'#{parser.failure_reason}' on line #{parser.failure_line} column #{parser.failure_column}:"
+          STDERR.puts input.split("\n")[parser.failure_line-1]
+          STDERR.puts (" " * parser.failure_column) + "^"
+          return false
+        end
       end
     end
 
@@ -76,6 +97,13 @@ module Gly
 
     def parser
       Parser.new options[:separator]
+    end
+
+    def check_lygre_available!
+      unless defined? LilypondConvertor
+        STDERR.puts "'lygre' gem not found. Please, install lygre in order to run 'gly ly'."
+        exit 1
+      end
     end
 
     class << self

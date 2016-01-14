@@ -1,4 +1,0 @@
-#!/bin/env ruby
-
-# glyfy
-# takes gabc file(s), produces gly file
