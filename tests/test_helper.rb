@@ -1,5 +1,6 @@
 $: << File.expand_path('../lib', File.dirname(__FILE__))
 require 'gly'
+require 'grely'
 
 require 'minitest/autorun'
 
@@ -13,5 +14,11 @@ class GlyTest < MiniTest::Test
   def gly_process(gly_io)
     doc = Gly::Parser.new.parse(gly_io)
     Gly::GabcConvertor.new.convert(doc.scores[0])
+  end
+
+  def glyfy_process(gabc_io)
+    parsing_result = GabcParser.new.parse gabc_io.read
+    score = parsing_result.create_score
+    Gly::GlyConvertor.new.convert score
   end
 end

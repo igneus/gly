@@ -1,8 +1,11 @@
+require 'delegate'
+
 module Gly
   # converts gabc to gly
   class GlyConvertor
     # score - GabcScore (from the lygre gem)
-    def convert(score, out=StringIO.new)
+    def convert(score, output_stream=StringIO.new)
+      out = NonemptyPrinter.new output_stream
       out.puts '\score'
       out.puts header score
       out.puts music score
@@ -29,11 +32,21 @@ module Gly
     end
 
     def lyrics(score)
-      score.music.words.collect {|w| word w }.join ' '
+      score.music.words
+        .collect {|w| word w }
+        .select {|w_str| ! w_str.empty? }
+        .join(' ')
     end
 
     def word(word)
       word.each_syllable.collect {|s| s.lyrics }.join ' -- '
+    end
+  end
+
+  class NonemptyPrinter < SimpleDelegator
+    def puts(what)
+      return if what.nil? || what.empty?
+      super(what)
     end
   end
 end
