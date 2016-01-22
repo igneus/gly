@@ -35,7 +35,10 @@ module Gly
         end
 
         gtex_fname = gabc_fname.sub /\.gabc/i, ''
-        piece_title = %w(book manuscript arranger author).collect do |m|          score.headers[m]
+        piece_title = %w(id book manuscript arranger author).collect do |m|
+          val = score.headers[m]
+          val = "\\texttt{\\##{val}}" if val && m == 'id'
+          val
         end.delete_if(&:nil?).join ', '
         fw.puts "\\commentary{\\footnotesize{#{piece_title}}}\n" unless piece_title.empty?
 
