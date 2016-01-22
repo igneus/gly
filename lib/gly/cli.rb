@@ -26,7 +26,11 @@ module Gly
       tpl = nil
       tpl = File.read(options[:template]) if options[:template]
 
-      opts = options.to_h
+      # convert HashWithIndifferentAccess to Hash
+      # with Symbol keys - options.to_h would make Hash
+      # with String keys
+      opts = options.each_pair.collect {|k,v| [k.to_sym,v]}.to_h
+
       opts[:suffix_always] = true
 
       files.each do |f|
