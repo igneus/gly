@@ -50,12 +50,15 @@ module Gly
         elsif header_start? line
           push_score
           @score = @doc.header
-        elsif header_line? line
-          parse_header line
         elsif explicit_lyrics? line
           parse_lyrics line
         elsif explicit_music? line
           parse_music line
+        elsif markup_line? line
+          push_score
+          parse_markup line
+        elsif header_line? line
+          parse_header line
         elsif lyrics_line? line
           parse_lyrics line
         else
@@ -110,6 +113,10 @@ module Gly
       @score.is_a? Headers
     end
 
+    def markup_line?(str)
+      str.start_with? '\markup'
+    end
+
     def contains_unmusical_letters?(str)
       letters = str.gsub(/[\W\d_]+/, '')
       letters !~ /\A[a-morsvwxz]*\Z/i # incomplete gabc music letters!
@@ -144,10 +151,14 @@ module Gly
       end
     end
 
+    def parse_markup(line)
+    end
+
     def push_score
       if @score.is_a?(ParsedScore) && !@score.empty?
         @doc << @score
       end
+      @score = nil
     end
   end
 end
