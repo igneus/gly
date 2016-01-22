@@ -32,6 +32,7 @@ initial-style
 centering-scheme
 user-notes
 annotation
+nabc-lines
 )
 
     def initialize
