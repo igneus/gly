@@ -90,7 +90,7 @@ module Gly
     end
 
     def header_line?(str)
-      in_header_block? || @score.lyrics.empty? && @score.music.empty? && str =~ /\w+:\s*./
+      in_header_block? || @score.lyrics.empty? && @score.music.empty? && str =~ /\A[\w_-]+:/
     end
 
     EXPLICIT_LYRICS_RE = /\A\\l(yrics)?\s+/
