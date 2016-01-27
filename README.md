@@ -291,6 +291,10 @@ In the other direction it is sometimes necessary to set a syllable
 not matching any music at all. In such cases empty music chunk
 `()` is what you need.
 
+Explicit empty lyrics syllable can be produced by a lone exclamation
+mark `!`. It is sometimes handy when `gly` doesn't recognize
+a non-singable music chunk.
+
 ### 4. Document header
 
 Each gly document may optinally contain a document header.
