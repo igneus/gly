@@ -5,6 +5,7 @@ module Gly
   class Parser
     def initialize(syllable_separator=nil)
       @syllable_separator = syllable_separator || '--'
+      @current_block = :score
     end
 
     def parse(source)
@@ -47,9 +48,13 @@ module Gly
         elsif new_score? line
           push_score
           @score = ParsedScore.new
+          @current_block = :score
         elsif header_start? line
           push_score
           @score = @doc.header
+          @current_block = :header
+        elsif block_start? line
+          @current_block = line.match(/\w+/)[0].to_sym
         elsif explicit_lyrics? line
           parse_lyrics line
         elsif explicit_music? line
@@ -62,7 +67,7 @@ module Gly
         elsif lyrics_line? line
           parse_lyrics line
         else
-          parse_music line
+          parse_default line
         end
       end
 
@@ -85,12 +90,16 @@ module Gly
       str =~ /\A\s*\\header/
     end
 
+    def block_start?(str)
+      str =~ /\A\s*\\(lyrics|markup|music)\s*\Z/
+    end
+
     def strip_comments(str)
       str.sub(/%.*\Z/, '')
     end
 
     def header_line?(str)
-      in_header_block? || @score.lyrics.empty? && @score.music.empty? && str =~ /\A[\w_-]+:/
+      @current_block == :header || @current_block == :score && @score.lyrics.empty? && @score.music.empty? && str =~ /\A[\w_-]+:/
     end
 
     EXPLICIT_LYRICS_RE = /\A\\l(yrics)?\s+/
@@ -107,10 +116,6 @@ module Gly
 
     def lyrics_line?(str)
       !contains_square_brackets?(str) && (str.include?(@syllable_separator) || contains_unmusical_letters?(str))
-    end
-
-    def in_header_block?
-      @score.is_a? Headers
     end
 
     def markup_line?(str)
@@ -152,6 +157,14 @@ module Gly
     end
 
     def parse_markup(line)
+    end
+
+    def parse_default(line)
+      if @current_block == :score
+        return parse_music line
+      end
+
+      send "parse_#{@current_block}", line
     end
 
     def push_score

@@ -242,6 +242,12 @@ For the opposite case there is `\music` and it's shortcut `\m`.
 
 `\m a[alt:když něco poplete autodetekci] j ivHG`
 
+`\lyrics` or `\music` alone on it's own line starts a lyrics/music
+block mode. It means that until the next block opening keyword
+is encountered (`\lyrics`, `\music`, `\header`, `\score`),
+default line meaning is lyrics/music.
+Again, this is handy mostly when gly fails to guess your intentions.
+
 In case you prefer another syllable separator over the default
 double dash, there is a command line switch `--separator` or `-s`
 for this purpose. However, setting a custom syllable separator
