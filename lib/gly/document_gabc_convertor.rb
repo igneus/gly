@@ -18,13 +18,15 @@ module Gly
     # yields score and filename of it's generated gabc file
     def each_score_with_gabcname
       @doc.scores.each_with_index do |score, si|
-        yield score, output_fname(score, si)
+        gabc = gabc_fname(score, si)
+        gtex = gtex_fname(score, si)
+        yield score, gabc, gtex
       end
     end
 
     private
 
-    def output_fname(score, score_index=nil)
+    def gabc_fname(score, score_index=nil)
       if @doc.scores.size == 1 && !@options[:suffix_always]
         score_id = ''
       else
@@ -33,6 +35,10 @@ module Gly
 
       File.basename(@doc.path)
         .sub(/\.gly\Z/i, "#{score_id}.gabc")
+    end
+
+    def gtex_fname(score, score_index=nil)
+      gabc_fname(score, score_index).sub('.gabc', '.gtex')
     end
   end
 end

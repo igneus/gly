@@ -27,14 +27,13 @@ module Gly
         fw.puts header_table document.header
       end
 
-      convertor.each_score_with_gabcname do |score, gabc_fname|
+      convertor.each_score_with_gabcname do |score, gabc_fname, gtex_fname|
         @builder.add_gabc gabc_fname
 
         if @options[:full_headers]
           fw.puts header_table score.headers
         end
 
-        gtex_fname = gabc_fname.sub /\.gabc/i, ''
         piece_title = %w(id book manuscript arranger author).collect do |m|
           val = score.headers[m]
           val = "\\texttt{\\##{val}}" if val && m == 'id'
