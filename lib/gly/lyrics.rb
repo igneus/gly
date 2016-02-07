@@ -11,13 +11,13 @@ module Gly
     def each_syllable
       return enum_for(:each_syllable) unless block_given?
 
-      @words.each do |w|
-        w.each_syllable.each_with_index do |s,si|
-          if si == 0
-            yield ' ' + s
-          else
-            yield s
-          end
+      @words.each_with_index do |w,wi|
+        w.each_syllable.each do |s|
+          yield s
+        end
+
+        if (wi + 1) < @words.size
+          yield ' '
         end
       end
     end

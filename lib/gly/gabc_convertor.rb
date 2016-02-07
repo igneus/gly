@@ -15,27 +15,33 @@ module Gly
       score.music.each_with_index do |mus_chunk,i|
         begin
           next_syl = lyric_enum.peek
+          out.print lyric_enum.next if next_syl == ' '
         rescue StopIteration
           next_syl = ''
-        end
+        end until next_syl != ' '
 
-        if clef?(mus_chunk) ||
-           (nonlyrical_chunk?(mus_chunk) && ! nonlyrical_lyrics?(next_syl))
-          # music chunk normally not having lyrics
-          out.print ' ' if i != 0
-        else
+        unless no_lyrics? mus_chunk, next_syl
           # regular music chunk
           begin
             out.print strip_directives lyric_enum.next
           rescue StopIteration
-            out.print ' ' if i != 0
+            out.print ' ' if i > 0
           end
         end
+
         out.print "(#{mus_chunk})"
-        # out.puts if differentia?(mus_chunk) # newline after each differentia
+        if no_lyrics?(mus_chunk, next_syl) && ! score.lyrics.empty?
+          out.print ' '
+        end
       end
 
       return out
+    end
+
+    def no_lyrics?(music_chunk, syllable)
+      clef?(music_chunk) ||
+        (nonlyrical_chunk?(music_chunk) &&
+         ! nonlyrical_lyrics?(syllable))
     end
 
     def clef?(chunk)
