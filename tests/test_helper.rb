@@ -1,6 +1,10 @@
 $: << File.expand_path('../lib', File.dirname(__FILE__))
 require 'gly'
-require 'grely'
+
+begin
+  require 'grely'
+rescue LoadError
+end
 
 require 'minitest/autorun'
 
@@ -17,6 +21,10 @@ class GlyTest < MiniTest::Test
   end
 
   def glyfy_process(gabc_io)
+    unless defined? GabcParser
+      skip 'lygre not found, cannot run glyfy tests'
+    end
+
     parsing_result = GabcParser.new.parse gabc_io.read
     score = parsing_result.create_score
     Gly::GlyConvertor.new.convert score
