@@ -197,8 +197,12 @@ or another top-level element.
 
 #### 3.1 Score header
 
-Score header consists of fields.
+Score header starts at the beginning of the score and ends with
+first non-empty line identified by the parser as music or lyrics.
+Like in gabc it is optional - you aren't required to include header
+in a score.
 
+Header consists of fields.
 Each header field is on it's own (one) line and consists of
 identifier, colon and value:
 
@@ -211,9 +215,6 @@ identifier, colon and value:
 
 Header field identifier may only consist of alphanumeric characters,
 minus-sign and underscore. Value can contain anything.
-
-Score header ends with first non-empty line identified by the parser
-as music or lyrics.
 
 Header field 'id' is special: if present, it is used as suffix
 of the generated gabc file (instead of the default, which is
