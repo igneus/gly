@@ -48,13 +48,18 @@ module Gly
       chunk =~ /\A[cf][1-4]\Z/
     end
 
-    def differentia?(chunk)
-      chunk =~ /\A*[,;:`]+\Z/ # differentia
+    def without_differentiae(chunk)
+      chunk.gsub /(([,`])|(:[:']?)|(;[1-6]?))/, ''
+    end
+
+    def without_breaks(chunk)
+      chunk.gsub /[zZ]/, ''
     end
 
     # is the given music chunk capable of bearing lyrics?
     def nonlyrical_chunk?(chunk)
-      differentia? chunk
+      chunk.size > 0 &&
+        without_breaks(without_differentiae(chunk)).empty?
     end
 
     def nonlyrical_lyrics?(syl)

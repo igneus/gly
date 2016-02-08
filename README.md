@@ -280,8 +280,8 @@ There are, however, a few special cases, to make it work conveniently:
 These special cases of music chunks don't get lyric syllable:
 
 * clef
-* music chunk containing only a division - i.e. music chunk containing
-  one of `,` , `;` , `:` , `::` alone
+* music chunk containing only a division bar
+  (eventually accompanied by a line break `z` or `Z`)
 
 Exception to this rule are 'nonlyrical lyrics chunks'.
 Currently there is only one built-in nonlyrical lyric chunk:
