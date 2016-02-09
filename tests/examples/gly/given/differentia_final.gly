@@ -1,0 +1,5 @@
+% this test catches a regression - space wasn't added
+% before the last differentia which resulted in an undesired
+% hyphen after the last lyrics syllable.
+a a ::
+A -- men.

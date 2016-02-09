@@ -12,6 +12,7 @@ module Gly
       out.puts '%%'
 
       lyric_enum = score.lyrics.each_syllable.to_enum
+
       score.music.each_with_index do |mus_chunk,i|
         begin
           next_syl = lyric_enum.peek
@@ -20,17 +21,23 @@ module Gly
           next_syl = ''
         end until next_syl != ' '
 
-        unless no_lyrics? mus_chunk, next_syl
+        if no_lyrics? mus_chunk, next_syl
+          if i == score.music.size - 1
+            out.print ' '
+          end
+        else
           # regular music chunk
           begin
             out.print strip_directives lyric_enum.next
           rescue StopIteration
-            out.print ' ' if i > 0
+            out.print ' ' if i > 0 # don't add space at the very beginning
           end
         end
 
         out.print "(#{mus_chunk})"
-        if no_lyrics?(mus_chunk, next_syl) && ! score.lyrics.empty?
+        if no_lyrics?(mus_chunk, next_syl) &&
+           i != (score.music.size - 1) &&
+           ! score.lyrics.empty?
           out.print ' '
         end
       end
