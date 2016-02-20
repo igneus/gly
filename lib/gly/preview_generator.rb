@@ -56,10 +56,10 @@ module Gly
         tex = doc_body.string
       else
         replacements = {
-          glyvars: header_variables(document.header),
-          body: doc_body.string
+          'glyvars' => header_variables(document.header),
+          'body' => doc_body.string
         }
-        tex = @template % replacements
+        tex = @template.gsub(/\{\{(\w+)\}\}/) {|m| replacements[m[2..-3]] }
       end
 
       with_preview_io(document.path) do |fw|

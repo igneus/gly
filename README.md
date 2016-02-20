@@ -319,9 +319,43 @@ as for score header.
 Field 'title' in the document header is, if present,
 used by `gly preview` as title of the generated pdf.
 
-## Run tests
+## Customization
 
-by executing `tests/run.rb`
+For quick transcription or composition the default output of
+`gly preview` is possibly good enough. But what if you want to
+customize the output? Switch font, fine-tune page geometry,
+use custom headings? No problem! `gly` understands your desire
+for beautiful music sheets.
+
+The easiest way to customize the overall look-and-feel
+of your `gly preview`s is a custom LaTeX template.
+
+normally it would be a valid LaTeX document prepared for
+gregorio (i.e. compatible with lualatex, importing
+all the necessary packages) and containing two placeholders:
+
+* `{{glyvars}}` in the preamble - it will be replaced by
+  several LaTeX command definitions making available for you
+  contents of the document header fields
+* `{{body}}` in the document body - it is where
+  scores will be inserted.
+
+The double curly braces tell gly "this is a placeholder" -
+the placeholder format is borrowed from popular templating
+engines.
+
+See the
+[default template](lib/gly/templates/lualatex_document.tex)
+for inspiration.
+
+Render a preview with your fancy new template
+by invoking
+
+    gly preview -t TEMPLATE.tex DOCUMENT.gly
+
+## How to run tests
+
+execute `tests/run.rb`
 
 ## License
 

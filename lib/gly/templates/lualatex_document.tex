@@ -1,4 +1,4 @@
-%% LuaLaTeX
+% LuaLaTeX
 
 \documentclass[a4paper, 12pt]{article}
 \usepackage[latin]{babel}
@@ -8,19 +8,19 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{etoolbox}
 
-%% for gregorio
+% for gregorio
 \usepackage{luatextra}
 \usepackage{graphicx}
 \usepackage{gregoriotex}
 
-%{glyvars}
+{{glyvars}}
 
-%% header fields like title, transcription-date etc.
-%% are translated by 'gly preview' to latex commands like
-%% \glyTitle \glyTranscriptionDate etc.
-%% (All of your document header fields are handled this way.)
-%% These commands can be used for various purposes,
-%% but we will use them only to assemble document title:
+% header fields like title, transcription-date etc.
+% are translated by 'gly preview' to latex commands like
+% \glyTitle \glyTranscriptionDate etc.
+% (All of your document header fields are handled this way.)
+% These commands can be used for various purposes,
+% but we will use them only to assemble document title:
 \newcommand{\glyPreviewTitle}{
   \begin{center}
     \ifdef{\glyTitle}{{\huge \glyTitle}}{}
@@ -43,9 +43,9 @@
 
 \glyPreviewTitle
 
-%{body}
+{{body}}
 
-%% tagline
+% tagline
 \vfill
 \glyPreviewTagline
 \end{document}
