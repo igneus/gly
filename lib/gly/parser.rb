@@ -169,7 +169,11 @@ module Gly
 
     def push_score
       if @score.is_a?(ParsedScore) && !@score.empty?
-        @doc << @score
+        begin
+          @doc << @score
+        rescue ArgumentError => ex
+          raise ParseError.wrap ex
+        end
       end
       @score = nil
     end

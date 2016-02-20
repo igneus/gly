@@ -1,6 +1,7 @@
 module Gly; end
 
 %w(parser
+exceptions
 gabc_convertor
 parsed_score
 headers

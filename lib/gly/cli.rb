@@ -15,6 +15,8 @@ module Gly
       files.each do |f|
         DocumentGabcConvertor.new(parser.parse(f)).convert
       end
+    rescue Gly::Exception => ex
+      error_exit! ex
     end
 
     desc 'preview FILE ...', 'convert to gabc AND generate pdf preview'
@@ -37,6 +39,9 @@ module Gly
         gen = PreviewGenerator.new template: tpl, options: opts
         gen.process(parser.parse(f))
       end
+
+    rescue Gly::Exception => ex
+      error_exit! ex
     end
 
     desc 'list FILE ...', 'list scores contained in files'
@@ -62,6 +67,8 @@ module Gly
       lister.list(STDOUT, STDERR)
 
       exit(lister.error? ? 1 : 0)
+    rescue Gly::Exception => ex
+      error_exit! ex
     end
 
     desc 'ly FILE ...', 'transform gly document to lilypond document'
@@ -71,6 +78,9 @@ module Gly
       files.each do |f|
         DocumentLyConvertor.new(parser.parse(f)).convert
       end
+
+    rescue Gly::Exception => ex
+      error_exit! ex
     end
 
     desc 'fy FILE ...', 'transform gabc to gly'
@@ -119,6 +129,11 @@ module Gly
           fail Thor::UndefinedCommandError, "Could not find command #{command.inspect}. Did you mean 'gly preview #{command}' ?"
         end
       end
+    end
+
+    def error_exit!(exception)
+      STDERR.puts 'ERROR: ' + exception.message
+      exit 1
     end
   end
 end
