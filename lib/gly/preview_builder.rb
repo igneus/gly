@@ -15,7 +15,8 @@ module Gly
 
     def build
       @gabcs.each do |g|
-        exec 'gregorio', g
+        outfile = g.sub /(\.gabc)?$/i, '.gtex'
+        exec('gregorio', '-o', outfile, g)
       end
 
       exec 'lualatex', @main_tex
