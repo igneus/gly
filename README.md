@@ -31,15 +31,14 @@ workflows over the web-based ones.)
 __gly language__
 * music separated from lyrics
   * no need of the ubiquitous and tedious parentheses
+  * music transcription is usually quicker and more comfortable
   * separation of "material and form" -> easy copying of the music or
     lyrics alone is possible (useful for a composer)
   * syllabified lyrics entered in a format inspired by LilyPond
 * music and lyrics can be interspersed as needed
 * no semicolons in the header
-* custom header fields supported (commented out in the GABC output,
-  as gregorio doesn't tolerate headers it doesn't know)
-* several scores per file (when compiled to gabc, each becomes
-  a separate file)
+* custom header fields
+* several scores per file
 
 __gly tool__
 * transform your gly document to one or more gabc scores
