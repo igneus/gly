@@ -45,6 +45,7 @@ module Gly
 
         if empty? line
           next
+        # keywords specifying line or block type
         elsif new_score? line
           push_score
           @score = ParsedScore.new
@@ -59,6 +60,10 @@ module Gly
           parse_lyrics line
         elsif explicit_music? line
           parse_music line
+        # line in a typed block
+        elsif @current_block != :score
+          parse_default line
+        # content type autodetection
         elsif markup_line? line
           push_score
           parse_markup line
