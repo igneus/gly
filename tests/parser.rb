@@ -7,6 +7,6 @@ class TestParser < GlyTest
       doc = Gly::Parser.new.parse(fr)
     end
     assert_equal 1, doc.header.size
-    assert doc.header.has_key?('titl')
+    assert doc.header.has_key?('title')
   end
 end
