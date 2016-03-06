@@ -17,6 +17,8 @@ module Gly
     # iterates over document scores,
     # yields score and filename of it's generated gabc file
     def each_score_with_gabcname
+      return to_enum(:each_score_with_gabcname) unless block_given?
+
       @doc.scores.each_with_index do |score, si|
         gabc = gabc_fname(score, si)
         gtex = gtex_fname(score, si)

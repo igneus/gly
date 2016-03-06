@@ -301,6 +301,28 @@ Explicit empty lyrics syllable can be produced by a lone exclamation
 mark `!`. It is sometimes handy when `gly` doesn't recognize
 a non-singable music chunk.
 
+#### 3.5 Markup
+
+Between scores (and only between scores) you can use
+one-line
+
+`\markup My annotation`
+
+and block
+
+```
+\markup
+My annotation
+when I plan it long
+```
+
+markup. `gly preview` will insert the content of your
+markups into the tex document it generates.
+Markup is inserted as is - just with the `\markup` keyword +
+leading and trailing whitespace stripped.
+It means you can use TeX commands and other constructs
+that make sense in a TeX document.
+
 ### 4. Document header
 
 Each gly document may optinally contain a document header.

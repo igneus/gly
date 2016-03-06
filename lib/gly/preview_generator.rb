@@ -27,29 +27,15 @@ module Gly
         fw.puts header_table document.header
       end
 
-      convertor.each_score_with_gabcname do |score, gabc_fname, gtex_fname|
-        @builder.add_gabc gabc_fname
+      scores_with_names = convertor.each_score_with_gabcname
 
-        if @options[:full_headers]
-          fw.puts header_table score.headers
+      document.content.each do |c|
+        if c.is_a? Markup
+          fw.puts render_markup(c)
+        else
+          score, gabc_fname, gtex_fname = scores_with_names.next
+          fw.puts render_score(score, gabc_fname, gtex_fname)
         end
-
-        piece_title = %w(id book manuscript arranger author).collect do |m|
-          val = score.headers[m]
-          val = "\\texttt{\\##{val}}" if val && m == 'id'
-          val
-        end.delete_if(&:nil?).join ', '
-        fw.puts "\\commentary{\\footnotesize{#{piece_title}}}\n" unless piece_title.empty?
-
-        annotations = score.headers.each_value('annotation')
-        begin
-          fw.puts "\\setfirstannotation{#{annotations.next}}"
-          fw.puts "\\setsecondannotation{#{annotations.next}}"
-        rescue StopIteration
-          # ok, no more annotations
-        end
-
-        fw.puts "\\includescore{#{gtex_fname}}\n\\vspace{1cm}"
       end
 
       if @options['no_document']
@@ -75,6 +61,39 @@ module Gly
     end
 
     private
+
+    def render_markup(markup)
+      markup.text
+    end
+
+    def render_score(score, gabc_fname, gtex_fname)
+      r = StringIO.new
+
+      @builder.add_gabc gabc_fname
+
+      if @options[:full_headers]
+        r.puts header_table score.headers
+      end
+
+      piece_title = %w(id book manuscript arranger author).collect do |m|
+        val = score.headers[m]
+        val = "\\texttt{\\##{val}}" if val && m == 'id'
+        val
+      end.delete_if(&:nil?).join ', '
+      r.puts "\\commentary{\\footnotesize{#{piece_title}}}\n" unless piece_title.empty?
+
+      annotations = score.headers.each_value('annotation')
+      begin
+        r.puts "\\setfirstannotation{#{annotations.next}}"
+        r.puts "\\setsecondannotation{#{annotations.next}}"
+      rescue StopIteration
+        # ok, no more annotations
+      end
+
+      r.puts "\\includescore{#{gtex_fname}}\n\\vspace{1cm}"
+
+      r.string
+    end
 
     def with_preview_io(src_name)
       if @preview_dest
