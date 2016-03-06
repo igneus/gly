@@ -26,7 +26,13 @@ module Gly
     option :template, aliases: :t, banner: 'use custom document template'
     def preview(*files)
       tpl = nil
-      tpl = File.read(options[:template]) if options[:template]
+      if options[:template]
+        begin
+          tpl = File.read(options[:template])
+        rescue Errno::ENOENT
+          raise Gly::Exception.new("File not found: '#{options[:template]}'")
+        end
+      end
 
       # convert HashWithIndifferentAccess to Hash
       # with Symbol keys - options.to_h would make Hash
@@ -37,7 +43,16 @@ module Gly
 
       files.each do |f|
         gen = PreviewGenerator.new template: tpl, options: opts
-        gen.process(parser.parse(f))
+        begin
+          gen.process(parser.parse(f))
+        rescue Errno::ENOENT
+          with_extension = f + '.gly'
+          if File.exist? with_extension
+            gen.process(parser.parse(with_extension))
+          else
+            raise Gly::Exception.new("File not found: '#{f}'")
+          end
+        end
       end
 
     rescue Gly::Exception => ex
