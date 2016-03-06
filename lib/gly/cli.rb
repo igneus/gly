@@ -46,6 +46,7 @@ module Gly
 
     desc 'list FILE ...', 'list scores contained in files'
     option :recursive, type: :boolean, aliases: :r, banner: 'recursively traverse directories', default: false
+    option :format, type: :string, aliases: :f, banner: 'grep|overview'
     def list(*files)
       if files.empty?
         STDERR.puts 'No file specified.'
@@ -63,7 +64,7 @@ module Gly
         files.flatten!
       end
 
-      lister = Lister.new(files)
+      lister = Lister.new(files, options[:format])
       lister.list(STDOUT, STDERR)
 
       exit(lister.error? ? 1 : 0)
