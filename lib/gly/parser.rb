@@ -10,13 +10,7 @@ module Gly
 
     def parse(source)
       if source.is_a? String
-        if File.file? source
-          parse_fname source
-        elsif source == '-'
-          parse_io STDIN
-        else
-          parse_str source
-        end
+        parse_fname source
       else
         parse_io source
       end
