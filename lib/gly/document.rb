@@ -5,24 +5,36 @@ module Gly
   class Document
     def initialize
       @scores = []
+      @content = []
       @scores_by_id = {}
       @header = Headers.new
       @path = nil
     end
 
-    attr_reader :scores, :header
+    # only Scores
+    attr_reader :scores
+
+    # Scores and Markups
+    attr_reader :content
+
+    attr_reader :header
     attr_accessor :path
 
+    # append a new Score (or Markup)
     def <<(score)
-      @scores << score
+      @content << score
 
-      sid = score.headers['id']
-      if sid
-        if @scores_by_id.has_key? sid
-          raise ArgumentError.new("More than one score with id '#{sid}'.")
+      if score.is_a? ParsedScore
+        @scores << score
+
+        sid = score.headers['id']
+        if sid
+          if @scores_by_id.has_key? sid
+            raise ArgumentError.new("More than one score with id '#{sid}'.")
+          end
+
+          @scores_by_id[sid] = score
         end
-
-        @scores_by_id[sid] = score
       end
 
       self

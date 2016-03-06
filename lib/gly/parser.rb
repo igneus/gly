@@ -43,7 +43,7 @@ module Gly
       io.each do |line|
         line = strip_comments(line)
 
-        if empty? line
+        if empty?(line) && @current_block != :markup
           next
         # keywords specifying line or block type
         elsif new_score? line
@@ -54,6 +54,9 @@ module Gly
           push_score
           @score = @doc.header
           @current_block = :header
+        elsif markup_start? line
+          @doc.content << Markup.new
+          @current_block = :markup
         elsif block_start? line
           @current_block = line.match(/\w+/)[0].to_sym
         elsif explicit_lyrics? line
@@ -88,15 +91,19 @@ module Gly
     end
 
     def new_score?(str)
-      str =~ /\A\s*\\score/
+      str =~ /\A\s*\\(score)\s*\Z/
     end
 
     def header_start?(str)
-      str =~ /\A\s*\\header/
+      str =~ /\A\s*\\(header)\s*\Z/
+    end
+
+    def markup_start?(str)
+      str =~ /\A\s*\\(markup)\s*\Z/
     end
 
     def block_start?(str)
-      str =~ /\A\s*\\(lyrics|markup|music)\s*\Z/
+      str =~ /\A\s*\\(lyrics|music)\s*\Z/
     end
 
     def strip_comments(str)
@@ -164,6 +171,11 @@ module Gly
     end
 
     def parse_markup(line)
+      if line =~ EXPLICIT_MARKUP_RE
+        @doc << Markup.new(line.sub(EXPLICIT_MARKUP_RE, ''))
+      else
+        @doc.content.last << line
+      end
     end
 
     def parse_default(line)

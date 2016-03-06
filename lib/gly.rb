@@ -6,6 +6,7 @@ gabc_convertor
 parsed_score
 headers
 lyrics
+markup
 document
 document_gabc_convertor
 document_ly_convertor
