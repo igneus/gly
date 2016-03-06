@@ -1,0 +1,19 @@
+\score
+id: a
+
+% "inline" markup
+\markup a
+
+\score
+id: b
+
+% "block" markup
+\markup
+b
+
+% second markup immediately following
+\markup
+c
+
+\score
+id: c

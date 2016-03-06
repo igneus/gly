@@ -55,6 +55,7 @@ module Gly
           @score = @doc.header
           @current_block = :header
         elsif markup_start? line
+          push_score
           @doc.content << Markup.new
           @current_block = :markup
         elsif block_start? line
