@@ -48,7 +48,8 @@ nabc-lines
       @pairs << [key, value]
     end
 
-    def_delegator :@headers, :[]
+    def_delegators :@headers, :[], :size, :keys, :values,
+       :has_key?, :includes?, :include?
     def_delegator :@pairs, :empty?
 
     # some header fields may appear more than once;

@@ -1,9 +1,9 @@
-# test-suite dynamically created from examples in subfolders
-
 require_relative 'test_helper'
 
-# Each test case is defined by a pair of files
-# in directories examples/given and examples/expected
+# Examples are medium-level tests (not unittests, not end-to-end tests)
+# testing parser and convertor at the same time.
+# Each test case is defined by a pair of a gly and gabc file
+# in directories examples/*/given and examples/*/expected.
 class TestExamples < GlyTest
   def self.example_test_case(given_file, expected_file)
     # filename without extension

@@ -60,13 +60,13 @@ module Gly
           parse_lyrics line
         elsif explicit_music? line
           parse_music line
+        elsif explicit_markup? line
+          push_score
+          parse_markup line
         # line in a typed block
         elsif @current_block != :score
           parse_default line
         # content type autodetection
-        elsif markup_line? line
-          push_score
-          parse_markup line
         elsif header_line? line
           parse_header line
         elsif lyrics_line? line
@@ -119,12 +119,14 @@ module Gly
       str =~ EXPLICIT_MUSIC_RE
     end
 
-    def lyrics_line?(str)
-      !contains_square_brackets?(str) && (str.include?(@syllable_separator) || contains_unmusical_letters?(str))
+    EXPLICIT_MARKUP_RE = /\A\\markup\s*/
+
+    def explicit_markup?(str)
+      str =~ EXPLICIT_MARKUP_RE
     end
 
-    def markup_line?(str)
-      str.start_with? '\markup'
+    def lyrics_line?(str)
+      !contains_square_brackets?(str) && (str.include?(@syllable_separator) || contains_unmusical_letters?(str))
     end
 
     def contains_unmusical_letters?(str)

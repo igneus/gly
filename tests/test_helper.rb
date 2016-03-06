@@ -29,4 +29,8 @@ class GlyTest < MiniTest::Test
     score = parsing_result.create_score
     Gly::GlyConvertor.new.convert score
   end
+
+  def expand_test_path(relative)
+    File.expand_path(relative, File.dirname(__FILE__))
+  end
 end
