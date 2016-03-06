@@ -1,6 +1,6 @@
 module Gly
   # result of a gly score parsing
-  class ParsedScore
+  class Score
     def initialize
       @headers = Headers.new
       @lyrics = Lyrics.new

@@ -22,13 +22,13 @@ class TestParser < GlyTest
 
     assert_equal 6, doc.content.size
 
-    assert_instance_of Gly::ParsedScore, doc.content[0]
+    assert_instance_of Gly::Score, doc.content[0]
     assert_equal 'a', doc.content[0].headers['id']
 
     assert_instance_of Gly::Markup, doc.content[1]
     assert_equal 'a', doc.content[1].text
 
-    assert_instance_of Gly::ParsedScore, doc.content[2]
+    assert_instance_of Gly::Score, doc.content[2]
     assert_equal 'b', doc.content[2].headers['id']
 
     assert_instance_of Gly::Markup, doc.content[3]
@@ -37,7 +37,7 @@ class TestParser < GlyTest
     assert_instance_of Gly::Markup, doc.content[4]
     assert_equal 'c', doc.content[4].text
 
-    assert_instance_of Gly::ParsedScore, doc.content[5]
+    assert_instance_of Gly::Score, doc.content[5]
     assert_equal 'c', doc.content[5].headers['id']
   end
 

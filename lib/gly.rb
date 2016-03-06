@@ -3,7 +3,7 @@ module Gly; end
 %w(parser
 exceptions
 gabc_convertor
-parsed_score
+score
 headers
 lyrics
 markup

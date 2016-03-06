@@ -24,7 +24,7 @@ module Gly
     def <<(score)
       @content << score
 
-      if score.is_a? ParsedScore
+      if score.is_a? Score
         @scores << score
 
         sid = score.headers['id']

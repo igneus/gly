@@ -34,7 +34,7 @@ module Gly
 
     def parse_io(io)
       @doc = Document.new
-      @score = ParsedScore.new
+      @score = Score.new
 
       if io.respond_to? :path
         @doc.path = io.path
@@ -48,7 +48,7 @@ module Gly
         # keywords specifying line or block type
         elsif new_score? line
           push_score
-          @score = ParsedScore.new
+          @score = Score.new
           @current_block = :score
         elsif header_start? line
           push_score
@@ -188,7 +188,7 @@ module Gly
     end
 
     def push_score
-      if @score.is_a?(ParsedScore) && !@score.empty?
+      if @score.is_a?(Score) && !@score.empty?
         begin
           @doc << @score
         rescue ArgumentError => ex
