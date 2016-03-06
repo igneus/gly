@@ -111,7 +111,7 @@ module Gly
     end
 
     def header_line?(str)
-      @current_block == :header || @current_block == :score && @score.lyrics.empty? && @score.music.empty? && str =~ /\A[\w_-]+:/
+      @current_block == :score && @score.lyrics.empty? && @score.music.empty? && str =~ /\A[\w_-]+:/
     end
 
     EXPLICIT_LYRICS_RE = /\A\\l(yrics)?\s+/
