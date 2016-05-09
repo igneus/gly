@@ -141,7 +141,7 @@ module Gly
     end
 
     def parse_header(str)
-      hid, hvalue = str.split(':').collect(&:strip)
+      hid, hvalue = str.split(':', 2).collect(&:strip)
       @score.headers[hid] = hvalue
     end
 

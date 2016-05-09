@@ -1,0 +1,3 @@
+% header value with colon and semicolon
+name: value: with colon
+user-notes: value; with semicolon
