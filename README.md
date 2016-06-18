@@ -23,12 +23,10 @@ support other than the predefined header fields).
 That led me to designing an alternative, Gregorio-inspired
 notation format, which compiles to pure Gregorio gabc.
 
-(Only after that I learned to know the
-[GABC Transcription Tool][bentrans] by Benjamin Bloomfield,
-which does something quite similar, but as a web-based tool.
-You can think of gly as of a less clever GABC Transcription Tool
-for those who strongly prefer command-line and plaintext-file-based
-workflows over the web-based ones.)
+(Existence of the
+[GABC Transcription Tool][bentrans] by Benjamin Bloomfield
+suggests that the author of gly wasn't the only one who prefered
+to enter music and lyrics separately.)
 
 ## Features
 
