@@ -4,6 +4,10 @@
 
 Writer-friendly Gregorian notation format compiling to gabc.
 
+One or more scores per file;
+generate pdf preview without need to write a single line of LaTeX code;
+write music and lyrics separately.
+
 *GLY* is an acronym of "Gregorio for liLYponders" or
 "Gregorio with separate LYrics.
 
@@ -72,6 +76,7 @@ Typical GABC source of an antiphon looks like this:
 
 Corresponding GLY may look like this:
 
+    \score
     name: Nativitas gloriosae
     office-part: laudes, 1. ant.
     occasion: In Nativitate B. Mariae Virginis
@@ -95,6 +100,7 @@ Or, with music and lyrics interlaced
 (this arrangement may be handy for larger scores,
 like full-notated hymns, sequences or nocturnal responsories):
 
+    \score
     name: Nativitas gloriosae
     office-part: laudes, 1. ant.
     occasion: In Nativitate B. Mariae Virginis
@@ -119,6 +125,25 @@ like full-notated hymns, sequences or nocturnal responsories):
 
 Other arrangements are also possible. Order of music and lyrics
 is actually ignored during processing.
+
+## Syntax - Short Description
+
+Score begins with a `\score` keyword.
+Header fields follow. The header syntax is very similar to gabc,
+except for semicolon at the end (omitted in gly) and the fact that
+only one-line values are supported.
+Unlike in gabc, there is no delimiter signaling end of the header.
+Header ends with first line detected as music or lyrics.
+
+Music lines contain only music. There is usually no need to enclose
+music chunks in parentheses (the author's bias against writing
+so many parentheses was one of the main motivations behind creating
+gly), but you are allowed to write them if you want to.
+
+Lyric lines contain lyrics, with syllables separated by double dash
+`--` like in LilyPond.
+
+For more detailed description of gly syntax see Syntax Reference below.
 
 ## Installation
 
@@ -156,7 +181,7 @@ gly file.
 
 ![Editing gly in emacs](/doc/img/gly_emacs_scr.png)
 
-## Syntax reference
+## Syntax Reference
 
 Gly syntax is line-based.
 The interpreter reads the input line by line,
