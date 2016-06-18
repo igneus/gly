@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 Gem::Specification.new do |s|
   s.name        = 'gly'
-  s.version     = '0.0.3'
-  s.date        = '2016-01-12'
+  s.version     = '0.0.4'
+  s.date        = '2016-06-18'
   s.summary     = 'Writer-friendly Gregorian notation format compiling to gabc'
 
   s.authors     = ['Jakub Pavlík']
