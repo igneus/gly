@@ -12,5 +12,9 @@ module Gly
     def empty?
       @headers.empty? && @lyrics.empty? && @music.empty?
     end
+
+    def music_with_lyrics
+      MusicWithLyrics.new(music, lyrics)
+    end
   end
 end

@@ -7,6 +7,7 @@ score
 headers
 lyrics
 markup
+music_with_lyrics
 document
 document_gabc_convertor
 document_ly_convertor
