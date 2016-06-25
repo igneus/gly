@@ -23,7 +23,7 @@ module Gly
     desc 'preview FILE ...', 'convert to gabc AND generate pdf preview'
     option :no_build, type: :boolean, aliases: :B, banner: 'only generate preview assets, don\'t compile them'
     option :no_document, type: :boolean, aliases: :D, banner: 'produce main LaTeX file without document definition; in this case --no-build is applied automatically'
-    option :full_headers, type: :boolean, aliases: :h, banner: 'include full document and score headers'
+    option :full_headers, type: :boolean, aliases: :H, banner: 'include full document and score headers'
     option :template, aliases: :t, banner: 'use custom document template'
     def preview(*files)
       tpl = nil
