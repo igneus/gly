@@ -11,9 +11,10 @@ module Gly
     class_option :separator, aliases: :s, banner: 'syllable separator (default is double dash "--")'
 
     desc 'gabc FILE ...', 'convert gly to gabc'
+    option :output, type: :string, aliases: :o, banner: 'specify output file name (or template of file names)'
     def gabc(*files)
       files.each do |f|
-        DocumentGabcConvertor.new(parser.parse(f)).convert
+        DocumentGabcConvertor.new(parser.parse(f), output_file: options[:output]).convert
       end
     rescue Gly::Exception => ex
       error_exit! ex
