@@ -16,6 +16,8 @@ module Gly
         out.print "(#{music_chunk})" if music_chunk
       end
 
+      out.puts unless score.music.empty?
+
       return out
     end
   end
