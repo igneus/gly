@@ -148,10 +148,10 @@ module Gly
     def parse_lyrics(str)
       # words: split by whitespace not being part of syllable
       # separator
-      str
-        .sub(EXPLICIT_LYRICS_RE, '')
-        .split(/(?<!#{@syllable_separator})\s+(?!#{@syllable_separator})/)
-        .each do |word|
+      words = str
+              .sub(EXPLICIT_LYRICS_RE, '')
+              .split(/(?<!#{@syllable_separator})\s+(?!#{@syllable_separator})/)
+      words.each do |word|
         syllables = word
                     .split(/\s*#{@syllable_separator}\s*/)
                     .collect {|s| s.gsub('_', ' ') }
