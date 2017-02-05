@@ -152,7 +152,10 @@ module Gly
         .sub(EXPLICIT_LYRICS_RE, '')
         .split(/(?<!#{@syllable_separator})\s+(?!#{@syllable_separator})/)
         .each do |word|
-        @score.lyrics << Word.new(word.split(/\s*#{@syllable_separator}\s*/))
+        syllables = word
+                    .split(/\s*#{@syllable_separator}\s*/)
+                    .collect {|s| s.gsub('_', ' ') }
+        @score.lyrics << Word.new(syllables)
       end
     end
 

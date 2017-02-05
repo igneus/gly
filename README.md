@@ -250,7 +250,14 @@ is double dash (minus) `--` with optional whitespace around.
 
 `cla -- ra ex stir -- pe Da -- vid.`
 
-The parser guesses meaning of the line by attempting to find
+Underscore can be used to enter a "joining" space,
+to set two or more words under a single note/neume.
+Some languages, like Czech or Italian, use this feature.
+The underscore will be replaced by a space in the gabc output.
+
+`Pán s_vá -- mi.`
+
+The parser guesses meaning of each line by attempting to find
 syllable separator in it and by looking if it's alphanumeric
 characters contain something that cannot be interpreted as music.
 If any of these conditions is met, the line is interpreted as lyrics.
