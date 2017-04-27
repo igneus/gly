@@ -1,15 +1,9 @@
 language: ruby
 rvm:
   - 2.0.0
-  - 2.3.0
-  - jruby-19mode
-  - rbx-2.7
+  - 2.4.0
 
 script: bundle exec ruby tests/run.rb
 
 git:
   depth: 3
-
-matrix:
-  allow_failures:
-    - rvm: jruby-19mode
