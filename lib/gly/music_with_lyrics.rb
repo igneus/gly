@@ -50,7 +50,7 @@ module Gly
     end
 
     def clef?(chunk)
-      chunk =~ /\A[cf][1-4]\Z/
+      chunk =~ /\A[cf]b?[1-4]\Z/
     end
 
     def without_differentiae(chunk)
