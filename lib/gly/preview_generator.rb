@@ -8,8 +8,8 @@ module Gly
       @preview_dest = nil
 
       @template = options.delete(:template) || default_template
-      @builder = options.delete(:builder) || PreviewBuilder.new
       @options = options.delete(:options) || {}
+      @builder = options.delete(:builder) || PreviewBuilder.new(options: @options)
     end
 
     # IO to which the main LaTeX document should be written.
