@@ -4,6 +4,7 @@ module Gly
       @doc = document
       @options = options
       @output_name_base = @options[:output_file] || File.basename(@doc.path)
+      @output_directory = @options[:output_directory] || '.'
     end
 
     def convert
@@ -11,7 +12,7 @@ module Gly
         if @output_name_base == '-'
           convert_to STDOUT, score
         else
-          File.open(out_fname, 'w') do |fw|
+          File.open("#{@output_directory}/#{out_fname}", 'w') do |fw|
             convert_to fw, score
           end
         end

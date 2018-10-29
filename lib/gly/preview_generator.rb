@@ -8,8 +8,8 @@ module Gly
       @preview_dest = nil
 
       @template = options.delete(:template) || default_template
-      @builder = options.delete(:builder) || PreviewBuilder.new
       @options = options.delete(:options) || {}
+      @builder = options.delete(:builder) || PreviewBuilder.new(options: @options)
     end
 
     # IO to which the main LaTeX document should be written.
@@ -101,7 +101,8 @@ module Gly
         return
       end
 
-      File.open(preview_fname(src_name), 'w') do |fw|
+      output_directory = @options[:output_directory] || '.'
+      File.open("#{output_directory}/#{preview_fname(src_name)}", 'w') do |fw|
         yield fw
       end
     end

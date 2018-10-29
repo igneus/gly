@@ -12,9 +12,10 @@ module Gly
 
     desc 'gabc FILE ...', 'convert gly to gabc'
     option :output, type: :string, aliases: :o, banner: 'specify output file name (or template of file names)'
+    option :output_directory, aliases: :d, type: :string, banner: 'specify output directory'
     def gabc(*files)
       files.each do |f|
-        DocumentGabcConvertor.new(parser.parse(f), output_file: options[:output]).convert
+        DocumentGabcConvertor.new(parser.parse(f), output_file: options[:output], output_directory: options[:output_directory]).convert
       end
     rescue Gly::Exception => ex
       error_exit! ex
@@ -25,6 +26,7 @@ module Gly
     option :no_document, type: :boolean, aliases: :D, banner: 'produce main LaTeX file without document definition; in this case --no-build is applied automatically'
     option :full_headers, type: :boolean, aliases: :H, banner: 'include full document and score headers'
     option :template, aliases: :t, banner: 'use custom document template'
+    option :output_directory, aliases: :d, type: :string, banner: 'specify output directory'
     def preview(*files)
       tpl = nil
       if options[:template]
@@ -89,11 +91,12 @@ module Gly
     end
 
     desc 'ly FILE ...', 'transform gly document to lilypond document'
+    option :output_directory, aliases: :d, type: :string, banner: 'specify output directory'
     def ly(*files)
       check_lygre_available!
 
       files.each do |f|
-        DocumentLyConvertor.new(parser.parse(f)).convert
+        DocumentLyConvertor.new(parser.parse(f), output_directory: options[:output_directory]).convert
       end
 
     rescue Gly::Exception => ex

@@ -6,8 +6,10 @@ module Gly
   # expects the 'lygre' gem
   # (which is only an optional dependency of gly)
   class DocumentLyConvertor
-    def initialize(document)
+    def initialize(document, options={})
       @doc = document
+      @options = options
+      @output_directory = @options[:output_directory] || '.'
     end
 
     def convert
@@ -37,7 +39,7 @@ module Gly
       end
 
       out_fname = File.basename(@doc.path) + '.ly'
-      File.open(out_fname, 'w') do |fw|
+      File.open("#{@output_directory}/#{out_fname}", 'w') do |fw|
         fw.puts ly_output.string
       end
     end
