@@ -15,13 +15,14 @@ module Gly
     attr_accessor :main_tex
 
     def build
-      @gabcs.each do |g|
-        outfile = g.sub /(\.gabc)?$/i, '.gtex'
-        output_directory = @options[:output_directory] || '.'
-        benevolent_exec('gregorio', '-o', "#{output_directory}/#{outfile}", "#{output_directory}/#{g}")
+      output_directory = @options[:output_directory] || '.'
+      Dir.chdir(output_directory) do
+        @gabcs.each do |g|
+          outfile = g.sub /(\.gabc)?$/i, '.gtex'
+          benevolent_exec('gregorio', '-o', outfile, g)
+        end
+        exec 'lualatex', '--interaction=nonstopmode', @main_tex
       end
-
-      exec 'lualatex', '--interaction=nonstopmode', @main_tex
     end
 
     private
