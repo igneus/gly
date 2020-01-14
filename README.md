@@ -13,7 +13,7 @@ write music and lyrics separately.
 
 ## Why
 
-One of the most popular solutions for typesetting quadratic
+One of the most popular solutions for typesetting square
 notation used for the Gregorian chant is [Gregorio][gregorio].
 
 Gregorio is a great tool, but I really don't like it's default
