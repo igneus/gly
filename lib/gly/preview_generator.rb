@@ -38,7 +38,7 @@ module Gly
         end
       end
 
-      if @options['no_document']
+      if @options.has_key? :no_document
         tex = doc_body.string
       else
         replacements = {
@@ -54,9 +54,11 @@ module Gly
         fw.puts tex
       end
 
-      build_disabled = @options['no_build'] || @options['no_document']
+      build_disabled = @options.has_key?(:no_build) || @options.has_key?(:no_document)
       if @builder.main_tex && !build_disabled
         @builder.build
+      else
+        @builder.build_gabcs
       end
     end
 

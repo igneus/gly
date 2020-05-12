@@ -11,9 +11,9 @@ module Gly
     end
 
     def convert
-      gabcor = GabcConvertor.new
+      gabcor = GabcConvertor.new comment_headers: false
       parser = GabcParser.new
-      lilyor = LilypondConvertor.new cadenza: true, version: false
+      lilyor = LilypondConvertor.new cadenza: true, header: true, version: false
 
       ly_output = StringIO.new
 
@@ -31,6 +31,7 @@ module Gly
           ly_output.puts lilyor.convert parsed_score.create_score
         rescue NoMethodError
           ly_output.puts "\\markup{error processing score \\italic{#{score.lyrics.readable}}}"
+          raise
         end
 
         ly_output.puts
@@ -52,7 +53,7 @@ module Gly
     end
 
     def default_style
-      '\layout { \context Score \override TimeSignature #\'stencil = ##f }'
+      '\layout { \context { \Score \override TimeSignature #\'stencil = ##f } }'
     end
   end
 end

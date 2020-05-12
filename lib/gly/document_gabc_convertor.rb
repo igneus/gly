@@ -2,8 +2,9 @@ module Gly
   class DocumentGabcConvertor
     def initialize(document, options={})
       @doc = document
-      @options = options
-      @output_name_base = @options[:output_file] || File.basename(@doc.path)
+      @suffix_always = options[:suffix_always] || false
+      @output_name_base = options[:output_file] || File.basename(@doc.path)
+      @gabc_options = options[:gabc_options] || {}
     end
 
     def convert
@@ -34,11 +35,11 @@ module Gly
     private
 
     def convert_to(io, score)
-      GabcConvertor.new.convert score, io
+      GabcConvertor.new(@gabc_options).convert score, io
     end
 
     def gabc_fname(score, score_index=nil)
-      if @doc.scores.size == 1 && !@options[:suffix_always]
+      if @doc.scores.size == 1 && !@suffix_always
         score_id = ''
       else
         score_id = '_' + (score.headers['id'] || score_index.to_s)

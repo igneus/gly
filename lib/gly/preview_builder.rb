@@ -13,11 +13,15 @@ module Gly
 
     attr_accessor :main_tex
 
-    def build
+    def build_gabcs
       @gabcs.each do |g|
         outfile = g.sub /(\.gabc)?$/i, '.gtex'
         benevolent_exec('gregorio', '-o', outfile, g)
       end
+    end
+
+    def build
+      build_gabcs
 
       exec 'lualatex', '--interaction=nonstopmode', @main_tex
     end

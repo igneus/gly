@@ -1,7 +1,7 @@
 require 'thor'
 
 begin
-  require 'grely'
+  require 'lygre'
 rescue LoadError
 end
 
@@ -9,12 +9,21 @@ module Gly
   # implements the 'gly' executable
   class CLI < Thor
     class_option :separator, aliases: :s, banner: 'syllable separator (default is double dash "--")'
+    class_option :help, aliases: :h, banner: 'display help and exit'
 
     desc 'gabc FILE ...', 'convert gly to gabc'
     option :output, type: :string, aliases: :o, banner: 'specify output file name (or template of file names)'
+    option :max_line_length, type: :numeric, aliases: :L, banner: 'make gabc lines no longer than N'
+    option :break_words, type: :boolean, aliases: :W, banner: 'line-break after each word'
+    option :break_divisiones, type: :boolean, aliases: :D, banner: 'line-break after each division ("bar line")'
     def gabc(*files)
+      gabc_options = {
+        line_limit: options[:max_line_length],
+        break_words: options[:break_words],
+        break_divisiones: options[:break_divisiones]
+      }
       files.each do |f|
-        DocumentGabcConvertor.new(parser.parse(f), output_file: options[:output]).convert
+        DocumentGabcConvertor.new(parser.parse(f), output_file: options[:output], gabc_options: gabc_options).convert
       end
     rescue Gly::Exception => ex
       error_exit! ex
