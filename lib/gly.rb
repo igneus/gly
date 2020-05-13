@@ -15,6 +15,8 @@ gly_convertor
 preview_generator
 preview_builder
 lister
+tags
+gregorio_version_detector
 string_helpers).each do |mod|
   require "gly/#{mod}"
 end

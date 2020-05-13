@@ -4,12 +4,20 @@ module Gly
   # Takes Gly::Document, builds a pdf preview
   # (or at least generates all necessary assets)
   class PreviewGenerator
+    # For which gregoriotex version to generate commands by default
+    DEFAULT_GREGORIOTEX_VERSION = 5
+
     def initialize(**options)
       @preview_dest = nil
 
       @template = options.delete(:template) || default_template
       @builder = options.delete(:builder) || PreviewBuilder.new
       @options = options.delete(:options) || {}
+      @tags = Gly::Tags[
+        options[:gregoriotex_version] ||
+        GregorioVersionDetector.version ||
+        DEFAULT_GREGORIOTEX_VERSION
+      ]
     end
 
     # IO to which the main LaTeX document should be written.
@@ -82,17 +90,12 @@ module Gly
         val = "\\texttt{\\##{val}}" if val && m == 'id'
         val
       end.delete_if(&:nil?).join ', '
-      r.puts "\\commentary{\\footnotesize{#{piece_title}}}\n" unless piece_title.empty?
+      r.puts @tags.commentary(piece_title) unless piece_title.empty?
 
       annotations = score.headers.each_value('annotation')
-      begin
-        r.puts "\\setfirstannotation{#{annotations.next}}"
-        r.puts "\\setsecondannotation{#{annotations.next}}"
-      rescue StopIteration
-        # ok, no more annotations
-      end
+      r.puts @tags.annotations(annotations.next, annotations.next)
 
-      r.puts "\\includescore{#{gtex_fname}}\n\\vspace{1cm}"
+      r.puts @tags.score(gtex_fname)
 
       r.string
     end

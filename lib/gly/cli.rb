@@ -34,6 +34,7 @@ module Gly
     option :no_document, type: :boolean, aliases: :D, banner: 'produce main LaTeX file without document definition; in this case --no-build is applied automatically'
     option :full_headers, type: :boolean, aliases: :H, banner: 'include full document and score headers'
     option :template, aliases: :t, banner: 'use custom document template'
+    option :gregoriotex_version, aliases: :g, banner: 'for which gregoriotex version [4 and 5 supported] to generate gregoriotex commands'
     def preview(*files)
       tpl = nil
       if options[:template]
