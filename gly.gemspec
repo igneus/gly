@@ -13,6 +13,6 @@ Gem::Specification.new do |s|
   s.homepage    = 'http://github.com/igneus/gly'
   s.licenses    = ['MIT']
 
-  s.add_dependency 'thor', '~> 0'
+  s.add_dependency 'thor'
   s.add_development_dependency 'minitest-reporters', '~> 1'
 end
