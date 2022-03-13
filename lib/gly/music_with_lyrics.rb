@@ -72,7 +72,7 @@ module Gly
     end
 
     def strip_directives(syl)
-      syl.sub(/(\s*)!/, '\1') # exclamation mark at the beginning - place even under nonlyrical music chunk
+      syl.sub(/^!/, '') # exclamation mark at the beginning - place even under nonlyrical music chunk
     end
   end
 end
