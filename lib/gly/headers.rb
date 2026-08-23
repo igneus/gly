@@ -33,6 +33,7 @@ centering-scheme
 user-notes
 annotation
 nabc-lines
+staff-lines
 )
 
     def initialize
