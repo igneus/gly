@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/igneus/gly.svg?branch=master)](https://travis-ci.org/igneus/gly)
+![Build Status](https://github.com/igneus/gly/actions/workflows/ci.yml/badge.svg)
+
 
 # gly
 
