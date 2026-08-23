@@ -1,0 +1,20 @@
+h h h h h h h h h h h h h
+
+% like in LilyPond, some whitespace around the syllable separator is required,
+% otherwise it's not considered separator
+a--men
+
+% the most usual case
+a -- men
+
+% additional spaces around the syllable separator don't matter
+a  -- men
+a --  men
+a  --  men
+a       --      men
+
+% words spanning multiple lines are currently not supported,
+% the trailing syllable separator is ignored and new line starts a new word
+\lyrics
+a --
+men

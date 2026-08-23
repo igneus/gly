@@ -146,15 +146,20 @@ module Gly
     end
 
     def parse_lyrics(str)
-      # words: split by whitespace not being part of syllable
-      # separator
-      words = str
-              .sub(EXPLICIT_LYRICS_RE, '')
-              .split(/(?<!#{@syllable_separator})\s+(?!#{@syllable_separator})/)
-      words.each do |word|
-        syllables = word
-                    .split(/\s*#{@syllable_separator}\s*/)
-                    .collect {|s| s.gsub('_', ' ') }
+      words = [[]]
+      chunks = str
+                 .sub(EXPLICIT_LYRICS_RE, '')
+                 .split(/\s+/)
+      chunks.each_with_index do |c, i|
+        next if c == @syllable_separator
+
+        words.last << c.gsub('_', ' ')
+
+        nxt = chunks[i + 1]
+        words << [] if nxt != @syllable_separator && nxt != nil
+      end
+
+      words.each do |syllables|
         @score.lyrics << Word.new(syllables)
       end
     end
