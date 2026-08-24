@@ -13,7 +13,7 @@ module Gly
         return Gem::Version.new(m[1])
       end
 
-      # failed to parse gregorio version from the output
+      STDERR.puts 'Warning: failed to parse output of `gregorio --version`, Gregorio version unknown'
       nil
     end
   end
