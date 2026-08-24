@@ -4,7 +4,6 @@ module Gly
   # takes Score, translates it to gabc
   class GabcConvertor
     def initialize(options={})
-      @line_limit = options[:line_limit]
       @break_words = options[:break_words]
       @break_divisiones = options[:break_divisiones]
       @comment_headers = options.fetch :comment_headers, true
