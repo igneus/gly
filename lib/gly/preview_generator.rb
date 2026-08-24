@@ -4,9 +4,6 @@ module Gly
   # Takes Gly::Document, builds a pdf preview
   # (or at least generates all necessary assets)
   class PreviewGenerator
-    # For which gregoriotex version to generate commands by default
-    DEFAULT_GREGORIOTEX_VERSION = 5
-
     def initialize(template: nil, builder: nil, options: {})
       @preview_dest = nil
 
@@ -15,11 +12,7 @@ module Gly
       @options = options
 
       @output_directory = options[:output_directory] || '.'
-      @tags = Gly::Tags[
-        options[:gregoriotex_version] ||
-        GregorioVersionDetector.version ||
-        DEFAULT_GREGORIOTEX_VERSION
-      ]
+      @tags = Gly::Tags::Gregorio6.new
     end
 
     # IO to which the main LaTeX document should be written.

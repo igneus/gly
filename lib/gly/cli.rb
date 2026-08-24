@@ -42,7 +42,6 @@ module Gly
     option :output_directory, aliases: :d, type: :string, banner: 'specify output directory'
     option :full_headers, type: :boolean, aliases: :H, banner: 'include full document and score headers'
     option :template, aliases: :t, banner: 'use custom document template'
-    option :gregoriotex_version, aliases: :g, banner: 'for which gregoriotex version [4 and 5 supported] to generate gregoriotex commands'
     def preview(*files)
       tpl = nil
       if options[:template]
@@ -59,7 +58,6 @@ module Gly
       opts = options.each_pair.collect {|k,v| [k.to_sym,v]}.to_h
 
       opts[:suffix_always] = true
-      opts[:gregoriotex_version] = opts[:gregoriotex_version]&.to_i
 
       files.each do |f|
         gen = PreviewGenerator.new template: tpl, options: opts
