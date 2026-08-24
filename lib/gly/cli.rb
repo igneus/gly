@@ -25,11 +25,13 @@ module Gly
       }
       files.each do |f|
         DocumentGabcConvertor.new(
-          parser.parse(f),
+          parser.parse(input_file(f)),
           output_file: options[:output],
           output_directory: options[:output_directory],
           gabc_options: gabc_options
         ).convert
+      rescue Errno::ENOENT
+        raise Gly::Exception.new("File not found: '#{f}'")
       end
     rescue Gly::Exception => ex
       error_exit! ex
@@ -61,16 +63,13 @@ module Gly
 
       files.each do |f|
         gen = PreviewGenerator.new template: tpl, options: opts
-        begin
-          gen.process(parser.parse(f))
-        rescue Errno::ENOENT
-          with_extension = f + '.gly'
-          if File.exist? with_extension
-            gen.process(parser.parse(with_extension))
-          else
+        document =
+          begin
+            parser.parse input_file f
+          rescue Errno::ENOENT => e
             raise Gly::Exception.new("File not found: '#{f}'")
           end
-        end
+        gen.process(document)
       end
 
     rescue Gly::Exception => ex
@@ -86,16 +85,18 @@ module Gly
         exit 1
       end
 
-      if options[:recursive]
-        files = files.collect do |f|
-          if File.directory?(f)
-            Dir[File.join(f, '**/*.gly')]
-          else
-            f
+      files =
+        if options[:recursive]
+          files.flat_map do |f|
+            if File.directory?(f)
+              Dir[File.join(f, '**/*.gly')]
+            else
+              input_file f
+            end
           end
+        else
+          files.collect {|f| input_file f }
         end
-        files.flatten!
-      end
 
       lister = Lister.new(files, options[:format])
       lister.list(STDOUT, STDERR)
@@ -111,7 +112,14 @@ module Gly
       check_lygre_available!
 
       files.each do |f|
-        DocumentLyConvertor.new(parser.parse(f), output_directory: options[:output_directory]).convert
+        document =
+          begin
+            parser.parse input_file f
+          rescue Errno::ENOENT => e
+            raise Gly::Exception.new("File not found: '#{f}'")
+          end
+
+        DocumentLyConvertor.new(document, output_directory: options[:output_directory]).convert
       end
 
     rescue Gly::Exception => ex
@@ -146,6 +154,16 @@ module Gly
 
     def parser
       Parser.new options[:separator]
+    end
+
+    # normalize input file name (support extension-less input
+    # file names like programs from the TeX family generally do)
+    def input_file(f)
+      if File.exist?(f)
+        f
+      else
+        f + '.gly'
+      end
     end
 
     def check_lygre_available!
