@@ -106,8 +106,7 @@ module Gly
         return
       end
 
-      output_directory = @options[:output_directory] || '.'
-      File.open("#{output_directory}/#{preview_fname(src_name)}", 'w') do |fw|
+      File.open(File.join(@output_directory, preview_fname(src_name)), 'w') do |fw|
         yield fw
       end
     end

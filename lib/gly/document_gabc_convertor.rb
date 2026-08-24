@@ -13,7 +13,7 @@ module Gly
         if @output_name_base == '-'
           convert_to STDOUT, score
         else
-          File.open("#{@output_directory}/#{out_fname}", 'w') do |fw|
+          File.open(File.join(@output_directory, out_fname), 'w') do |fw|
             convert_to fw, score
           end
         end

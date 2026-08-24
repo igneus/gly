@@ -40,7 +40,7 @@ module Gly
       end
 
       out_fname = File.basename(@doc.path) + '.ly'
-      File.open("#{@output_directory}/#{out_fname}", 'w') do |fw|
+      File.open(File.join(@output_directory, out_fname), 'w') do |fw|
         fw.puts ly_output.string
       end
     end
