@@ -7,17 +7,19 @@ module Gly
     # For which gregoriotex version to generate commands by default
     DEFAULT_GREGORIOTEX_VERSION = 5
 
-    def initialize(**options)
+    def initialize(template: nil, builder: nil, options: {})
       @preview_dest = nil
 
-      @template = options.delete(:template) || default_template
-      @options = options.delete(:options) || {}
+      @template = template || default_template
+      @builder = builder || PreviewBuilder.new
+      @options = options
+
+      @output_directory = options[:output_directory] || '.'
       @tags = Gly::Tags[
         options[:gregoriotex_version] ||
         GregorioVersionDetector.version ||
         DEFAULT_GREGORIOTEX_VERSION
       ]
-      @builder = options.delete(:builder) || PreviewBuilder.new(options: @options)
     end
 
     # IO to which the main LaTeX document should be written.
@@ -63,10 +65,12 @@ module Gly
       end
 
       build_disabled = @options.has_key?(:no_build) || @options.has_key?(:no_document)
-      if @builder.main_tex && !build_disabled
-        @builder.build
-      else
-        @builder.build_gabcs
+      Dir.chdir @output_directory do
+        if @builder.main_tex && !build_disabled
+          @builder.build
+        else
+          @builder.build_gabcs
+        end
       end
     end
 
