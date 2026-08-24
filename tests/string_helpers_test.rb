@@ -8,7 +8,7 @@ class StringHelpersTest < GlyTest
     ['simple_whitespace', 'aa aa', ['aa', 'aa']],
     ['leading_trailing_whitespace', ' a a  ', ['a', 'a']],
     ['repeated_inner_whitespace', 'a    a', ['a', 'a']],
-    ['bracketted', '(a)', ['a']],
+    ['bracketed', '(a)', ['a']],
     ['empty', '()', ['']],
     ['nested', '(a(b))', ['a(b', ')']] # nesting isn't supported
   ]
