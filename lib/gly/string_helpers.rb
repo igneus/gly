@@ -5,7 +5,7 @@ module Gly
     # splits string by whitespace that is not enclosed
     # in brackets.
     # At the same time removes brackets.
-    def bracket_aware_whitespace_split(str)
+    def music_split(str)
       str = str.strip
       chunk_start = 0
       chunks = []
@@ -36,7 +36,5 @@ module Gly
 
       chunks
     end
-
-    alias_method :music_split, :bracket_aware_whitespace_split
   end
 end
