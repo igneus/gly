@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'thor'
+gemspec
 
 group :test do
   gem 'minitest-reporters'
