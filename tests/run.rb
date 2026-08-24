@@ -1,5 +1,4 @@
-require_relative 'examples'
-require_relative 'no_crash'
-require_relative 'string_helpers_test'
-require_relative 'parser'
-require_relative 'music_with_lyrics'
+Dir[File.join(File.dirname(__FILE__), '*.rb')].each do |f|
+  next if f == __FILE__
+  require_relative File.basename f
+end
