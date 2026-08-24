@@ -45,7 +45,7 @@ module Gly
         tex = @template.gsub(/\{\{(\w+)\}\}/) {|m| replacements[m[2..-3]] }
       end
 
-      preview_path = File.join(@output_directory, preview_fname(src_name))
+      preview_path = File.join(@output_directory, preview_fname(document.path))
       File.open(preview_path, 'w') do |fw|
         @builder.main_tex = preview_fname(document.path)
 
