@@ -24,9 +24,11 @@ module Gly
         "\\commentary{\\footnotesize{#{str}}}\n"
       end
 
-      def annotations(first, second)
-        "\\setfirstannotation{#{first}}" +
-          "\\setsecondannotation{#{second}}"
+      def annotations(*annotations)
+        annotations
+          .zip(%w(setfirstannotation setsecondannotation))
+          .collect {|(a, command)| "\\#{command}{#{a}}" }
+          .join
       end
 
       def score(filename)
@@ -40,9 +42,10 @@ module Gly
         "\\grecommentary{\\footnotesize{#{str}}}\n"
       end
 
-      def annotations(first, second)
-        "\\greannotation{#{first}}" +
-          "\\greannotation{#{second}}"
+      def annotations(*annotations)
+        annotations
+          .collect {|a| "\\greannotation{#{a}}" }
+          .join
       end
 
       def score(filename)
