@@ -9,7 +9,6 @@ module Gly
   # implements the 'gly' executable
   class CLI < Thor
     class_option :separator, aliases: :s, banner: 'syllable separator (default is double dash "--")'
-    class_option :help, aliases: :h, banner: 'display help and exit'
 
     desc 'gabc FILE ...', 'convert gly to gabc'
     option :output, type: :string, aliases: :o, banner: 'specify output file name (or template of file names)'
