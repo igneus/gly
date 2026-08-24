@@ -5,8 +5,6 @@ module Gly
   # (or at least generates all necessary assets)
   class PreviewGenerator
     def initialize(template: nil, builder: nil, options: {})
-      @preview_dest = nil
-
       @template = template || default_template
       @builder = builder || PreviewBuilder.new
       @options = options
@@ -14,11 +12,6 @@ module Gly
       @output_directory = options[:output_directory] || '.'
       @tags = Gly::Tags::Gregorio6.new
     end
-
-    # IO to which the main LaTeX document should be written.
-    # If not set, a file will be created with name based on
-    # the source file name.
-    attr_accessor :preview_dest
 
     def process(document)
       convertor = DocumentGabcConvertor.new(document, **@options)
@@ -52,7 +45,8 @@ module Gly
         tex = @template.gsub(/\{\{(\w+)\}\}/) {|m| replacements[m[2..-3]] }
       end
 
-      with_preview_io(document.path) do |fw|
+      preview_path = File.join(@output_directory, preview_fname(src_name))
+      File.open(preview_path, 'w') do |fw|
         @builder.main_tex = preview_fname(document.path)
 
         fw.puts tex
@@ -96,17 +90,6 @@ module Gly
       r.puts @tags.score(gtex_fname)
 
       r.string
-    end
-
-    def with_preview_io(src_name)
-      if @preview_dest
-        yield @preview_dest
-        return
-      end
-
-      File.open(File.join(@output_directory, preview_fname(src_name)), 'w') do |fw|
-        yield fw
-      end
     end
 
     def preview_fname(src_name)
