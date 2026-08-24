@@ -13,6 +13,7 @@ module Gly
 
     desc 'gabc FILE ...', 'convert gly to gabc'
     option :output, type: :string, aliases: :o, banner: 'specify output file name (or template of file names)'
+    option :output_directory, aliases: :d, type: :string, banner: 'specify output directory'
     option :max_line_length, type: :numeric, aliases: :L, banner: 'make gabc lines no longer than N'
     option :break_words, type: :boolean, aliases: :W, banner: 'line-break after each word'
     option :break_divisiones, type: :boolean, aliases: :D, banner: 'line-break after each division ("bar line")'
@@ -23,7 +24,12 @@ module Gly
         break_divisiones: options[:break_divisiones]
       }
       files.each do |f|
-        DocumentGabcConvertor.new(parser.parse(f), output_file: options[:output], gabc_options: gabc_options).convert
+        DocumentGabcConvertor.new(
+          parser.parse(f),
+          output_file: options[:output],
+          output_directory: options[:output_directory],
+          gabc_options: gabc_options
+        ).convert
       end
     rescue Gly::Exception => ex
       error_exit! ex
@@ -32,6 +38,7 @@ module Gly
     desc 'preview FILE ...', 'convert to gabc AND generate pdf preview'
     option :no_build, type: :boolean, aliases: :B, banner: 'only generate preview assets, don\'t compile them'
     option :no_document, type: :boolean, aliases: :D, banner: 'produce main LaTeX file without document definition; in this case --no-build is applied automatically'
+    option :output_directory, aliases: :d, type: :string, banner: 'specify output directory'
     option :full_headers, type: :boolean, aliases: :H, banner: 'include full document and score headers'
     option :template, aliases: :t, banner: 'use custom document template'
     option :gregoriotex_version, aliases: :g, banner: 'for which gregoriotex version [4 and 5 supported] to generate gregoriotex commands'
@@ -99,11 +106,12 @@ module Gly
     end
 
     desc 'ly FILE ...', 'transform gly document to lilypond document'
+    option :output_directory, aliases: :d, type: :string, banner: 'specify output directory'
     def ly(*files)
       check_lygre_available!
 
       files.each do |f|
-        DocumentLyConvertor.new(parser.parse(f)).convert
+        DocumentLyConvertor.new(parser.parse(f), output_directory: options[:output_directory]).convert
       end
 
     rescue Gly::Exception => ex

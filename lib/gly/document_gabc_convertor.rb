@@ -2,6 +2,7 @@ module Gly
   class DocumentGabcConvertor
     def initialize(document, options={})
       @doc = document
+      @output_directory = options[:output_directory] || '.'
       @suffix_always = options[:suffix_always] || false
       @output_name_base = options[:output_file] || File.basename(@doc.path)
       @gabc_options = options[:gabc_options] || {}
@@ -12,7 +13,7 @@ module Gly
         if @output_name_base == '-'
           convert_to STDOUT, score
         else
-          File.open(out_fname, 'w') do |fw|
+          File.open("#{@output_directory}/#{out_fname}", 'w') do |fw|
             convert_to fw, score
           end
         end

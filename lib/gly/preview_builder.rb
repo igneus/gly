@@ -2,9 +2,10 @@ module Gly
   # *builds* the pdf preview from assets prepared
   # by PreviewGenerator
   class PreviewBuilder
-    def initialize
+    def initialize(**options)
       @gabcs = []
       @main_tex = nil
+      @options = options.delete(:options) || {}
     end
 
     def add_gabc(path)
@@ -21,9 +22,12 @@ module Gly
     end
 
     def build
-      build_gabcs
+      output_directory = @options[:output_directory] || '.'
 
-      exec 'lualatex', '--interaction=nonstopmode', @main_tex
+      Dir.chdir(output_directory) do
+        build_gabcs
+        exec 'lualatex', '--interaction=nonstopmode', @main_tex
+      end
     end
 
     private

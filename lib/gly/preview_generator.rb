@@ -11,13 +11,13 @@ module Gly
       @preview_dest = nil
 
       @template = options.delete(:template) || default_template
-      @builder = options.delete(:builder) || PreviewBuilder.new
       @options = options.delete(:options) || {}
       @tags = Gly::Tags[
         options[:gregoriotex_version] ||
         GregorioVersionDetector.version ||
         DEFAULT_GREGORIOTEX_VERSION
       ]
+      @builder = options.delete(:builder) || PreviewBuilder.new(options: @options)
     end
 
     # IO to which the main LaTeX document should be written.
@@ -57,7 +57,7 @@ module Gly
       end
 
       with_preview_io(document.path) do |fw|
-        @builder.main_tex = fw.path if fw.respond_to? :path
+        @builder.main_tex = preview_fname(document.path)
 
         fw.puts tex
       end
@@ -106,7 +106,8 @@ module Gly
         return
       end
 
-      File.open(preview_fname(src_name), 'w') do |fw|
+      output_directory = @options[:output_directory] || '.'
+      File.open("#{output_directory}/#{preview_fname(src_name)}", 'w') do |fw|
         yield fw
       end
     end
