@@ -36,8 +36,9 @@ module Gly
         if c.is_a? Markup
           fw.puts render_markup(c)
         else
-          score, gabc_fname, gtex_fname = scores_with_names.next
-          fw.puts render_score(score, gabc_fname, gtex_fname)
+          score, gabc_fname = scores_with_names.next
+          @builder.add_gabc gabc_fname
+          fw.puts render_score(score, gabc_fname)
         end
       end
 
@@ -74,10 +75,8 @@ module Gly
       markup.text
     end
 
-    def render_score(score, gabc_fname, gtex_fname)
+    def render_score(score, gabc_fname)
       r = StringIO.new
-
-      @builder.add_gabc gabc_fname
 
       if @options[:full_headers]
         r.puts header_table score.headers
@@ -93,6 +92,7 @@ module Gly
       annotations = score.headers.each_value('annotation').to_a[0..1]
       r.puts @tags.annotations(*annotations)
 
+      gtex_fname = gabc_fname.sub(/\.gabc$/, '.gtex')
       r.puts @tags.score(gtex_fname)
 
       r.string

@@ -29,9 +29,7 @@ module Gly
       return to_enum(:each_score_with_gabcname) unless block_given?
 
       @doc.scores.each_with_index do |score, si|
-        gabc = gabc_fname(score, si)
-        gtex = gtex_fname(score, si)
-        yield score, gabc, gtex
+        yield score, gabc_fname(score, si)
       end
     end
 
@@ -50,10 +48,6 @@ module Gly
 
       @output_name_base
         .sub(/(\.(gly|gabc))?\Z/i, "#{score_id}.gabc")
-    end
-
-    def gtex_fname(score, score_index=nil)
-      gabc_fname(score, score_index).sub('.gabc', '.gtex')
     end
   end
 end
