@@ -49,7 +49,7 @@ module Gly
       end
 
       with_preview_io(document.path) do |fw|
-        @builder.main_tex = fw.path if fw.respond_to? :path
+        @builder.main_tex = preview_fname(document.path)
 
         fw.puts tex
       end
