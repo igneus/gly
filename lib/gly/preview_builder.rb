@@ -22,7 +22,7 @@ module Gly
 
     def build
       build_gabcs
-      exec 'lualatex', '--interaction=nonstopmode', @main_tex
+      @main_tex && exec('lualatex', '--interaction=nonstopmode', @main_tex)
     end
 
     private

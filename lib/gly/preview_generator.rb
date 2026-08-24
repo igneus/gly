@@ -57,12 +57,13 @@ module Gly
         fw.puts tex
       end
 
-      build_disabled = @options.has_key?(:no_build) || @options.has_key?(:no_document)
+      return if @options.has_key?(:no_build)
+
       Dir.chdir @output_directory do
-        if @builder.main_tex && !build_disabled
-          @builder.build
-        else
+        if @options.has_key?(:no_document)
           @builder.build_gabcs
+        else
+          @builder.build
         end
       end
     end
