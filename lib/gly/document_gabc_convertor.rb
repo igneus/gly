@@ -5,7 +5,9 @@ module Gly
       @output_directory = options[:output_directory] || '.'
       @suffix_always = options[:suffix_always] || false
       @output_name_base = options[:output_file] || File.basename(@doc.path)
-      @gabc_options = options[:gabc_options] || {}
+
+      gabc_options = options[:gabc_options] || {}
+      @convertor = GabcConvertor.new(gabc_options)
     end
 
     def convert
@@ -22,7 +24,7 @@ module Gly
     end
 
     # iterates over document scores,
-    # yields score and filename of it's generated gabc file
+    # yields score and filename of its generated gabc file
     def each_score_with_gabcname
       return to_enum(:each_score_with_gabcname) unless block_given?
 
@@ -36,7 +38,7 @@ module Gly
     private
 
     def convert_to(io, score)
-      GabcConvertor.new(@gabc_options).convert score, io
+      @convertor.convert score, io
     end
 
     def gabc_fname(score, score_index=nil)
