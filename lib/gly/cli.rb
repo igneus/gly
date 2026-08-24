@@ -104,7 +104,7 @@ module Gly
       error_exit! ex
     end
 
-    desc 'ly FILE ...', 'transform gly document to lilypond document'
+    desc 'ly FILE ...', 'transform gly document to lilypond document (requires lygre)'
     option :output_directory, aliases: :d, type: :string, banner: 'specify output directory'
     def ly(*files)
       check_lygre_available!
@@ -124,7 +124,7 @@ module Gly
       error_exit! ex
     end
 
-    desc 'fy FILE ...', 'transform gabc to gly'
+    desc 'fy FILE ...', 'transform gabc to gly (requires lygre)'
     def fy(*files)
       check_lygre_available!
 
@@ -148,6 +148,21 @@ module Gly
       end
     end
 
+    desc 'version', 'print gly version'
+    def version
+      puts "gly #{VERSION}, released #{RELEASE_DATE}"
+
+      # TODO currently lygre doesn't expose version information
+      puts 'lygre' + (lygre_available? ? '' : ' not') + ' available'
+
+      GregorioVersionDetector.version&.yield_self do |v|
+        puts "gregorio #{v}"
+        if v.segments[0] != 5
+          puts '!!! watch out for problems, this gly version expects gregorio v6'
+        end
+      end
+    end
+
     private
 
     def parser
@@ -164,8 +179,12 @@ module Gly
       end
     end
 
+    def lygre_available?
+      defined? LilypondConvertor
+    end
+
     def check_lygre_available!
-      unless defined? LilypondConvertor
+      unless lygre_available?
         STDERR.puts "'lygre' gem not found. Please, install lygre in order to run 'gly ly'."
         exit 1
       end

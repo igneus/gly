@@ -1,6 +1,8 @@
 module Gly; end
 
-%w(parser
+%w(
+version
+parser
 exceptions
 gabc_convertor
 score
@@ -17,6 +19,7 @@ preview_builder
 lister
 tags
 gregorio_version_detector
-string_helpers).each do |mod|
+string_helpers
+).each do |mod|
   require "gly/#{mod}"
 end

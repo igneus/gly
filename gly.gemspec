@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+require_relative 'lib/gly/version'
+
 Gem::Specification.new do |s|
   s.name        = 'gly'
-  s.version     = '0.0.4'
-  s.date        = '2016-06-18'
+  s.version     = Gly::VERSION
+  s.date        = Gly::RELEASE_DATE.to_s
   s.summary     = 'Writer-friendly Gregorian notation format compiling to gabc'
 
   s.authors     = ['Jakub Pavlík']
