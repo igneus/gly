@@ -43,5 +43,9 @@ module Gly
     def word_boundary?(music_chunk, lyric_chunk)
       music_chunk == nil && lyric_chunk == ' '
     end
+
+    def divisio?(music_chunk)
+      music_chunk =~ /[,;:]/
+    end
   end
 end
