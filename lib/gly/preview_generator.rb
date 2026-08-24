@@ -83,9 +83,6 @@ module Gly
       end.delete_if(&:nil?).join ', '
       r.puts @tags.commentary(piece_title) unless piece_title.empty?
 
-      annotations = score.headers.each_value('annotation').to_a[0..1]
-      r.puts @tags.annotations(*annotations)
-
       gtex_fname = gabc_fname.sub(/\.gabc$/, '.gtex')
       r.puts @tags.score(gtex_fname)
 

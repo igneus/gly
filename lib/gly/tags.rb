@@ -7,12 +7,6 @@ module Gly
         "\\grecommentary{\\footnotesize{#{str}}}\n"
       end
 
-      def annotations(*annotations)
-        annotations
-          .collect {|a| "\\greannotation{#{a}}" }
-          .join
-      end
-
       def score(filename)
         # TODO: space between scores should not be hardcoded this way
         "\\gregorioscore{#{filename}}\n\\vspace{1cm}"
