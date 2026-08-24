@@ -59,6 +59,7 @@ module Gly
       opts = options.each_pair.collect {|k,v| [k.to_sym,v]}.to_h
 
       opts[:suffix_always] = true
+      opts[:gregoriotex_version] = opts[:gregoriotex_version]&.to_i
 
       files.each do |f|
         gen = PreviewGenerator.new template: tpl, options: opts
