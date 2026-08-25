@@ -1,7 +1,8 @@
-c4 a c3 a c2 a c1 a
-cb4 a cb3 a cb2 a cb1 a
-f4 a f3 a f2 a f1 a
+c4  c3  c2  c1
+cb4 cb3 cb2 cb1
+f4  f3  f2  f1
+
+a % clefs are considered non-lyrical music chunks, lyrics syllable will be paired with this single note
+
 \lyrics
-la la la la
-la la la la
-la la la la
+la
