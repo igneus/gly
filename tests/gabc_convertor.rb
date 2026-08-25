@@ -53,12 +53,11 @@ describe Gly::GabcConvertor do
       h, h
       a -- men
       GLY
-      # TODO line breaking strategy must never change semantics.
-      #   Here it breaks a word in two.
+      # Line breaking strategy must never change semantics.
+      # Here breaking line on divisio would break a word in two.
       _(c(break_divisiones: true).(score)).must_equal <<~GABC
       %%
-      a(h,)
-      men(h)
+      a(h,)men(h)
       GABC
     end
 

@@ -37,7 +37,7 @@ module Gly
           end
         end
 
-        if @break_divisiones && divisio?(music_chunk)
+        if @break_divisiones && divisio?(music_chunk) && signal
           next_space = "\n"
         end
       end
