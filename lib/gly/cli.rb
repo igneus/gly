@@ -155,7 +155,7 @@ module Gly
 
       GregorioVersionDetector.version&.yield_self do |v|
         puts "gregorio #{v}"
-        if v.segments[0] != 5
+        if v.segments[0] != 6
           puts '!!! watch out for problems, this gly version expects gregorio v6'
         end
       end
