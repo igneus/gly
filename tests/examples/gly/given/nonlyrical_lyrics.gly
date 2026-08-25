@@ -1,2 +1,11 @@
-c4 h h , h f
-a -- men, * a -- men.
+c4 h h , % asterisk is considered "non-lyrical lyrics", will be aligned to the divisio
+a -- men, *
+
+h h , % nothing will be aligned to this divisio
+a -- men,
+
+h f :: % lyrics syllable is marked as force-aligned to this divisio
+a -- men. !<i>T.P.</i>
+
+h hi h h ::
+Al -- le -- lú -- ia!
