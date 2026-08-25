@@ -7,7 +7,7 @@ module Gly
       @output_name_base = options[:output_file] || File.basename(@doc.path)
 
       gabc_options = options[:gabc_options] || {}
-      @convertor = GabcConvertor.new(gabc_options)
+      @convertor = GabcConvertor.new(**gabc_options)
     end
 
     def convert

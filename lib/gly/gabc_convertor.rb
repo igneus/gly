@@ -3,12 +3,23 @@ require 'stringio'
 module Gly
   # takes Score, translates it to gabc
   class GabcConvertor
-    def initialize(**options)
-      @break_words = options[:break_words]
-      @break_divisiones = options[:break_divisiones]
-      @break_lines = options[:break_lines]
-      @comment_headers = options.fetch :comment_headers, true
+    LINE_BREAKING_STRATEGIES = [
+      WORD = :word,
+      DIVISIO = :divisio,
+      LINE = :line,
+      NONE = :none
+    ].freeze
+
+    def initialize(line_breaking: nil, comment_headers: true)
+      @line_breaking = line_breaking || LINE
+      unless LINE_BREAKING_STRATEGIES.include? @line_breaking
+        raise ArgumentError.new(@line_breaking)
+      end
+
+      @comment_headers = comment_headers
     end
+
+    attr_reader :line_breaking
 
     def convert(score, out=StringIO.new)
       score.headers.each_pair do |key,value|
@@ -37,19 +48,19 @@ module Gly
         out.print lyric_chunk if lyric_chunk
         out.print "(#{music_chunk})" if music_chunk
 
-        if @break_lines && signal == Lyrics::END_OF_LINE
+        if line_breaking == LINE && signal == Lyrics::END_OF_LINE
           newline_before_next_lyrical = true
         end
 
         if signal
-          if @break_words
+          if line_breaking == WORD
             next_space = "\n"
           else
             next_space = ' '
           end
         end
 
-        if @break_divisiones && divisio?(music_chunk) && signal
+        if line_breaking == DIVISIO && divisio?(music_chunk) && signal
           next_space = "\n"
         end
       end

@@ -13,15 +13,23 @@ module Gly
     desc 'gabc FILE ...', 'convert gly to gabc'
     option :output, type: :string, aliases: :o, banner: 'specify output file name (or template of file names)'
     option :output_directory, aliases: :d, type: :string, banner: 'specify output directory'
+    option :break_lines, type: :boolean, aliases: :L, banner: 'line-breaks as in source lyrics (default)'
     option :break_words, type: :boolean, aliases: :W, banner: 'line-break after each word'
     option :break_divisiones, type: :boolean, aliases: :D, banner: 'line-break after each division ("bar line")'
-    option :break_lines, type: :boolean, aliases: :L, banner: 'line-breaks as in source lyrics'
+    option :no_break, type: :boolean, aliases: :N, banner: 'no line-breaking, produce gabc music as one long line'
     def gabc(*files)
+      gc = GabcConvertor
       gabc_options = {
-        break_words: options[:break_words],
-        break_divisiones: options[:break_divisiones],
-        break_lines: options[:break_lines],
+        line_breaking: {
+          break_words: gc::WORD,
+          break_divisiones: gc::DIVISIO,
+          break_lines: gc::LINE,
+          no_break: gc::NONE,
+        }.each_pair
+          .find {|(opt, _)| options[opt] }
+          &.last
       }
+
       files.each do |f|
         DocumentGabcConvertor.new(
           parser.parse(input_file(f)),

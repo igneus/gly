@@ -14,23 +14,28 @@ describe Gly::GabcConvertor do
     Gly::Parser.new.parse_str(source).scores[0]
   end
 
-  describe 'line breaking options' do
+  describe 'line breaking strategies' do
     before do
       @long = gly_score <<~GLY
       h h h hih, h h h g ,
-      A -- men a -- men di -- co vo -- bis:
+      A -- men a -- men
+      di -- co vo -- bis:
       GLY
     end
 
-    it 'by default produces a long one-line gabc' do
-      _(c.(@long)).must_equal <<~GABC
+    it ':line is default' do
+      _(Gly::GabcConvertor.new.line_breaking).must_equal :line
+    end
+
+    it ':none produces a long one-line gabc' do
+      _(c(line_breaking: :none).(@long)).must_equal <<~GABC
       %%
       A(h)men(h) a(h)men(hih,) di(h)co(h) vo(h)bis:(g) (,)
       GABC
     end
 
-    it 'break_words wraps line after each gabc word' do
-      _(c(break_words: true).(@long)).must_equal <<~GABC
+    it ':word wraps line after each gabc word' do
+      _(c(line_breaking: :word).(@long)).must_equal <<~GABC
       %%
       A(h)men(h)
       a(h)men(hih,)
@@ -40,40 +45,29 @@ describe Gly::GabcConvertor do
       GABC
     end
 
-    it 'break_divisiones wraps line after each divisio' do
-      _(c(break_divisiones: true).(@long)).must_equal <<~GABC
+    it ':divisio wraps line after each divisio' do
+      _(c(line_breaking: :divisio).(@long)).must_equal <<~GABC
       %%
       A(h)men(h) a(h)men(hih,)
       di(h)co(h) vo(h)bis:(g) (,)
       GABC
     end
 
-    it 'break_divisiones and divisio in the middle of a word' do
+    it ':divisio does not break on a divisio in the middle of a word' do
       score = gly_score <<~GLY
       h, h
       a -- men
       GLY
       # Line breaking strategy must never change semantics.
       # Here breaking line on divisio would break a word in two.
-      _(c(break_divisiones: true).(score)).must_equal <<~GABC
+      _(c(line_breaking: :divisio).(score)).must_equal <<~GABC
       %%
       a(h,)men(h)
       GABC
     end
 
-    it 'break_words + break_divisiones' do
-      _(c(break_words: true, break_divisiones: true).(@long)).must_equal <<~GABC
-      %%
-      A(h)men(h)
-      a(h)men(hih,)
-      di(h)co(h)
-      vo(h)bis:(g)
-      (,)
-      GABC
-    end
-
-    it 'break_lines' do
-      _(c(break_lines: true).(gly_score(<<~GLY))).must_equal <<~GABC
+    it ':line' do
+      _(c(line_breaking: :line).(gly_score(<<~GLY))).must_equal <<~GABC
       h h h hih, h h , ; h g ,
       A -- men a -- men
       di -- co
