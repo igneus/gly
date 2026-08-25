@@ -15,10 +15,12 @@ module Gly
     option :output_directory, aliases: :d, type: :string, banner: 'specify output directory'
     option :break_words, type: :boolean, aliases: :W, banner: 'line-break after each word'
     option :break_divisiones, type: :boolean, aliases: :D, banner: 'line-break after each division ("bar line")'
+    option :break_lines, type: :boolean, aliases: :L, banner: 'line-breaks as in source lyrics'
     def gabc(*files)
       gabc_options = {
         break_words: options[:break_words],
-        break_divisiones: options[:break_divisiones]
+        break_divisiones: options[:break_divisiones],
+        break_lines: options[:break_lines],
       }
       files.each do |f|
         DocumentGabcConvertor.new(

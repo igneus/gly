@@ -71,6 +71,20 @@ describe Gly::GabcConvertor do
       (,)
       GABC
     end
+
+    it 'break_lines' do
+      _(c(break_lines: true).(gly_score(<<~GLY))).must_equal <<~GABC
+      h h h hih, h h , ; h g ,
+      A -- men a -- men
+      di -- co
+      vo -- bis:
+      GLY
+      %%
+      A(h)men(h) a(h)men(hih,)
+      di(h)co(h) (,) (;)
+      vo(h)bis:(g) (,)
+      GABC
+    end
   end
 
   describe 'comment_headers option' do
