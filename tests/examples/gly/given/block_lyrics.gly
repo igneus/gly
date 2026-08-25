@@ -1,3 +1,5 @@
 a a
 \lyrics
 i i
+\m d d  % explicit music line in a lyrics block is respected
+i i

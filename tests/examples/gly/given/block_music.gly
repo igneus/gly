@@ -1,4 +1,8 @@
 \lyrics
 a a
+b b b
 \music
+i i
+a -- men % this is obviously not valid music, but in a \music block everything is considered music
+\l c c % explicit lyrics line in a music block is respected
 i i
