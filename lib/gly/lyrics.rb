@@ -8,6 +8,8 @@ module Gly
       @words = []
     end
 
+    attr_reader :words
+
     def each_syllable
       return enum_for(:each_syllable) unless block_given?
 
@@ -33,9 +35,12 @@ module Gly
   class Word
     extend Forwardable
 
-    def initialize(syllables=[])
+    def initialize(syllables=[], eol: false)
       @syllables = syllables
+      @eol = eol
     end
+
+    attr_reader :syllables
 
     def_delegators :@syllables, :<<, :push
     def_delegator :@syllables, :each, :each_syllable
@@ -45,6 +50,10 @@ module Gly
         s.start_with?('!') ? s[1..-1] : s
       end
       without_directives.join
+    end
+
+    def end_of_line?
+      @eol
     end
   end
 end

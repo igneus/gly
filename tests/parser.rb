@@ -12,6 +12,10 @@ class TestParser < GlyTest
 
     assert doc.scores.empty?
 
+    doc.content.each do |i|
+      assert_instance_of Gly::Markup, i
+    end
+
     assert_equal "Perhaps", doc.content[0].text
     assert_equal "Ave\nCaesar", doc.content[1].text
     assert_equal "Ave Crux\n\nspes unica", doc.content[2].text
@@ -41,11 +45,35 @@ class TestParser < GlyTest
     assert_equal 'c', doc.content[5].headers['id']
   end
 
+  def test_lyrics_end_of_line
+    score = parse_score 'examples/parser/fortitudo_mea.gly'
+
+    assert_equal score.lyrics.words[0].syllables, ["FOr", "ti", "tú", "do"]
+
+    0.upto(5) do |i|
+      assert ! score.lyrics.words[i].end_of_line?
+    end
+
+    assert_equal score.lyrics.words[6].syllables, ["Dó", "mi", "nus:"]
+    assert score.lyrics.words[6].end_of_line?
+
+    7.upto(11) do |i|
+      assert ! score.lyrics.words[i].end_of_line?
+    end
+
+    assert_equal score.lyrics.words[12].syllables, ["sa", "lú", "tem."]
+    assert score.lyrics.words[12].end_of_line?
+  end
+
   def parse_example(path)
     doc = nil
     File.open expand_test_path(path) do |fr|
       doc = Gly::Parser.new.parse(fr)
     end
     doc
+  end
+
+  def parse_score(path)
+    parse_example(path).scores[0]
   end
 end

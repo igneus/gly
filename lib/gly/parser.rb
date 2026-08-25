@@ -159,8 +159,8 @@ module Gly
         words << [] if nxt != @syllable_separator && nxt != nil
       end
 
-      words.each do |syllables|
-        @score.lyrics << Word.new(syllables)
+      words.each.with_index(1) do |syllables, i|
+        @score.lyrics << Word.new(syllables, eol: i == words.size)
       end
     end
 
