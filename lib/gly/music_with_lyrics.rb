@@ -13,31 +13,23 @@ module Gly
 
       @music.each_with_index do |mus_chunk,i|
         begin
-          next_syl = lyric_enum.peek
-          yield nil, lyric_enum.next if next_syl == ' '
+          next_syl, _ = lyric_enum.peek
         rescue StopIteration
-          next_syl = ''
-        end until next_syl != ' '
-
-        if no_lyrics? mus_chunk, next_syl
-          if i == @music.size - 1
-            yield nil, ' '
-          end
-        else
-          # regular music chunk
-          begin
-            lyr = strip_directives lyric_enum.next
-          rescue StopIteration
-            lyr = ' ' if i > 0 # don't add space at the very beginning
-          end
         end
 
-        yield mus_chunk, lyr
-        if no_lyrics?(mus_chunk, next_syl) &&
-           i != (@music.size - 1) &&
-           ! @lyrics.empty?
-          yield nil, ' '
+        if next_syl.nil? || no_lyrics?(mus_chunk, next_syl)
+          yield mus_chunk, nil, Lyrics::END_OF_WORD
+          next
         end
+
+        begin
+          lyr, signal = lyric_enum.next
+        rescue StopIteration
+        end
+
+        yield mus_chunk,
+              (lyr && strip_directives(lyr)),
+              (signal.nil? && no_lyrics?(mus_chunk, lyr)) ? Lyrics::END_OF_WORD : signal
       end
     end
 

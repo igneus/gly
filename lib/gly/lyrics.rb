@@ -4,6 +4,9 @@ module Gly
   class Lyrics
     extend Forwardable
 
+    END_OF_WORD = :end_of_word
+    END_OF_LINE = :end_of_line
+
     def initialize
       @words = []
     end
@@ -14,12 +17,17 @@ module Gly
       return enum_for(:each_syllable) unless block_given?
 
       @words.each_with_index do |w,wi|
-        w.each_syllable.each do |s|
-          yield s
-        end
+        w.each_syllable.with_index(1) do |s, i|
+          signal =
+            if i == w.syllables.size
+              if w.end_of_line?
+                END_OF_LINE
+              else
+                END_OF_WORD
+              end
+            end
 
-        if (wi + 1) < @words.size
-          yield ' '
+          yield s, signal
         end
       end
     end

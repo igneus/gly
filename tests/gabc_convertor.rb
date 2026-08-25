@@ -41,13 +41,10 @@ describe Gly::GabcConvertor do
     end
 
     it 'break_divisiones wraps line after each divisio' do
-      # TODO the one space before "dico" is not expected,
-      #   investigate its origin
       _(c(break_divisiones: true).(@long)).must_equal <<~GABC
       %%
       A(h)men(h) a(h)men(hih,)
-       di(h)co(h) vo(h)bis:(g) (,)
-
+      di(h)co(h) vo(h)bis:(g) (,)
       GABC
     end
 
@@ -66,18 +63,13 @@ describe Gly::GabcConvertor do
     end
 
     it 'break_words + break_divisiones' do
-      # The additional blank lines after divisiones which are also
-      # word boundaries are not desirable, but for now we don't care.
-      # Normal use case is to choose one line breaking strategy.
       _(c(break_words: true, break_divisiones: true).(@long)).must_equal <<~GABC
       %%
       A(h)men(h)
       a(h)men(hih,)
-
       di(h)co(h)
       vo(h)bis:(g)
       (,)
-
       GABC
     end
   end

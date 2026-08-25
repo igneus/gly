@@ -19,17 +19,26 @@ module Gly
 
       out.puts '%%'
 
-      score.music_with_lyrics.each_pair do |music_chunk, lyric_chunk|
-        if @break_words && word_boundary?(music_chunk, lyric_chunk)
-          out.puts
-          next
+      next_space = false
+      score.music_with_lyrics.each_pair do |music_chunk, lyric_chunk, signal|
+        if next_space
+          out.print next_space
+          next_space = false
         end
 
         out.print lyric_chunk if lyric_chunk
         out.print "(#{music_chunk})" if music_chunk
 
+        if signal
+          if @break_words
+            next_space = "\n"
+          else
+            next_space = ' '
+          end
+        end
+
         if @break_divisiones && divisio?(music_chunk)
-          out.puts
+          next_space = "\n"
         end
       end
 
@@ -39,10 +48,6 @@ module Gly
     end
 
     private
-
-    def word_boundary?(music_chunk, lyric_chunk)
-      music_chunk == nil && lyric_chunk == ' '
-    end
 
     def divisio?(music_chunk)
       music_chunk =~ /[,;:]/
