@@ -9,7 +9,11 @@ end
 require 'minitest/autorun'
 
 require 'minitest/reporters'
-Minitest::Reporters.use!
+if ENV['VERBOSE']
+  Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
+else
+  Minitest::Reporters.use!
+end
 
 # parent of all gly test classes
 class GlyTest < MiniTest::Test
