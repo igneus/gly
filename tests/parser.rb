@@ -48,20 +48,23 @@ class TestParser < GlyTest
   def test_lyrics_end_of_line
     score = parse_score 'examples/parser/fortitudo_mea.gly'
 
-    assert_equal score.lyrics.words[0].syllables, ["FOr", "ti", "tú", "do"]
+    assert_equal ["FOr", "ti", "tú", "do"],
+                 score.lyrics.words[0].syllables
 
     0.upto(5) do |i|
       assert ! score.lyrics.words[i].end_of_line?
     end
 
-    assert_equal score.lyrics.words[6].syllables, ["Dó", "mi", "nus:"]
+    assert_equal ["Dó", "mi", "nus:"],
+                 score.lyrics.words[6].syllables
     assert score.lyrics.words[6].end_of_line?
 
     7.upto(11) do |i|
       assert ! score.lyrics.words[i].end_of_line?
     end
 
-    assert_equal score.lyrics.words[12].syllables, ["sa", "lú", "tem."]
+    assert_equal ["sa", "lú", "tem."],
+                 score.lyrics.words[12].syllables
     assert score.lyrics.words[12].end_of_line?
   end
 
