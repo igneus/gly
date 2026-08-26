@@ -1,2 +1,12 @@
-a , a ` a : a ; a ;3 a :' a :: a ::z a ::Z a
-\l la la la la la la la la la la
+a , a ` a : a ; a ;3
+a :' a :: a ::z a ::Z a
+\l la la la la la
+\l la la la la la
+
+,:;3 % multiple unsingable items in a single music chunk
+b
+\l la
+
+, ; : % repeated unsingable music chunks
+c
+\l la
