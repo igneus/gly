@@ -11,6 +11,7 @@ module Gly
 
       lyric_enum = @lyrics.each_syllable.to_enum
 
+      in_a_word = false
       @music.each_with_index do |mus_chunk,i|
         begin
           next_syl, _ = lyric_enum.peek
@@ -18,18 +19,20 @@ module Gly
         end
 
         if next_syl.nil? || no_lyrics?(mus_chunk, next_syl)
-          yield mus_chunk, nil, Lyrics::END_OF_WORD
+          yield mus_chunk, nil, (in_a_word ? nil : Lyrics::END_OF_WORD)
           next
         end
 
         begin
-          lyr, signal = lyric_enum.next
+          syl, signal = lyric_enum.next
         rescue StopIteration
         end
 
+        in_a_word = signal ? false : (in_a_word || syl)
+
         yield mus_chunk,
-              (lyr && strip_directives(lyr)),
-              (signal.nil? && no_lyrics?(mus_chunk, lyr)) ? Lyrics::END_OF_WORD : signal
+              (syl && strip_directives(syl)),
+              (signal.nil? && no_lyrics?(mus_chunk, syl)) ? Lyrics::END_OF_WORD : signal
       end
     end
 

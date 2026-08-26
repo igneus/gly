@@ -10,3 +10,7 @@ b
 , ; : % repeated unsingable music chunks
 c
 \l la
+
+% unsingable music chunks in the middle of a word
+a , ; a
+\l a -- men

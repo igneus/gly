@@ -41,6 +41,13 @@ class TestMusicWithLyrics < GlyTest
     )
   end
 
+  def test_unsingables_within_a_word
+    assert_translates(
+      "a , , a\n\\l a -- men",
+      [['a', 'a', nil], [',', nil, nil], [',', nil, nil], ['a', 'men', EOL]]
+    )
+  end
+
   def test_clef
     assert_translates(
       "c3",
