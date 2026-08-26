@@ -2,7 +2,11 @@ c4  c3  c2  c1
 cb4 cb3 cb2 cb1
 f4  f3  f2  f1
 
-a % clefs are considered non-lyrical music chunks, lyrics syllable will be paired with this single note
+a % clefs are considered unsingable music chunks, lyrics syllable will be paired with this single note
+\l la
 
-\lyrics
-la
+c1c4 % multiple clefs
+z0::c3 % clef + other unsingable elements
+
+a
+\l la

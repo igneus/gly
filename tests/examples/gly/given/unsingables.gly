@@ -1,7 +1,11 @@
+% divisiones
 a , a ` a : a ; a ;3
-a :' a :: a ::z a ::Z a
+b :' b :: b ::z b ::Z b
+% custodes
+z0 c a+ c c+ c l+ c
 \l la la la la la
 \l la la la la la
+\l la la la la
 
 ,:;3 % multiple unsingable items in a single music chunk
 b

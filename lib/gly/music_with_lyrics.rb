@@ -40,7 +40,7 @@ module Gly
 
     def no_lyrics?(music_chunk, syllable)
       clef?(music_chunk) ||
-        (nonlyrical_chunk?(music_chunk) &&
+        (unsingable_music_chunk?(music_chunk) &&
          ! nonlyrical_lyrics?(syllable))
     end
 
@@ -48,18 +48,19 @@ module Gly
       chunk =~ /\A[cf]b?[1-4]\Z/
     end
 
-    def without_divisiones(chunk)
-      chunk.gsub /(([,`])|(:[:']?)|(;[1-6]?))/, ''
-    end
-
-    def without_breaks(chunk)
-      chunk.gsub /[zZ]/, ''
-    end
+    UNSINGABLE_CHUNK_RE = /
+      \A(
+      [cf]b?[1-4]          # clef
+      |[,`]|:[:']?|;[1-6]? # divisio
+      |z0|[a-mnp]\+        # custos
+      |[zZ]                # line break
+      )+\Z
+    /x.freeze
 
     # is the given music chunk capable of bearing lyrics?
-    def nonlyrical_chunk?(chunk)
+    def unsingable_music_chunk?(chunk)
       chunk.size > 0 &&
-        without_breaks(without_divisiones(chunk)).empty?
+        chunk =~ UNSINGABLE_CHUNK_RE
     end
 
     def nonlyrical_lyrics?(syl)
