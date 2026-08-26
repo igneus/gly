@@ -65,6 +65,20 @@ class TestParser < GlyTest
     assert score.lyrics.words[12].end_of_line?
   end
 
+  def test_custom_syllable_separator
+    doc = Gly::Parser.new('$').parse_str 'a -- men, al $ le $ lu $ ia'
+    score = doc.scores[0]
+
+    # the default syllable separator is considered normal syllable content
+    assert_equal ['a'], score.lyrics.words[0].syllables
+    assert_equal ['--'], score.lyrics.words[1].syllables
+    assert_equal ['men,'], score.lyrics.words[2].syllables
+
+    # custom syllable separator takes effect
+    assert_equal ['al', 'le', 'lu', 'ia'],
+                 score.lyrics.words[3].syllables
+  end
+
   def parse_example(path)
     doc = nil
     File.open expand_test_path(path) do |fr|
