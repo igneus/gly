@@ -18,13 +18,12 @@ module Gly
     option :break_divisiones, type: :boolean, aliases: :D, banner: 'line-break after each division ("bar line")'
     option :no_break, type: :boolean, aliases: :N, banner: 'no line-breaking, produce gabc music as one long line'
     def gabc(*files)
-      gc = GabcConvertor
       gabc_options = {
         line_breaking: {
-          break_words: gc::WORD,
-          break_divisiones: gc::DIVISIO,
-          break_lines: gc::LINE,
-          no_break: gc::NONE,
+          break_words:      GabcConvertor::WORD,
+          break_divisiones: GabcConvertor::DIVISIO,
+          break_lines:      GabcConvertor::LINE,
+          no_break:         GabcConvertor::NONE,
         }.each_pair
           .find {|(opt, _)| options[opt] }
           &.last
