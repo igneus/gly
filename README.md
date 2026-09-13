@@ -1,63 +1,68 @@
 ![Build Status](https://github.com/igneus/gly/actions/workflows/ci.yml/badge.svg)
 
-
 # gly
 
-Writer-friendly Gregorian notation format compiling to gabc.
-
-One or more scores per file;
-generate pdf preview without need to write a single line of LaTeX code;
-write music and lyrics separately.
+Alternative Gregorian chant notation format convertible to (and from) [gabc][gabc].
 
 *GLY* is an acronym of "Gregorio for liLYponders" or
-"Gregorio with separate LYrics.
+"Gregorio with separate LYrics."
 
 ## Why
 
-One of the most popular solutions for typesetting square
-notation used for the Gregorian chant is [Gregorio][gregorio].
+[Gregorio][gregorio] is a state-of-the-art FOSS solution
+for typesetting *square notation* (= the notation commonly used
+in practical editions of Gregorian chant).
 
-Gregorio is a great tool, but I really don't like it's default
-input format [gabc][gabc] - it's not very well readable,
-pain to write, and too restrictive (for some reason doesn't
-support other than the predefined header fields).
-That led me to designing an alternative, Gregorio-inspired
-notation format, which compiles to pure Gregorio gabc.
+Gregorio uses [gabc][gabc], a dedicated language concisely specifying
+features of the notation.
+I've always found this language rather unpleasant in terms of
+readability, writeability, and unnecessary constraints,
+and rather hindering than supporting my usual workflows.
+(Which is partly due to the fact that my habits and workflows
+are formed by maintaining primarily chant corpora written in LilyPond.)
 
-(Existence of the
-[GABC Transcription Tool][bentrans] by Benjamin Bloomfield
-suggests that the author of gly wasn't the only one who prefered
-to enter music and lyrics separately.)
+Gly is an attempt to reimagine the language to better fit my needs.
+The resulting gly language keeps unchanged the notation encoding minilanguage
+(i.e. the part of gabc that's written in parentheses)
+and overall score data model,
+but changes file layout to get rid of most parentheses,
+allow separate management of music and lyrics
+and support more document-oriented content organization where
+more than one score may sit in the same file
+and even additional LaTeX markup may be included
+(inspiration by LilyPond is obvious).
 
 ## Features
 
 __gly language__
 * music separated from lyrics
   * no need of the ubiquitous and tedious parentheses
-  * music transcription is usually quicker and more comfortable
-  * separation of "material and form" -> easy copying of the music or
-    lyrics alone is possible (useful for a composer)
+  * music transcription is usually faster and more comfortable
+  * easy copying of the music or lyrics alone
   * syllabified lyrics entered in a format inspired by LilyPond
-* music and lyrics can be interspersed as needed
+* music and lyrics lines can be interspersed as needed
 * no semicolons in the header
-* custom header fields
-* several scores per file
+* custom header fields are handled generously (commented out in the gabc output)
+* multiple scores per file
+* scores may be interspersed with LaTeX markup
 
 __gly tool__
 * transform your gly document to one or more gabc scores
-* compile pdf preview with a single command, without writing
+* ... or existing gabc scores to a gly document
+* build pdf preview with a single command, without writing
   any (La)TeX
-  * produces score annotations from provided score header fields
-* transform gly document to (modern notation) lilypond document
+  * produces score annotations from provided header fields -- *TODO: this used to be a valuable feature in Gregorio 3 days, serious rethinking and possibly removal is commanded*
+* transform gly document to a (modern notation) LilyPond document
+* Ruby code of the tool can be used for custom data processing over gly files - in you scripts just `require 'gly'` and use `Gly::Parser` or other components
 
-## Real world examples
+## Real World Examples
 
 * [Antiphonale according to the 1983 Ordo cantus officii][antiphonale83]
 * [Proper Divine Office chants of the ecclesiastical province of Prague][prop_prag]
 * [Proper Divine Office chants of Bohemian Premonstratensian houses][opraem_boh]
 * [Completorium Pragense][completorium]
 
-## Basic examples
+## Basic Examples
 
 Typical GABC source of an antiphon looks like this:
 
@@ -99,7 +104,7 @@ Corresponding GLY may look like this:
 
 Or, with music and lyrics interlaced
 (this arrangement may be handy for larger scores,
-like full-notated hymns, sequences or nocturnal responsories):
+like fully notated hymns, sequences or nocturnal responsories):
 
     \score
     name: Nativitas gloriosae
@@ -130,7 +135,7 @@ is actually ignored during processing.
 ## Syntax - Short Description
 
 Score begins with a `\score` keyword.
-Header fields follow. The header syntax is very similar to gabc,
+Zero or more header fields follow. The header syntax is very similar to gabc,
 except for semicolon at the end (omitted in gly) and the fact that
 only one-line values are supported.
 Unlike in gabc, there is no delimiter signaling end of the header.
@@ -163,18 +168,20 @@ But better support is planned.)
 
 ## Usage
 
-This gem provides executable `gly`. Run `gly help` for full list
-of subcommands. The most important ones are:
+Single executable `gly` is provided. It accepts several subcommands:
 
-`gly gabc FILE1 ...`
+- `gly gabc FILE1 ...`
+  converts given gly file(s) to one or more gabc files (one per score,
+  i.e. one gly may spawn a bunch of gabcs).
+- `gly fy FILE1 ...`
+  converts given gabc file(s) to a gly file
+- `gly preview FILE1 ...`
+  creates a pdf document with all scores contained in each gly file.
+- `gly help` lists all available subcommands
+- `gly help SUBCOMMAND` prints help for the specified subcommand
 
-converts given gly file(s) to one or more gabc files (one per score,
-i.e. one gly may spawn a bunch of gabcs).
-
-`gly preview FILE1 ...`
-
-creates a pdf document with all scores contained in each
-gly file.
+Subcommands can be shortenned to unique incipits,
+i.e. instead of `gly preview` it suffices to write just `gly p` (etc.)
 
 ## Tools
 
@@ -187,7 +194,7 @@ gly file.
 Gly syntax is line-based.
 The interpreter reads the input line by line,
 and depending on context it interprets each line as
-e.g. music, lyrics or header field.
+header field, music, lyrics or markup.
 
 The syntax is quite permissive, not requiring a lot of delimiters
 or hints for the parser concerning what each line means.
@@ -200,7 +207,7 @@ When a `%` sign is encountered, everything until the end of line
 is considered a comment and not interpreted.
 (Comment syntax is the same as in gabc.)
 
-Please note, that when compiling to gabc, comments are dropped
+Please note that comments are dropped by gly
 and don't appear in the resulting gabc file.
 
 ### 2. Whitespace
@@ -220,7 +227,7 @@ Lines with music and lyrics may appear in any order.
 Score ends with end of file or with explicit beginning of a new score
 or another top-level element.
 
-#### 3.1 Score header
+#### 3.1 Score Header
 
 Score header starts at the beginning of the score and ends with
 first non-empty line identified by the parser as music or lyrics.
@@ -266,19 +273,19 @@ characters contain something that cannot be interpreted as music.
 If any of these conditions is met, the line is interpreted as lyrics.
 
 If gly fails to guess your lyrics line correctly and interprets
-it as music, place `\lyrics` or it's shorter form `\l` at the beginning
+it as music, place `\lyrics` or its shorter form `\l` at the beginning
 of the unhappy line:
 
 `\l a a a`
 
-For the opposite case there is `\music` and it's shortcut `\m`.
+For the opposite case there is `\music` and its shortcut `\m`.
 
 `\m a[alt:když něco poplete autodetekci] j ivHG`
 
-`\lyrics` or `\music` alone on it's own line starts a lyrics/music
+`\lyrics` or `\music` alone on its own line starts a lyrics/music
 block mode. It means that until the next block opening keyword
 is encountered (`\lyrics`, `\music`, `\header`, `\score`),
-default line meaning is lyrics/music.
+all lines are considered lyrics/music, unless explicitly specified otherwise.
 Again, this is handy mostly when gly fails to guess your intentions.
 
 In case you prefer another syllable separator over the default
@@ -302,7 +309,7 @@ That is especially useful in two cases:
 * empty music chunk `()`
 * music chunk containing space `(gf gf g!hi)`
 
-#### 3.4 Matching lyrics to music
+#### 3.4 Matching Lyrics to Music
 
 When processing the gly source and producing gabc, music chunks
 are matched to lyric syllables.
@@ -356,7 +363,7 @@ leading and trailing whitespace stripped.
 It means you can use TeX commands and other constructs
 that make sense in a TeX document.
 
-### 4. Document header
+### 4. Document Header
 
 Each gly document may optinally contain a document header.
 It may appear anywhere in the document, but best practice is to place
@@ -407,9 +414,13 @@ by invoking
 
     gly preview -t TEMPLATE.tex DOCUMENT.gly
 
-## How to run tests
+## How to Run Tests
 
-execute `tests/run.rb`
+    bundle exec ruby tests/run.rb
+
+Set environment variable VERBOSE for verbose reporting:
+
+    VERBOSE=1 bundle exec ruby tests/run.rb
 
 ## License
 
