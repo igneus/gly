@@ -18,7 +18,7 @@ end
 # parent of all gly test classes
 class GlyTest < MiniTest::Test
   # shortcut performing gly->gabc conversion and returning
-  # it's results
+  # its results
   def gly_process(gly_io)
     doc = Gly::Parser.new.parse(gly_io)
     Gly::GabcConvertor.new.convert(doc.scores[0])

@@ -11,7 +11,7 @@ module Gly
     class_option :separator, aliases: :s, banner: 'syllable separator (default is double dash "--")'
 
     desc 'gabc FILE ...', 'convert gly to gabc'
-    option :output, type: :string, aliases: :o, banner: 'specify output file name (or template of file names)' # better description how it really works
+    option :output, type: :string, aliases: :o, banner: 'specify output file name (or template of file names)' # TODO better description how it really works
     option :suffix_always, type: :boolean, aliases: :a, banner: 'add score id suffix to the gabc file name even if gly file contains just one score'
     option :output_directory, aliases: :d, type: :string, banner: 'specify output directory'
     option :break_lines, type: :boolean, aliases: :L, banner: 'line-breaks as in source lyrics (default)'
