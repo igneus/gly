@@ -9,10 +9,12 @@ Gem::Specification.new do |s|
 
   s.authors     = ['Jakub Pavlík']
   s.email       = 'jkb.pavlik@gmail.com'
-  s.files       = (Dir['bin/*'] + Dir['lib/**/*'] +
-                   Dir['tests/**/*'])
+  s.files       =
+    `git ls-files -z`
+      .split("\x0")
+      .reject {|f| f =~ %r{^(\.|doc|elisp)} }
   s.executables = ['gly']
-  s.homepage    = 'http://github.com/igneus/gly'
+  s.homepage    = 'https://github.com/igneus/gly'
   s.licenses    = ['MIT']
 
   s.add_dependency 'thor'
