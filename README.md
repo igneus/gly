@@ -52,8 +52,10 @@ __gly tool__
 
 ## Real world examples
 
-* [WIP Antiphonale according to the 1983 Ordo cantus officii][antiphonale83]
+* [Antiphonale according to the 1983 Ordo cantus officii][antiphonale83]
+* [Proper Divine Office chants of the ecclesiastical province of Prague][prop_prag]
 * [Proper Divine Office chants of Bohemian Premonstratensian houses][opraem_boh]
+* [Completorium Pragense][completorium]
 
 ## Basic examples
 
@@ -419,7 +421,7 @@ MIT
 
 [opraem_boh]: https://gist.github.com/igneus/1aed0b36e9b23b51526d
 [antiphonale83]: https://github.com/igneus/antiphonale83
-
-[bentrans]: https://bbloomf.github.io/jgabc/transcriber.html
+[completorium]: https://github.com/igneus/completorium-pragense
+[prop_prag]: https://github.com/igneus/proprium-pragense-antiphonale
 
 [lygre]: https://github.com/igneus/lygre
