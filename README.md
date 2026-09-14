@@ -67,11 +67,10 @@ __gly tool__
 Typical GABC source of an antiphon looks like this:
 
     name: Nativitas gloriosae;
-    office-part: laudes, 1. ant.;
+    office-part: antiphona;
     occasion: In Nativitate B. Mariae Virginis;
     book: Antiphonale Romanum 1912, pg. 704;
     mode: 8;
-    initial-style: 1;
     %%
     
     (c4) NA(g)TI(g)VI(g)TAS(gd) glo(f)ri(gh)ó(g)sae(g) * (,)
@@ -84,11 +83,10 @@ Corresponding GLY may look like this:
 
     \score
     name: Nativitas gloriosae
-    office-part: laudes, 1. ant.
+    office-part: antiphona
     occasion: In Nativitate B. Mariae Virginis
     book: Antiphonale Romanum 1912, pg. 704
     mode: 8
-    initial-style: 1
     
     c4 g g g gd f gh g g ,
     g g hi gh gf f ;
@@ -108,11 +106,10 @@ like fully notated hymns, sequences or nocturnal responsories):
 
     \score
     name: Nativitas gloriosae
-    office-part: laudes, 1. ant.
+    office-part: antiphona
     occasion: In Nativitate B. Mariae Virginis
     book: Antiphonale Romanum 1912, pg. 704
     mode: 8
-    initial-style: 1
     
     c4 g g g gd f gh g g ,
     NA -- TI -- VI -- TAS glo -- ri -- ósae *
@@ -239,11 +236,10 @@ Each header field is on it's own (one) line and consists of
 identifier, colon and value:
 
     name: Nativitas gloriosae
-    office-part: laudes, 1. ant.
+    office-part: antiphona
     occasion: In Nativitate B. Mariae Virginis
     book: Antiphonale Romanum 1912, pg. 704
     mode: 8
-    initial-style: 1
 
 Header field identifier may only consist of alphanumeric characters,
 minus-sign and underscore. Value can contain anything.
