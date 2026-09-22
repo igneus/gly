@@ -82,6 +82,23 @@ class TestParser < GlyTest
                  score.lyrics.words[3].syllables
   end
 
+  def test_document_header_anywhere
+    doc = parse_example 'examples/parser/document_header_anywhere.gly'
+
+    assert_equal 2, doc.scores.size
+
+    assert_equal 'Header After Score', doc.header['title']
+  end
+
+  def test_document_header_repeated
+    doc = parse_example 'examples/parser/document_header_repeated.gly'
+
+    # When the document contains more than one header,
+    # they simply add together
+    assert_equal 'Second', doc.header['title']
+    assert_equal %w(First Second), doc.header.each_value('title').to_a
+  end
+
   def parse_example(path)
     doc = nil
     File.open expand_test_path(path) do |fr|

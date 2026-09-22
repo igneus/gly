@@ -1,0 +1,8 @@
+\score
+a a
+
+\header
+title: Header After Score
+
+\score
+h h
