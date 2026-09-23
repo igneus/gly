@@ -4,32 +4,37 @@
 
 Alternative Gregorian chant notation format convertible to (and from) [gabc][gabc].
 
-*GLY* is an acronym of "Gregorio for liLYponders" or
+GLY is an acronym of "Gregorio for liLYponders" or
 "Gregorio with separate LYrics."
 
 ## Why
 
 [Gregorio][gregorio] is a state-of-the-art FOSS solution
-for typesetting *square notation* (= the notation commonly used
-in practical editions of Gregorian chant).
+for typesetting *square notation* (= the special music notation
+commonly used in practical editions of Gregorian chant,
+based on one type of medieval chant notation).
 
-Gregorio uses [gabc][gabc], a dedicated language concisely specifying
-features of the notation.
-I've always found this language rather unpleasant in terms of
-readability, writeability, and unnecessary constraints,
-and rather hindering than supporting my usual workflows.
-(Which is partly due to the fact that my habits and workflows
-are formed by maintaining primarily chant corpora written in LilyPond.)
+For convenient notation entry Gregorio provides [gabc][gabc],
+a dedicated language concisely specifying features of the notation.
+I've always found the gabc language rather unpleasant to work with
+and often standing in the way of my usual workflows.
+The main issues:
+
+- typing so many parentheses is tedious
+- lyrics are hard to read
+- lyrics/music can't easily be copied on their own
+- Gregorio is unnecessarily strict about header fields errors on encountering a non-standard header field name
+- a LaTeX document is required to render the music
 
 Gly is an attempt to reimagine the language to better fit my needs.
-The resulting gly language keeps unchanged the notation encoding minilanguage
+The resulting language keeps unchanged the music minilanguage
 (i.e. the part of gabc that's written in parentheses)
 and overall score data model,
 but changes file layout to get rid of most parentheses,
 allow separate management of music and lyrics
 and support more document-oriented content organization where
 more than one score may sit in the same file
-and even additional LaTeX markup may be included
+and even additional LaTeX markup can be included
 (inspiration by LilyPond is obvious).
 
 ## Features
@@ -51,9 +56,9 @@ __gly tool__
 * ... or existing gabc scores to a gly document
 * build pdf preview with a single command, without writing
   any (La)TeX
-  * produces score annotations from provided header fields -- *TODO: this used to be a valuable feature in Gregorio 3 days, serious rethinking and possibly removal is commanded*
+  * produces score annotations from provided header fields -- *TODO: this used to be a valuable feature in the days of Gregorio 3, nowadays serious rethinking and possibly removal is commanded*
 * transform gly document to a (modern notation) LilyPond document
-* Ruby code of the tool can be used for custom data processing over gly files - in you scripts just `require 'gly'` and use `Gly::Parser` or other components
+* Ruby code of the tool can be used for custom data processing over gly files - in your scripts just `require 'gly'` and use `Gly::Parser` and other components
 
 ## Real World Examples
 
@@ -102,7 +107,7 @@ Corresponding GLY may look like this:
 
 Or, with music and lyrics interlaced
 (this arrangement may be handy for larger scores,
-like fully notated hymns, sequences or nocturnal responsories):
+like fully notated hymns, sequences or prolix responsories):
 
     \score
     name: Nativitas gloriosae
@@ -126,8 +131,8 @@ like fully notated hymns, sequences or nocturnal responsories):
     df!gh g f hg~ hi h g ::
     cla -- ra ex stir -- pe Da -- vid.
 
-Other arrangements are also possible. Order of music and lyrics
-is actually ignored during processing.
+Other arrangements are possible. Order of music and lyrics
+is insignificant.
 
 ## Syntax - Short Description
 
@@ -139,9 +144,7 @@ Unlike in gabc, there is no delimiter signaling end of the header.
 Header ends with first line detected as music or lyrics.
 
 Music lines contain only music. There is usually no need to enclose
-music chunks in parentheses (the author's bias against writing
-so many parentheses was one of the main motivations behind creating
-gly), but you are allowed to write them if you want to.
+music chunks in parentheses, but you are allowed to write them if you want to.
 
 Lyric lines contain lyrics, with syllables separated by double dash
 `--` like in LilyPond.
@@ -150,23 +153,28 @@ For more detailed description of gly syntax see Syntax Reference below.
 
 ## Installation
 
-Install Ruby (some 2.x version) runtime. Then install as any ruby gem:
+Make sure you have Ruby runtime installed
+
+`ruby --version`
+
+and that its version is at least some 2.x.
+Then install gly as any Ruby gem:
 
 `gem install gly`
 
 If you plan to use `gly preview`,
-ensure that you have a working installation of `gregorio` and
+make sure that you have a working installation of `gregorio` and
 `lualatex`.
 
-If you also plan to use the gly->lilypond translation,
-install the [lygre][lygre] gem.
-(This feature is currently only for the brave.
-But better support is planned.)
+Optionally install the `lygre` gem to unlock `gly ly` and `gly fy` subcommands.
+
+`gem install lygre`
 
 ## Usage
 
 Single executable `gly` is provided. It accepts several subcommands:
 
+- `gly` lists all available subcommands
 - `gly gabc FILE1 ...`
   converts given gly file(s) to one or more gabc files (one per score,
   i.e. one gly may spawn a bunch of gabcs).
@@ -174,7 +182,6 @@ Single executable `gly` is provided. It accepts several subcommands:
   converts given gabc file(s) to a gly file
 - `gly preview FILE1 ...`
   creates a pdf document with all scores contained in each gly file.
-- `gly help` lists all available subcommands
 - `gly help SUBCOMMAND` prints help for the specified subcommand
 
 Subcommands can be shortenned to unique incipits,
@@ -361,13 +368,13 @@ that make sense in a TeX document.
 
 ### 4. Document Header
 
-Each gly document may optinally contain a document header.
+Each gly document may optionally contain a document header.
 It may appear anywhere in the document, but best practice is to place
 it at the very beginning.
 
 Document header starts with keyword `\header` and ends
 at the end of file or at the beginning of another top-level element.
-The syntax of it's content is the same
+The syntax of its content is the same
 as for score header.
 
     \header
