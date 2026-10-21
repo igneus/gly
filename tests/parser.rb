@@ -1,6 +1,14 @@
 require_relative 'test_helper'
 
 class TestParser < GlyTest
+  def test_empty
+    doc = Gly::Parser.new.parse_str ''
+
+    assert doc.scores.empty?
+    assert doc.content.empty?
+    assert doc.header.empty?
+  end
+
   def test_markup_after_header
     doc = parse_example 'examples/parser/markup_after_header.gly'
     assert_equal 1, doc.header.size
