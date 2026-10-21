@@ -23,7 +23,7 @@ The main issues:
 - typing so many parentheses is tedious
 - lyrics are hard to read
 - lyrics/music can't easily be copied on their own
-- Gregorio is unnecessarily strict about header fields errors on encountering a non-standard header field name
+- Gregorio is unnecessarily strict about header fields and errors on encountering a non-standard header field name
 - a LaTeX document is required to render the music
 
 Gly is an attempt to reimagine the language to better fit my needs.
