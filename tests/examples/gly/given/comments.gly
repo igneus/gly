@@ -1,0 +1,13 @@
+% simple comment
+%no initial whitespace
+%%%%% multiple percent characters
+
+annotation: value % comment after header
+
+% whole-line comment in score header
+
+a a % comment after music
+
+% whole-line comment in score content
+
+la -- la % comment after lyrics
