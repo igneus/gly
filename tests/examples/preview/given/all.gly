@@ -1,0 +1,48 @@
+\header
+% header fields with special handling
+title: Gly Document With All Elements
+
+% custom header fields
+crazy-parrot: is crazy
+snake_cased_prop: value
+
+% one-line markup
+\markup\section*{Preface}
+
+\markup
+This is a
+\emph{block} markup.
+
+With multiple paragraphs.
+
+% completely empty score
+\score
+
+% score with header fields only
+\score
+mode: ?
+
+% non-empty score without an ID
+\score
+office-part: varia
+c4 h h
+la -- la
+
+% score with an ID
+\score
+id: la
+custom-header: value of a custom header
+c4 h h
+la -- la
+
+% score with all the header fields included in \grecommentary
+% (usually only a few of them are present, this is an extreme example)
+\score
+id: commentary
+book: Antiphonale Romanum 1700
+manuscript: Hartker antiphonal
+arranger: Palestrina
+author: St. Gregory the Great
+
+\markup
+Another markup.

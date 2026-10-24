@@ -17,6 +17,8 @@ end
 
 # parent of all gly test classes
 class GlyTest < MiniTest::Test
+  TEST_DIR = File.dirname __FILE__
+
   # shortcut performing gly->gabc conversion and returning
   # its results
   def gly_process(gly_io)

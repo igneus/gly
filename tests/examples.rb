@@ -5,11 +5,13 @@ require_relative 'test_helper'
 # Each test case is defined by a pair of a gly and gabc file
 # in directories examples/*/given and examples/*/expected.
 class TestExamples < GlyTest
-  def self.example_test_case(given_file, expected_file)
+  def self.case_name(given_file)
     # filename without extension
-    case_name = File.basename(given_file).sub(/\.[^\.]*\Z/, '')
+    File.basename(given_file).sub(/\.[^\.]*\Z/, '')
+  end
 
-    define_method "test_#{case_name}" do
+  def self.example_test_case(given_file, expected_file)
+    define_method "test_#{case_name(given_file)}" do
       expected = File.read expected_file
       File.open given_file do |fr|
         # the method transform is 'deferred'
@@ -23,8 +25,7 @@ end
 
 # conversion gly -> gabc
 class TestGlyExamples < TestExamples
-  here = File.dirname __FILE__
-  Dir.glob(File.join(here, 'examples/gly/given/*.gly')).each do |given|
+  Dir.glob(File.join(TEST_DIR, 'examples/gly/given/*.gly')).each do |given|
     expected = given.sub('/given', '/expected').sub('.gly', '.gabc')
     example_test_case given, expected
   end
@@ -36,13 +37,63 @@ end
 
 # conversion gabc -> gly
 class TestGlyfyExamples < TestExamples
-  here = File.dirname __FILE__
-  Dir.glob(File.join(here, 'examples/glyfy/given/*.gabc')).each do |given|
+  Dir.glob(File.join(TEST_DIR, 'examples/glyfy/given/*.gabc')).each do |given|
     expected = given.sub('/given', '/expected').sub('.gabc', '.gly')
     example_test_case given, expected
   end
 
   def transform(fr)
     glyfy_process(fr).string
+  end
+end
+
+# gly -> zero or more gabc + a LaTeX document
+class TestPreviewExamples < TestExamples
+  TEMPLATE = File.read File.join(TEST_DIR, *%w(examples preview template.tex))
+
+  attr_reader :tmp_dir
+
+  def setup
+    @tmp_dir = "/tmp/gly-test-examples-preview-#{rand(10**5)}"
+    assert !Dir.exist?(tmp_dir)
+    Dir.mkdir tmp_dir
+  end
+
+  def teardown
+    FileUtils.rm_rf tmp_dir
+  end
+
+  def self.preview_test_case(given_gly_file, expected_dir)
+    define_method "test_#{case_name(given_gly_file)}" do
+      document = Gly::Parser.new.parse given_gly_file
+      opts = {output_directory: tmp_dir, no_build: true}
+
+      Gly::PreviewGenerator
+        .new(template: TEMPLATE, options: opts)
+        .process(document)
+
+      list_dir(tmp_dir).each do |f|
+        assert File.exist? File.join(tmp_dir, f)
+        assert_equal file_contents(f, _in: expected_dir),
+                     file_contents(f, _in: tmp_dir)
+      end
+
+      assert_equal list_dir(expected_dir), list_dir(tmp_dir)
+    end
+  end
+
+  Dir.glob(File.join(TEST_DIR, 'examples/preview/given/*.gly')).each do |given|
+    expected = given.sub('/given', '/expected').sub('.gly', '')
+    preview_test_case given, expected
+  end
+
+  def list_dir(name)
+    Dir
+      .glob(['*.tex', '*.gabc'], base: name)
+      .sort
+  end
+
+  def file_contents(file_name, _in:)
+    File.read File.join _in, file_name
   end
 end
